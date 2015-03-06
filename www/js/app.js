@@ -43,4 +43,8 @@ angular.module('next', ['ionic'])
         "Adamstuen", "Stensgata", "Colletts Gate", "Bislett"
     ];
     
+    $scope.refresh = function() {
+        console.log("refreshing..");
+    }
+    
 });
