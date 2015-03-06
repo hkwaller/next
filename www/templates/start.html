@@ -1,6 +1,6 @@
 <ion-view view-title="#next">
      <ion-header-bar class="bar bar-subheader">
-        <ion-slide-box>
+        <ion-slide-box on-slide-changed="slideChanged(index)">
           <ion-slide ng-repeat="station in stations">
               <div class="row station-row">
                 <div class="col col-10">
@@ -29,7 +29,7 @@
                         {{ line.destination }}
                     </div>
                     <div class="col col-20">
-                        {{ line.time }} min
+                        {{ calcTime(line.time) }} min
                     </div>
                 </div>
             </ion-item>
