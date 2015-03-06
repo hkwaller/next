@@ -1,0 +1,34 @@
+<ion-view view-title="#next">
+    <ion-content>
+        <ion-slide-box>
+          <ion-slide ng-repeat="station in stations">
+              <div class="row station-row">
+                <div class="col col-10">
+                    <i class="icon ion-chevron-left"></i>
+                </div>
+                <div class="col col-80">
+                    <div class="station">{{ station }}</div>
+                </div>
+                <div class="col col-10">
+                    <i class="icon ion-chevron-right"></i>
+                </div>  
+              </div>
+          </ion-slide>
+        </ion-slide-box>
+        <ion-list>
+            <ion-item ng-repeat="line in lines">
+                <div class="row">
+                    <div class="col col-20">
+                        <span ng-class="line.class">{{ line.number }}</span>
+                    </div>
+                    <div class="col col-60 line-name">
+                        {{ line.destination }}
+                    </div>
+                    <div class="col col-20">
+                        {{ line.time }} min
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

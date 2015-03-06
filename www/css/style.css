@@ -1,1 +1,44 @@
-/* Empty. Add your own CSS if you like */
+.line-17 {
+    background: red;
+    padding: .5em;
+    border-radius: 0.35em;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.line-18 {
+    background: #fdcf0e;
+    padding: .5em;
+    border-radius: 0.35em;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.line-37 {
+    background: #3e75dd;
+    padding: .5em;
+    border-radius: 0.35em;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.line-54 {
+    background: #4ad33f;
+    padding: .5em;
+    border-radius: 0.35em;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.line-name {
+    font-weight: 400;
+    font-size: 1.1em;
+}
+
+.station-row {
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: 200;
+    padding: .5em;
+    background: #e0dddd;
+}
