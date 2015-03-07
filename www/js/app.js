@@ -29,7 +29,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     url: '/station-overview',
     controller: 'OverviewCtrl',
     templateUrl: 'templates/stations-overview.html'
-  })
+  });
   
    $urlRouterProvider.otherwise("/station-overview");
 })
@@ -49,42 +49,53 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
             $scope.$apply();
         }));
     }
-    
-    $ionicPlatform.ready(function() {
-        $cordovaGeolocation.getCurrentPosition()
-            .then(function (position) {
-              var lat  = position.coords.latitude
-              var long = position.coords.longitude
-              console.log(lat + " " + long);
-            }, function(err) {
-              // error
-        });
-    });
 
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
         $scope.activeIndex = index;
-    }
+    };
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);
-    }
+    };
 
 })
 
-.controller('OverviewCtrl', function($scope, $location, ApiService, StationService) {
+.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, ApiService, StationService) {
     
     $scope.stations = [];
 
-    ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
-        $scope.stations = stations;
-        $scope.$apply();
-    }));
+    $ionicPlatform.ready(function() {
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function (position) {
+              var lat  = position.coords.latitude;
+              var lng = position.coords.longitude;
+
+              // Oslo: 59.932624, 10.734738
+              // Ytterby: 57.863906199999995 11.9110967
+
+              console.log("Coordinates from cordova geolocation",lat,lng);
+
+              if ((lng+"").substr(0,4)==="11.9"){
+                lat = 59.932624;
+                lng = 10.734738;
+                console.log("But since you are in Ytterby we'll use",lat,lng,"instead! :)");
+              }
+
+              ApiService.getStationList(lat, lng, 5, function(err, stations) {
+                  $scope.stations = stations;
+                  $scope.$apply();
+              });
+
+            }, function(err) {
+              console.log("Error getting current position! :(",err);
+            });
+    });
     
     $scope.goToStation = function(station) {
         StationService.setStation(station);        
         $location.path('/station-detail');
-    }
+    };
     
 });
