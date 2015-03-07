@@ -25,10 +25,10 @@
             <ion-item ng-repeat="line in lines | limitTo:10">
                 <div class="row">
                     <div class="col col-20">
-                        <span ng-class="line.class">{{ line.LineRef }}</span>
+                        <span class="line line-{{line.LineRef}}">{{ line.LineRef }}</span>
                     </div>
                     <div class="col col-60 line-name">
-                        {{ line.DestinationDisplay }}
+                        <strong>{{ line.DestinationDisplay }}</strong>
                     </div>
                     <div class="col col-20">
                         {{ line.MinutesToDeparture }} min

@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation'])
+angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -38,15 +38,18 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     
     ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
 
-    if (StationService.getStation() !== null) {
+    if (StationService.getStation() != null) {
         $scope.selectedStation = StationService.getStation();
-        ApiService.getDeparturesForStation($scope.selectedStation.ID, (function(err, lines) {
+        getLinesFromApi($scope.selectedStation.ID);
+    }
+
+    function getLinesFromApi(id) {
+        ApiService.getDeparturesForStation(id, (function(err, lines) {
             $scope.lines = lines;
-            console.log($scope.lines);
             $scope.$apply();
         }));
     }
-
+    
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
@@ -57,7 +60,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
               // error
         });
     });
-    
+
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
@@ -65,21 +68,8 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     }
 
     $scope.refresh = function() {
-        console.log("refreshing..");
-    }
-
-    $scope.calcTime = function(departureTime) {
-        var now = new Date();
-        var str = departureTime.split(":");
-        var dep = new Date(2015, 2, 7, str[0], str[1]);
-
-        var date1_ms = now.getTime();
-        var date2_ms = dep.getTime();
-
-        var diff = Math.round((date2_ms - date1_ms)/(1000*60));
-        if (diff < 10 && diff !== 0) return diff + " min";
-        else if (diff === 0 || diff === -0) return "Nå";
-        else return departureTime;
+        getLinesFromApi($scope.selectedStation.ID);
+        $scope.$broadcast('scroll.refreshComplete');
     }
 
 })
@@ -90,6 +80,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
     ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
         $scope.stations = stations;
+        console.log(stations);
         $scope.$apply();
     }));
     
