@@ -40,13 +40,16 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
     if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
-        ApiService.getDeparturesForStation($scope.selectedStation.ID, (function(err, lines) {
+        getLinesFromApi($scope.selectedStation.ID);
+    }
+
+    function getLinesFromApi(id) {
+        ApiService.getDeparturesForStation(id, (function(err, lines) {
             $scope.lines = lines;
-            console.log($scope.lines);
             $scope.$apply();
         }));
     }
-
+    
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
@@ -57,7 +60,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
               // error
         });
     });
-    
+
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
@@ -65,21 +68,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     }
 
     $scope.refresh = function() {
-        console.log("refreshing..");
-    }
-
-    $scope.calcTime = function(departureTime) {
-        var now = new Date();
-        var str = departureTime.split(":");
-        var dep = new Date(2015, 2, 7, str[0], str[1]);
-
-        var date1_ms = now.getTime();
-        var date2_ms = dep.getTime();
-
-        var diff = Math.round((date2_ms - date1_ms)/(1000*60));
-        if (diff < 10 && diff !== 0) return diff + " min";
-        else if (diff === 0 || diff === -0) return "Nå";
-        else return departureTime;
+        getLinesFromApi($scope.selectedStation.ID);
     }
 
 })
