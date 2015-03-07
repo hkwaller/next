@@ -38,7 +38,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     
     ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
 
-    if (StationService.getStation() !== null) {
+    if (StationService.getStation() != null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
     }
