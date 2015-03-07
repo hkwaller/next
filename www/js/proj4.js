@@ -5,30 +5,33 @@ var proj4 = require('proj4'),
 
 proj4.defs('EPSG:25832', '+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs');
 
-var getstuffomg = function(lat,long,callback){
+
+/*
+Davids fantastic method! Will (eventually) call callback with (err,result) where result is an array
+of objects. Each object has a `stationdata` property which describes the station, and a `departures`
+prop which is an array of departures.
+*/
+var getstuffomg = function(lat,long,numberofstops,callback){
 	var coords = proj4('EPSG:25832', { x: long, y: lat }),
-		url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x="+Math.round(coords.x)+",y="+Math.round(coords.y)+")&proposals=7",
-		data = {};
+		url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x="+Math.round(coords.x)+",y="+Math.round(coords.y)+")&proposals="+numberofstops;
 	request.get(url, function(res){
-		async.each(res.res.body,function(station,done){
-			data[station.ID] = { stationdata: station };
+		async.reduce(res.res.body,{},function(data,station,done){
 			request.get("http://api.trafikanten.no/ReisRest/RealTime/GetAllDepartures/"+station.ID,function(res){
-				data[station.ID].departures = res.res.body;
-				done();
+				done(null,_.extend(data,_.object([station.ID],[{stationdata:station,departures:res.res.body}])));
 			});
-		},function(err){
-			console.log("FAKKING DONE! should callback here, but now I will just spam the result :)");
-			_.each(data,function(station,id){
-				console.log("from station",station.stationdata.Name);
-				_.each(station.departures,function(dep){
-					console.log(" ..... ",dep.LineRef,dep.DestinationName);
-				});
-			});
+		},callback);
+	});
+};
+
+var testfunc = function(err,data){
+	console.log("FAKKING DONE! Lets spam the result :)");
+	_.each(data,function(station,id){
+		console.log("from station",station.stationdata.Name);
+		_.each(station.departures,function(dep){
+			console.log(" ..... ",dep.LineRef,dep.DestinationName);
 		});
 	});
 };
 
-var cb = function(){};
-
-getstuffomg(59.932624,10.734738,cb);
+getstuffomg(59.932624,10.734738,5,testfunc);
 
