@@ -31,8 +31,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     templateUrl: 'templates/stations-overview.html'
   })
   
-   $urlRouterProvider.otherwise("/station-detail");
-
+   $urlRouterProvider.otherwise("/station-overview");
 })
 
 .controller('MainCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService) {
@@ -87,4 +86,17 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
         else return departureTime;
     }
 
+})
+
+.controller('OverviewCtrl', function($scope, ApiService) {
+    
+    $scope.stations = [];
+    
+    ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
+        $scope.stations = stations;
+        console.log($scope.stations);
+        $scope.$apply();
+    }));
+    
+    
 });

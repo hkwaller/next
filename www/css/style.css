@@ -52,5 +52,15 @@
 }
 
 .text-center {
-    text-aling: center;
+    text-align: center;
+}
+
+.lineID-padding {
+    padding-right: .5em;
+}
+
+.station-overview-name {
+    font-size: 1.1em;
+    font-weight: 600;
+    padding-left: 0;
 }

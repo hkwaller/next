@@ -20,14 +20,18 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-  .state('index', {
-    url: '/',
+  .state('detail', {
+    url: '/station-detail',
     controller: 'MainCtrl',
-    templateUrl: 'templates/start.html'
+    templateUrl: 'templates/station-detail.html'
   })
-
-   $urlRouterProvider.otherwise("/");
-
+  .state('overview', {
+    url: '/station-overview',
+    controller: 'OverviewCtrl',
+    templateUrl: 'templates/stations-overview.html'
+  })
+  
+   $urlRouterProvider.otherwise("/station-overview");
 })
 
 .controller('MainCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService) {
@@ -58,8 +62,10 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     ];
 
     $scope.selectedStation = "";
+    $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
+        $scope.activeIndex = index;
     }
 
     $scope.refresh = function() {
@@ -80,4 +86,17 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
         else return departureTime;
     }
 
+})
+
+.controller('OverviewCtrl', function($scope, ApiService) {
+    
+    $scope.stations = [];
+    
+    ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
+        $scope.stations = stations;
+        console.log($scope.stations);
+        $scope.$apply();
+    }));
+    
+    
 });

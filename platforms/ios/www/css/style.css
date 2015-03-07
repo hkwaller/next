@@ -50,3 +50,17 @@
 .pane {
     background: rgba(237, 236, 236, 0.47);   
 }
+
+.text-center {
+    text-align: center;
+}
+
+.lineID-padding {
+    padding-right: .5em;
+}
+
+.station-overview-name {
+    font-size: 1.5em;
+    font-weight: 600;
+    padding-left: 0;
+}

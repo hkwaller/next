@@ -1,0 +1,19 @@
+<ion-view view-title="#next" ng-cloak>
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="station in stations">
+                <div class="row">
+                    <div class="col col-80 station-overview-name">
+                        {{ station.Name }}
+                    </div>
+                    <div class="col col-20">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="lineID-padding" ng-repeat="line in station.Lines">{{ line.LineID }}<span ng-hide="$index === station.Lines.length - 1">, </span></div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
