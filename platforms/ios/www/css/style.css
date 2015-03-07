@@ -1,4 +1,4 @@
-.line-17 {
+.line.line-17 {
     background: red;
     padding: .5em;
     border-radius: 0.35em;
@@ -6,7 +6,7 @@
     color: #fff;
 }
 
-.line-18 {
+.line.line-18 {
     background: #fdcf0e;
     padding: .5em;
     border-radius: 0.35em;
@@ -14,25 +14,17 @@
     color: #fff;
 }
 
-.line-37 {
-    background: #3e75dd;
+.line {
+    background: #f01d1d;
     padding: .5em;
     border-radius: 0.35em;
     font-size: 1.2em;
-    color: #fff;
-}
-
-.line-54 {
-    background: #4ad33f;
-    padding: .5em;
-    border-radius: 0.35em;
-    font-size: 1.2em;
-    color: #fff;
+    color: #fdcf0e;
 }
 
 .line-name {
     font-weight: 400;
-    font-size: 1.1em;
+    font-size: 1em;
 }
 
 .station-row {
@@ -48,7 +40,7 @@
 }
 
 .pane {
-    background: rgba(237, 236, 236, 0.47);   
+    background: #dbdbdb;   
 }
 
 .text-center {

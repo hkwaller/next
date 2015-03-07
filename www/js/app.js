@@ -69,6 +69,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);
+        $scope.$broadcast('scroll.refreshComplete');
     }
 
 })
