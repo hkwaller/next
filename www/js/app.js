@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation'])
+angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -80,6 +80,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
     ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
         $scope.stations = stations;
+        console.log(stations);
         $scope.$apply();
     }));
     

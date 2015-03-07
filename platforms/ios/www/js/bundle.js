@@ -1,4 +1,119 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var sortable = require('sortable-hash');
+
+var geo = {};
+
+geo.decode = function (hash) {
+  var decoded = sortable.decode(hash, 2);
+  return {
+    lat: decoded[1] / 100 * 90,
+    lon: decoded[0] / 100 * 180
+  };
+}
+
+geo.encode = function (latitude, longitude, precision) {
+  return sortable.encode([
+    longitude / 180 * 100,
+    latitude / 90 * 100
+  ], precision);
+}
+
+module.exports = geo;
+
+},{"sortable-hash":2}],2:[function(require,module,exports){
+var bits = [16, 8, 4, 2, 1];
+var base32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+
+var Hash = {};
+
+Hash.decode = function (hash, num) {
+  if (typeof num == 'undefined') throw new Error('`num` required');
+
+  var ranges = [];
+  for (var i = 0; i < num; i++) {
+    ranges[i] = [-100, 100];
+  }
+  var id = 0;
+  
+  for (var i = 0; i < hash.length; i++) {
+    for (var j = 0; j < bits.length; j++) {
+      var range = ranges[id++ % ranges.length];
+      var side = base32.indexOf(hash[i]) & bits[j]
+        ? 0
+        : 1;
+      range[side] = avg(range);
+    }
+  }
+
+  var averaged = [];
+  for (var i = 0; i < ranges.length; i++) {
+    averaged[i] = avg(ranges[i]);
+  }
+  return averaged;
+};
+
+Hash.encode = function (values, opts) {
+  if (typeof opts == 'number') {
+    opts = { precision: opts };
+  }
+  if (!opts) opts = {};
+
+  var bit = 0;
+  var ch = 0;
+  var precision = opts.precision || 12;
+
+  var ranges = [];
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] < -100 || values[i] > 100) {
+      throw new Error('accepted input range: [-100, 100]');
+    }
+    ranges[i] = [-100, 100];
+  }
+
+  var hash = '';
+  var i = 0;
+
+  while (hash.length < precision) {
+    var arg = i++ % values.length;
+    var range = ranges[arg];
+    var value = values[arg];
+    var mid = avg(range);
+
+    if (value > mid) {
+      ch |= bits[bit];
+      range[0] = mid;
+    } else {
+      range[1] = mid;
+    }
+
+    if (bit < 4) {
+      bit++;
+    } else {
+      hash += base32[ch];
+      bit = 0;
+      ch = 0;
+    }
+  }
+
+  return hash;
+}
+
+function avg (r) {
+  return (r[0] + r[1]) / 2;
+}
+
+module.exports = Hash;
+
+/*console.log(Hash.encode([-2.4/180*100, 10.3/90*100]));
+console.log(Hash.encode([10, 10, 10]));
+console.log(Hash.encode([11, 10, 10]));
+console.log(Hash.encode([10, 11, 10]));
+console.log(Hash.encode([10, 10, 11]));
+console.log(Hash.decode(Hash.encode([10, 10, 10]), 3));
+console.log(Hash.decode(Hash.encode([11, 10, 10]), 3));
+console.log(Hash.decode(Hash.encode([-2.4/180*100, 10.3/90*100]), 2));*/
+
+},{}],3:[function(require,module,exports){
 /*! geolib 2.0.14 by Manuel Bieh
 * Library to provide geo functions like distance calculation,
 * conversion of decimal coordinates to sexagesimal and vice versa, etc.
@@ -1149,7 +1264,65 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 	}
 
 }(this));
-},{}],2:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+(function (global){
+// http://www.rajdeepd.com/articles/chrome/localstrg/LocalStorageSample.htm
+
+// NOTE:
+// this varies from actual localStorage in some subtle ways
+
+// also, there is no persistence
+// TODO persist
+(function () {
+  "use strict";
+
+  var db;
+
+  function LocalStorage() {
+  }
+  db = LocalStorage;
+
+  db.prototype.getItem = function (key) {
+    if (this.hasOwnProperty(key)) {
+      return String(this[key]);
+    }
+    return null;
+  };
+
+  db.prototype.setItem = function (key, val) {
+    this[key] = String(val);
+  };
+
+  db.prototype.removeItem = function (key) {
+    delete this[key];
+  };
+
+  db.prototype.clear = function () {
+    var self = this;
+    Object.keys(self).forEach(function (key) {
+      self[key] = undefined;
+      delete self[key];
+    });
+  };
+
+  db.prototype.key = function (i) {
+    i = i || 0;
+    return Object.keys(this)[i];
+  };
+
+  db.prototype.__defineGetter__('length', function () {
+    return Object.keys(this).length;
+  });
+
+  if (global.localStorage) {
+    module.exports = localStorage;
+  } else {
+    module.exports = new LocalStorage();
+  }
+}());
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],5:[function(require,module,exports){
 (function (global){
 //! moment.js
 //! version : 2.9.0
@@ -4196,7 +4369,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var mgrs = require('mgrs');
 
 function Point(x, y, z) {
@@ -4232,7 +4405,7 @@ Point.prototype.toMGRS = function(accuracy) {
   return mgrs.forward([this.x, this.y], accuracy);
 };
 module.exports = Point;
-},{"mgrs":69}],4:[function(require,module,exports){
+},{"mgrs":72}],7:[function(require,module,exports){
 var parseCode = require("./parseCode");
 var extend = require('./extend');
 var projections = require('./projections');
@@ -4267,7 +4440,7 @@ Projection.projections = projections;
 Projection.projections.start();
 module.exports = Projection;
 
-},{"./deriveConstants":34,"./extend":35,"./parseCode":39,"./projections":41}],5:[function(require,module,exports){
+},{"./deriveConstants":37,"./extend":38,"./parseCode":42,"./projections":44}],8:[function(require,module,exports){
 module.exports = function(crs, denorm, point) {
   var xin = point.x,
     yin = point.y,
@@ -4320,14 +4493,14 @@ module.exports = function(crs, denorm, point) {
   return point;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var sign = require('./sign');
 
 module.exports = function(x) {
   return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
 };
-},{"./sign":23}],7:[function(require,module,exports){
+},{"./sign":26}],10:[function(require,module,exports){
 var TWO_PI = Math.PI * 2;
 // SPI is slightly greater than Math.PI, so values that exceed the -180..180
 // degree range by a tiny amount don't get wrapped. This prevents points that
@@ -4339,35 +4512,35 @@ var sign = require('./sign');
 module.exports = function(x) {
   return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
 };
-},{"./sign":23}],8:[function(require,module,exports){
+},{"./sign":26}],11:[function(require,module,exports){
 module.exports = function(x) {
   if (Math.abs(x) > 1) {
     x = (x > 1) ? 1 : -1;
   }
   return Math.asin(x);
 };
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(x) {
   return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
 };
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(x) {
   return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
 };
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(x) {
   return (0.05859375 * x * x * (1 + 0.75 * x));
 };
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function(x) {
   return (x * x * x * (35 / 3072));
 };
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = function(a, e, sinphi) {
   var temp = e * sinphi;
   return a / Math.sqrt(1 - temp * temp);
 };
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function(ml, e0, e1, e2, e3) {
   var phi;
   var dphi;
@@ -4384,7 +4557,7 @@ module.exports = function(ml, e0, e1, e2, e3) {
   //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
   return NaN;
 };
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 
 module.exports = function(eccent, q) {
@@ -4417,16 +4590,16 @@ module.exports = function(eccent, q) {
   //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
   return NaN;
 };
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = function(e0, e1, e2, e3, phi) {
   return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
 };
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function(eccent, sinphi, cosphi) {
   var con = eccent * sinphi;
   return cosphi / (Math.sqrt(1 - con * con));
 };
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 module.exports = function(eccent, ts) {
   var eccnth = 0.5 * eccent;
@@ -4443,7 +4616,7 @@ module.exports = function(eccent, ts) {
   //console.log("phi2z has NoConvergence");
   return -9999;
 };
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var C00 = 1;
 var C02 = 0.25;
 var C04 = 0.046875;
@@ -4468,7 +4641,7 @@ module.exports = function(es) {
   en[4] = t * es * C88;
   return en;
 };
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var pj_mlfn = require("./pj_mlfn");
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
@@ -4489,13 +4662,13 @@ module.exports = function(arg, es, en) {
   //..reportError("cass:pj_inv_mlfn: Convergence error");
   return phi;
 };
-},{"./pj_mlfn":21}],21:[function(require,module,exports){
+},{"./pj_mlfn":24}],24:[function(require,module,exports){
 module.exports = function(phi, sphi, cphi, en) {
   cphi *= sphi;
   sphi *= sphi;
   return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
 };
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function(eccent, sinphi) {
   var con;
   if (eccent > 1.0e-7) {
@@ -4506,15 +4679,15 @@ module.exports = function(eccent, sinphi) {
     return (2 * sinphi);
   }
 };
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = function(x) {
   return x<0 ? -1 : 1;
 };
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = function(esinp, exp) {
   return (Math.pow((1 - esinp) / (1 + esinp), exp));
 };
-},{}],25:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = function (array){
   var out = {
     x: array[0],
@@ -4528,7 +4701,7 @@ module.exports = function (array){
   }
   return out;
 };
-},{}],26:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 
 module.exports = function(eccent, phi, sinphi) {
@@ -4537,7 +4710,7 @@ module.exports = function(eccent, phi, sinphi) {
   con = Math.pow(((1 - con) / (1 + con)), com);
   return (Math.tan(0.5 * (HALF_PI - phi)) / con);
 };
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 exports.wgs84 = {
   towgs84: "0,0,0",
   ellipse: "WGS84",
@@ -4618,7 +4791,7 @@ exports.rnb72 = {
   ellipse: "intl",
   datumName: "Reseau National Belge 1972"
 };
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 exports.MERIT = {
   a: 6378137.0,
   rf: 298.257,
@@ -4834,7 +5007,7 @@ exports.sphere = {
   b: 6370997.0,
   ellipseName: "Normal Sphere (r=6370997)"
 };
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 exports.greenwich = 0.0; //"0dE",
 exports.lisbon = -9.131906111111; //"9d07'54.862\"W",
 exports.paris = 2.337229166667; //"2d20'14.025\"E",
@@ -4848,7 +5021,7 @@ exports.brussels = 4.367975; //"4d22'4.71\"E",
 exports.stockholm = 18.058277777778; //"18d3'29.8\"E",
 exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var proj = require('./Proj');
 var transform = require('./transform');
 var wgs84 = proj('WGS84');
@@ -4913,7 +5086,7 @@ function proj4(fromProj, toProj, coord) {
   }
 }
 module.exports = proj4;
-},{"./Proj":4,"./transform":67}],31:[function(require,module,exports){
+},{"./Proj":7,"./transform":70}],34:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
@@ -5319,7 +5492,7 @@ datum.prototype = {
 */
 module.exports = datum;
 
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
 var PJD_GRIDSHIFT = 3;
@@ -5420,7 +5593,7 @@ module.exports = function(source, dest, point) {
 };
 
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var globals = require('./global');
 var parseProj = require('./projString');
 var wkt = require('./wkt');
@@ -5477,7 +5650,7 @@ function defs(name) {
 globals(defs);
 module.exports = defs;
 
-},{"./global":36,"./projString":40,"./wkt":68}],34:[function(require,module,exports){
+},{"./global":39,"./projString":43,"./wkt":71}],37:[function(require,module,exports){
 var Datum = require('./constants/Datum');
 var Ellipsoid = require('./constants/Ellipsoid');
 var extend = require('./extend');
@@ -5535,7 +5708,7 @@ module.exports = function(json) {
   return json;
 };
 
-},{"./constants/Datum":27,"./constants/Ellipsoid":28,"./datum":31,"./extend":35}],35:[function(require,module,exports){
+},{"./constants/Datum":30,"./constants/Ellipsoid":31,"./datum":34,"./extend":38}],38:[function(require,module,exports){
 module.exports = function(destination, source) {
   destination = destination || {};
   var value, property;
@@ -5551,7 +5724,7 @@ module.exports = function(destination, source) {
   return destination;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = function(defs) {
   defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
   defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
@@ -5564,7 +5737,7 @@ module.exports = function(defs) {
   defs['EPSG:102113'] = defs['EPSG:3857'];
 };
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var projs = [
   require('./projections/tmerc'),
   require('./projections/utm'),
@@ -5594,7 +5767,7 @@ module.exports = function(proj4){
     proj4.Proj.projections.add(proj);
   });
 };
-},{"./projections/aea":42,"./projections/aeqd":43,"./projections/cass":44,"./projections/cea":45,"./projections/eqc":46,"./projections/eqdc":47,"./projections/gnom":49,"./projections/krovak":50,"./projections/laea":51,"./projections/lcc":52,"./projections/mill":55,"./projections/moll":56,"./projections/nzmg":57,"./projections/omerc":58,"./projections/poly":59,"./projections/sinu":60,"./projections/somerc":61,"./projections/stere":62,"./projections/sterea":63,"./projections/tmerc":64,"./projections/utm":65,"./projections/vandg":66}],38:[function(require,module,exports){
+},{"./projections/aea":45,"./projections/aeqd":46,"./projections/cass":47,"./projections/cea":48,"./projections/eqc":49,"./projections/eqdc":50,"./projections/gnom":52,"./projections/krovak":53,"./projections/laea":54,"./projections/lcc":55,"./projections/mill":58,"./projections/moll":59,"./projections/nzmg":60,"./projections/omerc":61,"./projections/poly":62,"./projections/sinu":63,"./projections/somerc":64,"./projections/stere":65,"./projections/sterea":66,"./projections/tmerc":67,"./projections/utm":68,"./projections/vandg":69}],41:[function(require,module,exports){
 var proj4 = require('./core');
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = require('./Proj');
@@ -5607,7 +5780,7 @@ proj4.mgrs = require('mgrs');
 proj4.version = require('../package.json').version;
 require('./includedProjections')(proj4);
 module.exports = proj4;
-},{"../package.json":70,"./Point":3,"./Proj":4,"./common/toPoint":25,"./core":30,"./defs":33,"./includedProjections":37,"./transform":67,"mgrs":69}],39:[function(require,module,exports){
+},{"../package.json":73,"./Point":6,"./Proj":7,"./common/toPoint":28,"./core":33,"./defs":36,"./includedProjections":40,"./transform":70,"mgrs":72}],42:[function(require,module,exports){
 var defs = require('./defs');
 var wkt = require('./wkt');
 var projStr = require('./projString');
@@ -5644,7 +5817,7 @@ function parse(code){
 }
 
 module.exports = parse;
-},{"./defs":33,"./projString":40,"./wkt":68}],40:[function(require,module,exports){
+},{"./defs":36,"./projString":43,"./wkt":71}],43:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var PrimeMeridian = require('./constants/PrimeMeridian');
 
@@ -5771,7 +5944,7 @@ module.exports = function(defData) {
   return self;
 };
 
-},{"./constants/PrimeMeridian":29}],41:[function(require,module,exports){
+},{"./constants/PrimeMeridian":32}],44:[function(require,module,exports){
 var projs = [
   require('./projections/merc'),
   require('./projections/longlat')
@@ -5807,7 +5980,7 @@ exports.start = function() {
   projs.forEach(add);
 };
 
-},{"./projections/longlat":53,"./projections/merc":54}],42:[function(require,module,exports){
+},{"./projections/longlat":56,"./projections/merc":57}],45:[function(require,module,exports){
 var EPSLN = 1.0e-10;
 var msfnz = require('../common/msfnz');
 var qsfnz = require('../common/qsfnz');
@@ -5930,7 +6103,7 @@ exports.phi1z = function(eccent, qs) {
 };
 exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
-},{"../common/adjust_lon":7,"../common/asinz":8,"../common/msfnz":17,"../common/qsfnz":22}],43:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/asinz":11,"../common/msfnz":20,"../common/qsfnz":25}],46:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -6129,7 +6302,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
-},{"../common/adjust_lon":7,"../common/asinz":8,"../common/e0fn":9,"../common/e1fn":10,"../common/e2fn":11,"../common/e3fn":12,"../common/gN":13,"../common/imlfn":14,"../common/mlfn":16}],44:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/asinz":11,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/gN":16,"../common/imlfn":17,"../common/mlfn":19}],47:[function(require,module,exports){
 var mlfn = require('../common/mlfn');
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
@@ -6233,7 +6406,7 @@ exports.inverse = function(p) {
 
 };
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
-},{"../common/adjust_lat":6,"../common/adjust_lon":7,"../common/e0fn":9,"../common/e1fn":10,"../common/e2fn":11,"../common/e3fn":12,"../common/gN":13,"../common/imlfn":14,"../common/mlfn":16}],45:[function(require,module,exports){
+},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/gN":16,"../common/imlfn":17,"../common/mlfn":19}],48:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var qsfnz = require('../common/qsfnz');
 var msfnz = require('../common/msfnz');
@@ -6298,7 +6471,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["cea"];
 
-},{"../common/adjust_lon":7,"../common/iqsfnz":15,"../common/msfnz":17,"../common/qsfnz":22}],46:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/iqsfnz":18,"../common/msfnz":20,"../common/qsfnz":25}],49:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var adjust_lat = require('../common/adjust_lat');
 exports.init = function() {
@@ -6341,7 +6514,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
-},{"../common/adjust_lat":6,"../common/adjust_lon":7}],47:[function(require,module,exports){
+},{"../common/adjust_lat":9,"../common/adjust_lon":10}],50:[function(require,module,exports){
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
 var e2fn = require('../common/e2fn');
@@ -6453,7 +6626,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Equidistant_Conic", "eqdc"];
 
-},{"../common/adjust_lat":6,"../common/adjust_lon":7,"../common/e0fn":9,"../common/e1fn":10,"../common/e2fn":11,"../common/e3fn":12,"../common/imlfn":14,"../common/mlfn":16,"../common/msfnz":17}],48:[function(require,module,exports){
+},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/imlfn":17,"../common/mlfn":19,"../common/msfnz":20}],51:[function(require,module,exports){
 var FORTPI = Math.PI/4;
 var srat = require('../common/srat');
 var HALF_PI = Math.PI/2;
@@ -6500,7 +6673,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["gauss"];
 
-},{"../common/srat":24}],49:[function(require,module,exports){
+},{"../common/srat":27}],52:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var EPSLN = 1.0e-10;
 var asinz = require('../common/asinz');
@@ -6601,7 +6774,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["gnom"];
 
-},{"../common/adjust_lon":7,"../common/asinz":8}],50:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/asinz":11}],53:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 exports.init = function() {
   this.a = 6377397.155;
@@ -6701,7 +6874,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Krovak", "krovak"];
 
-},{"../common/adjust_lon":7}],51:[function(require,module,exports){
+},{"../common/adjust_lon":10}],54:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var FORTPI = Math.PI/4;
 var EPSLN = 1.0e-10;
@@ -6991,7 +7164,7 @@ exports.authlat = function(beta, APA) {
 };
 exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
 
-},{"../common/adjust_lon":7,"../common/qsfnz":22}],52:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/qsfnz":25}],55:[function(require,module,exports){
 var EPSLN = 1.0e-10;
 var msfnz = require('../common/msfnz');
 var tsfnz = require('../common/tsfnz');
@@ -7128,7 +7301,7 @@ exports.inverse = function(p) {
 
 exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
 
-},{"../common/adjust_lon":7,"../common/msfnz":17,"../common/phi2z":18,"../common/sign":23,"../common/tsfnz":26}],53:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/msfnz":20,"../common/phi2z":21,"../common/sign":26,"../common/tsfnz":29}],56:[function(require,module,exports){
 exports.init = function() {
   //no-op for longlat
 };
@@ -7140,7 +7313,7 @@ exports.forward = identity;
 exports.inverse = identity;
 exports.names = ["longlat", "identity"];
 
-},{}],54:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 var msfnz = require('../common/msfnz');
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -7239,7 +7412,7 @@ exports.inverse = function(p) {
 
 exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 
-},{"../common/adjust_lon":7,"../common/msfnz":17,"../common/phi2z":18,"../common/tsfnz":26}],55:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/msfnz":20,"../common/phi2z":21,"../common/tsfnz":29}],58:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 /*
   reference
@@ -7286,7 +7459,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Miller_Cylindrical", "mill"];
 
-},{"../common/adjust_lon":7}],56:[function(require,module,exports){
+},{"../common/adjust_lon":10}],59:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var EPSLN = 1.0e-10;
 exports.init = function() {};
@@ -7365,7 +7538,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Mollweide", "moll"];
 
-},{"../common/adjust_lon":7}],57:[function(require,module,exports){
+},{"../common/adjust_lon":10}],60:[function(require,module,exports){
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
 /*
   reference
@@ -7585,7 +7758,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
-},{}],58:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var tsfnz = require('../common/tsfnz');
 var adjust_lon = require('../common/adjust_lon');
 var phi2z = require('../common/phi2z');
@@ -7754,7 +7927,7 @@ exports.inverse = function(p) {
 };
 
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
-},{"../common/adjust_lon":7,"../common/phi2z":18,"../common/tsfnz":26}],59:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/phi2z":21,"../common/tsfnz":29}],62:[function(require,module,exports){
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
 var e2fn = require('../common/e2fn');
@@ -7883,7 +8056,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["Polyconic", "poly"];
-},{"../common/adjust_lat":6,"../common/adjust_lon":7,"../common/e0fn":9,"../common/e1fn":10,"../common/e2fn":11,"../common/e3fn":12,"../common/gN":13,"../common/mlfn":16}],60:[function(require,module,exports){
+},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/gN":16,"../common/mlfn":19}],63:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var adjust_lat = require('../common/adjust_lat');
 var pj_enfn = require('../common/pj_enfn');
@@ -7990,7 +8163,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["Sinusoidal", "sinu"];
-},{"../common/adjust_lat":6,"../common/adjust_lon":7,"../common/asinz":8,"../common/pj_enfn":19,"../common/pj_inv_mlfn":20,"../common/pj_mlfn":21}],61:[function(require,module,exports){
+},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/asinz":11,"../common/pj_enfn":22,"../common/pj_inv_mlfn":23,"../common/pj_mlfn":24}],64:[function(require,module,exports){
 /*
   references:
     Formules et constantes pour le Calcul pour la
@@ -8072,7 +8245,7 @@ exports.inverse = function(p) {
 
 exports.names = ["somerc"];
 
-},{}],62:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var sign = require('../common/sign');
@@ -8239,7 +8412,7 @@ exports.inverse = function(p) {
 
 };
 exports.names = ["stere"];
-},{"../common/adjust_lon":7,"../common/msfnz":17,"../common/phi2z":18,"../common/sign":23,"../common/tsfnz":26}],63:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/msfnz":20,"../common/phi2z":21,"../common/sign":26,"../common/tsfnz":29}],66:[function(require,module,exports){
 var gauss = require('./gauss');
 var adjust_lon = require('../common/adjust_lon');
 exports.init = function() {
@@ -8298,7 +8471,7 @@ exports.inverse = function(p) {
 
 exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative"];
 
-},{"../common/adjust_lon":7,"./gauss":48}],64:[function(require,module,exports){
+},{"../common/adjust_lon":10,"./gauss":51}],67:[function(require,module,exports){
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
 var e2fn = require('../common/e2fn');
@@ -8435,7 +8608,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
-},{"../common/adjust_lon":7,"../common/asinz":8,"../common/e0fn":9,"../common/e1fn":10,"../common/e2fn":11,"../common/e3fn":12,"../common/mlfn":16,"../common/sign":23}],65:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/asinz":11,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/mlfn":19,"../common/sign":26}],68:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var tmerc = require('./tmerc');
 exports.dependsOn = 'tmerc';
@@ -8455,7 +8628,7 @@ exports.init = function() {
 };
 exports.names = ["Universal Transverse Mercator System", "utm"];
 
-},{"./tmerc":64}],66:[function(require,module,exports){
+},{"./tmerc":67}],69:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -8576,7 +8749,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
-},{"../common/adjust_lon":7,"../common/asinz":8}],67:[function(require,module,exports){
+},{"../common/adjust_lon":10,"../common/asinz":11}],70:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
@@ -8649,7 +8822,7 @@ module.exports = function transform(source, dest, point) {
 
   return point;
 };
-},{"./Proj":4,"./adjust_axis":5,"./common/toPoint":25,"./datum_transform":32}],68:[function(require,module,exports){
+},{"./Proj":7,"./adjust_axis":8,"./common/toPoint":28,"./datum_transform":35}],71:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var extend = require('./extend');
 
@@ -8864,7 +9037,7 @@ module.exports = function(wkt, self) {
   return extend(self, obj.output);
 };
 
-},{"./extend":35}],69:[function(require,module,exports){
+},{"./extend":38}],72:[function(require,module,exports){
 
 
 
@@ -9601,7 +9774,7 @@ function getMinNorthing(zoneLetter) {
 
 }
 
-},{}],70:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports={
   "name": "proj4",
   "version": "2.3.3",
@@ -9703,7 +9876,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.3.tgz"
 }
 
-},{}],71:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -10786,7 +10959,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":72,"reduce":73}],72:[function(require,module,exports){
+},{"emitter":75,"reduce":76}],75:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -10952,7 +11125,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],73:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -10978,13 +11151,24 @@ module.exports = function(arr, fn, initial){
   return curr;
 };
 },{}],"/lib/api":[function(require,module,exports){
+(function (global){
 var proj4 = require('proj4');
 var request = require('superagent');
 var geolib = require('geolib');
 var moment = require('moment');
+var GeoHash = require('geo-hash');
+if (!global.localStorage) {
+  global.localStorage = require('localStorage');
+}
 
 proj4.defs('EPSG:25832', '+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs');
 
+var preferredStationsByGeoHash;
+try {
+  preferredStationsByGeoHash = JSON.parse(localStorage.getItem('preferred-stations')) || {};
+} catch (error) {
+  preferredStationsByGeoHash = {};
+}
 
 /*
  * Feed in latitude, longitude and number of wanted stops, will call callback with (err,result)
@@ -10998,7 +11182,8 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
   var url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x=" + Math.round(coords.x) + ",y=" + Math.round(coords.y) + ")&proposals=" + numberofstops;
 
   request.get(url, function(res) {
-    res.body.forEach(function(station) {
+    var stations = res.body;
+    stations.forEach(function(station, index) {
       var latLngXY = proj4('EPSG:25832', 'WGS84', {
         x: station.X,
         y: station.Y
@@ -11011,9 +11196,19 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
         latitude: latLngXY.y,
         longitude: latLngXY.x
       });
+
+      var geoHash = GeoHash.encode(lng, lat, 7);
+      station.Preference = (preferredStationsByGeoHash[geoHash] && preferredStationsByGeoHash[geoHash][station.ID]) || 0;
+      station.Index = index;
     });
 
-    callback(null, res.body);
+    stations.sort(function (a, b) {
+      var dPreference = b.Preference - a.Preference;
+      var dIndex = a.Index - b.Index;
+      return dPreference === 0 ? dIndex : dPreference;
+    });
+
+    callback(null, stations);
   });
 };
 
@@ -11028,6 +11223,36 @@ exports.getDeparturesForStation = function(ID, callback) {
       return dep;
     }));
   });
+};
+
+exports.preferStation = function (ID, lat, lng) {
+  var geoHash = GeoHash.encode(lng, lat, 7);
+  if (!(geoHash in preferredStationsByGeoHash)) {
+    preferredStationsByGeoHash[geoHash] = {};
+  }
+
+  if (!(ID in preferredStationsByGeoHash[geoHash])) {
+    preferredStationsByGeoHash[geoHash][ID] = 0;
+  }
+
+  preferredStationsByGeoHash[geoHash][ID]++;
+  localStorage.setItem('preferred-stations', JSON.stringify(preferredStationsByGeoHash));
+};
+
+exports.getPreferredStation = function (lat, lng) {
+  var geoHash = GeoHash.encode(lng, lat, 7);
+  var preferredStations = preferredStationsByGeoHash[geoHash];
+  var largestPreference = 0;
+  var preferredStation = null;
+  if (preferredStations) {
+    Object.keys(preferredStations).forEach(function (ID) {
+      if (preferredStations[ID] > largestPreference) {
+        largestPreference = preferredStations[ID];
+        preferredStation = ID;
+      }
+    });
+  }
+  return preferredStation;
 };
 
 // *************** Test ****************************
@@ -11109,4 +11334,5 @@ var departureExample = {
   VisitNumber: 7
 };
 
-},{"geolib":1,"moment":2,"proj4":38,"superagent":71}]},{},[]);
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"geo-hash":1,"geolib":3,"localStorage":4,"moment":5,"proj4":41,"superagent":74}]},{},[]);

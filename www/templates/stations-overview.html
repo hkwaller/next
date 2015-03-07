@@ -1,8 +1,10 @@
 <ion-view view-title="#next" ng-cloak>
     <ion-content>
-        Favoritter
+        <div class="item item-divider" ng-show="stations.length > 0">
+            Favoritter
+        </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | filter:station.Preferance > 0" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in stations | favouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
                     <div class="col col-80 station-overview-name">
                         {{ station.Name }}
@@ -18,9 +20,11 @@
                 </div>
             </ion-item>
         </ion-list>
-        Liste
+        <div class="item item-divider">
+            Alle
+        </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | filter:station.Preferance === 0" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in stations | noFavouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
                     <div class="col col-80 station-overview-name">
                         {{ station.Name }}
