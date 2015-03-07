@@ -22,7 +22,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
   $stateProvider
   .state('detail', {
     url: '/station-detail',
-    controller: 'MainCtrl',
+    controller: 'DetailCtrl',
     templateUrl: 'templates/station-detail.html'
   })
   .state('overview', {
@@ -34,17 +34,18 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
    $urlRouterProvider.otherwise("/station-overview");
 })
 
-.controller('MainCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService) {
-
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService, StationService) {
+    
     ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
 
-    $scope.lines = [
-        {"number":17, "destination":"Rikshospitalet", "time":"06:31", "class":"line-17"},
-        {"number":18, "destination":"Rikshospitalet", "time":"22:57", "class":"line-18"},
-        {"number":37, "destination":"Ullevål Stadion", "time":"22:58", "class":"line-37"},
-        {"number":54, "destination":"Sinsen", "time":"23:00", "class":"line-54"},
-        {"number":17, "destination":"Rikshospitalet", "time":"23:05", "class":"line-17"}
-    ];
+    if (StationService.getStation() !== null) {
+        $scope.selectedStation = StationService.getStation();
+        ApiService.getDeparturesForStation($scope.selectedStation.ID, (function(err, lines) {
+            $scope.lines = lines;
+            console.log($scope.lines);
+            $scope.$apply();
+        }));
+    }
 
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
@@ -56,12 +57,7 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
               // error
         });
     });
-
-    $scope.stations = [
-        "Adamstuen", "Stensgata", "Colletts Gate", "Bislett"
-    ];
-
-    $scope.selectedStation = "";
+    
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
@@ -88,15 +84,18 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
 })
 
-.controller('OverviewCtrl', function($scope, ApiService) {
+.controller('OverviewCtrl', function($scope, $location, ApiService, StationService) {
     
     $scope.stations = [];
-    
+
     ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
         $scope.stations = stations;
-        console.log($scope.stations);
         $scope.$apply();
     }));
     
+    $scope.goToStation = function(station) {
+        StationService.setStation(station);        
+        $location.path('/station-detail');
+    }
     
 });
