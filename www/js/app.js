@@ -20,13 +20,18 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-  .state('index', {
-    url: '/',
+  .state('detail', {
+    url: '/station-detail',
     controller: 'MainCtrl',
-    templateUrl: 'templates/start.html'
+    templateUrl: 'templates/station-detail.html'
   })
-
-   $urlRouterProvider.otherwise("/");
+  .state('overview', {
+    url: '/station-overview',
+    controller: 'OverviewCtrl',
+    templateUrl: 'templates/stations-overview.html'
+  })
+  
+   $urlRouterProvider.otherwise("/station-detail");
 
 })
 
