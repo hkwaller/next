@@ -32,15 +32,35 @@ angular.module('next', ['ionic'])
 
 .controller('MainCtrl', function($scope, $ionicSlideBoxDelegate) {
     $scope.lines = [
-        {"number":17, "destination":"Rikshospitalet", "time":2, "class":"line-17"},
-        {"number":18, "destination":"Rikshospitalet", "time":4, "class":"line-18"},
-        {"number":37, "destination":"Ullevål Stadion", "time":6, "class":"line-37"},
-        {"number":54, "destination":"Sinsen", "time":7, "class":"line-54"},
-        {"number":17, "destination":"Rikshospitalet", "time":9, "class":"line-17"}
+        {"number":17, "destination":"Rikshospitalet", "time":"22:55", "class":"line-17"},
+        {"number":18, "destination":"Rikshospitalet", "time":"22:57", "class":"line-18"},
+        {"number":37, "destination":"Ullevål Stadion", "time":"22:58", "class":"line-37"},
+        {"number":54, "destination":"Sinsen", "time":"23:00", "class":"line-54"},
+        {"number":17, "destination":"Rikshospitalet", "time":"23:05", "class":"line-17"}
     ];
     
     $scope.stations = [
         "Adamstuen", "Stensgata", "Colletts Gate", "Bislett"
     ];
+    
+    $scope.selectedStation = "";
+    $scope.slideChanged = function(index) {
+        $scope.selectedStation = $scope.stations[index];
+    }
+    
+    $scope.refresh = function() {
+        console.log("refreshing..");
+    }
+    
+    $scope.calcTime = function(departureTime) {
+        var now = new Date();
+        var str = departureTime.split(":");
+        var dep = new Date(2015, 2, 6, str[0], str[1]);
+
+        var date1_ms = now.getTime();
+        var date2_ms = dep.getTime();
+        
+        return Math.round((date2_ms - date1_ms)/(1000*60));
+    }
     
 });

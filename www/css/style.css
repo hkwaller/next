@@ -42,3 +42,11 @@
     padding: .5em;
     background: #e0dddd;
 }
+
+.bar {
+    padding: 0;
+}
+
+.pane {
+    background: rgba(237, 236, 236, 0.47);   
+}
