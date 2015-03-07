@@ -58,8 +58,10 @@ angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation
     ];
 
     $scope.selectedStation = "";
+    $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
+        $scope.activeIndex = index;
     }
 
     $scope.refresh = function() {

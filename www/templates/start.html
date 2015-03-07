@@ -1,20 +1,24 @@
 <ion-view view-title="#next">
      <ion-header-bar class="bar bar-subheader">
-        <ion-slide-box on-slide-changed="slideChanged(index)">
-          <ion-slide ng-repeat="station in stations">
               <div class="row station-row">
-                <div class="col col-10">
+                <div class="col col-10" ng-show="activeIndex !== 0">
                     <i class="icon ion-chevron-left"></i>
                 </div>
-                <div class="col col-80">
-                    <div class="station">{{ station }}</div>
+                <div class="col col-10" ng-show="activeIndex === 0">
                 </div>
-                <div class="col col-10">
+                  
+                  <ion-slide-box on-slide-changed="slideChanged(index)" class="col col-80">
+                    <ion-slide ng-repeat="station in stations">
+                        <div>
+                            <div class="station text-center">{{ station }}</div>
+                        </div>
+                    </ion-slide>
+                  </ion-slide-box> 
+                <div class="col col-10" ng-show="activeIndex !== stations.length - 1">
                     <i class="icon ion-chevron-right"></i>
-                </div>  
+                </div>
               </div>
-          </ion-slide>
-        </ion-slide-box>   
+  
     </ion-header-bar>
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">

@@ -50,3 +50,7 @@
 .pane {
     background: rgba(237, 236, 236, 0.47);   
 }
+
+.text-center {
+    text-aling: center;
+}

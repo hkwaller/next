@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('next', ['ionic', 'ngCordova.plugins.geolocation'])
+angular.module('next', ['ionic', 'next.services', 'ngCordova.plugins.geolocation'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -25,12 +25,15 @@ angular.module('next', ['ionic', 'ngCordova.plugins.geolocation'])
     controller: 'MainCtrl',
     templateUrl: 'templates/start.html'
   })
-  
+
    $urlRouterProvider.otherwise("/");
 
 })
 
-.controller('MainCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation) {
+.controller('MainCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService) {
+
+    ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
+
     $scope.lines = [
         {"number":17, "destination":"Rikshospitalet", "time":"06:31", "class":"line-17"},
         {"number":18, "destination":"Rikshospitalet", "time":"22:57", "class":"line-18"},
@@ -38,7 +41,7 @@ angular.module('next', ['ionic', 'ngCordova.plugins.geolocation'])
         {"number":54, "destination":"Sinsen", "time":"23:00", "class":"line-54"},
         {"number":17, "destination":"Rikshospitalet", "time":"23:05", "class":"line-17"}
     ];
-    
+
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
@@ -49,20 +52,20 @@ angular.module('next', ['ionic', 'ngCordova.plugins.geolocation'])
               // error
         });
     });
-    
+
     $scope.stations = [
         "Adamstuen", "Stensgata", "Colletts Gate", "Bislett"
     ];
-    
+
     $scope.selectedStation = "";
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
     }
-    
+
     $scope.refresh = function() {
         console.log("refreshing..");
     }
-    
+
     $scope.calcTime = function(departureTime) {
         var now = new Date();
         var str = departureTime.split(":");
@@ -70,11 +73,11 @@ angular.module('next', ['ionic', 'ngCordova.plugins.geolocation'])
 
         var date1_ms = now.getTime();
         var date2_ms = dep.getTime();
-        
+
         var diff = Math.round((date2_ms - date1_ms)/(1000*60));
         if (diff < 10 && diff !== 0) return diff + " min";
         else if (diff === 0 || diff === -0) return "Nå";
         else return departureTime;
     }
-    
+
 });
