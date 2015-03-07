@@ -8,17 +8,21 @@
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
-    "lodash": "^3.4.0",
-    "async": "^0.9.0",
     "superagent": "^0.21.0",
     "proj4": "^2.3.3"
   },
   "devDependencies": {
     "bower": "^1.3.3",
     "gulp-util": "^2.2.14",
+    "shelljs": "^0.3.0",
+    "browserify": "~9.0.3",
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
     "org.apache.cordova.statusbar"
-  ]
+  ],
+  "scripts": {
+    "bundle-external": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
+    "browser": "open -a Google\\ Chrome\\ Canary --args --disable-web-security"
+  }
 }
