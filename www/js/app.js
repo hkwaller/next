@@ -67,11 +67,14 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
     $scope.stations = [];
 
+    var lat;
+    var lng;
+
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
-              var lat  = position.coords.latitude;
-              var lng = position.coords.longitude;
+              lat  = position.coords.latitude;
+              lng = position.coords.longitude;
 
               // Oslo: 59.932624, 10.734738
               // Ytterby: 57.863906199999995 11.9110967
@@ -82,6 +85,13 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 lat = 59.932624;
                 lng = 10.734738;
                 console.log("But since you are in Ytterby we'll use",lat,lng,"instead! :)");
+              }
+
+              var preferredStation = ApiService.getPreferredStation(lat, lng);
+              if (preferredStation) {
+                $ionicViewSwitcher.nextTransition('none');
+                StationService.setStation(preferredStation);
+                $location.path('/station-detail');
               }
 
               ApiService.getStationList(lat, lng, 5, function(err, stations) {
@@ -95,7 +105,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     });
     
     $scope.goToStation = function(station) {
-        StationService.setStation(station);        
+        if (station && lat && lng) {
+          ApiService.preferStation(station, lat, lng);
+        }
+        StationService.setStation(station);
         $location.path('/station-detail');
     };
     
