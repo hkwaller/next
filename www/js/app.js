@@ -34,8 +34,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
    $urlRouterProvider.otherwise("/station-overview");
 })
 
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService, StationService) {
     
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, $timeout, ApiService, StationService) {
     ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
 
     if (StationService.getStation() != null) {
@@ -45,8 +45,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
     function getLinesFromApi(id) {
         ApiService.getDeparturesForStation(id, (function(err, lines) {
-            $scope.lines = lines;
-            $scope.$apply();
+            $timeout(function() {
+                $scope.lines = lines;
+                $scope.$apply();
+            });
         }));
     }
 
@@ -63,8 +65,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
 })
 
-.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, ApiService, StationService) {
     
+.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
 
     var lat;
@@ -95,8 +97,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
               }
 
               ApiService.getStationList(lat, lng, 5, function(err, stations) {
-                  $scope.stations = stations;
-                  $scope.$apply();
+                  $timeout(function() {
+                      $scope.stations = stations;
+                      $scope.$apply();
+                  })
               });
 
             }, function(err) {
