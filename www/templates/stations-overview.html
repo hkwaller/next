@@ -1,6 +1,6 @@
 <ion-view view-title="#next" ng-cloak>
     <ion-content>
-        <div class="item item-divider" ng-show="stations.length > 0">
+        <div class="item item-divider" ng-show="(stations | favouriteFilter).length > 0">
             Favoritter
         </div>
         <ion-list>
