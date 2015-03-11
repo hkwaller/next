@@ -95,7 +95,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 StationService.setStation(preferredStation);
                 $location.path('/station-detail');
               }
-
+             getStationsFromApi(lat, lng, 7);
               ApiService.getStationList(lat, lng, 5, function(err, stations) {
                   $timeout(function() {
                       $scope.stations = stations;
@@ -114,6 +114,20 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         }
         StationService.setStation(station);
         $location.path('/station-detail');
+    };
+    
+    function getStationsFromApi(lat, lng, count) {
+        ApiService.getStationList(lat, lng, count, function(err, stations) {
+          $timeout(function() {
+              $scope.stations = stations;
+              $scope.$apply();
+          })
+      });
+    }
+    
+    $scope.refresh = function() {
+        getStationsFromApi(lat, lng, 7);
+        $scope.$broadcast('scroll.refreshComplete');
     };
     
 });

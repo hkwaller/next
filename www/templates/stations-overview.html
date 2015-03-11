@@ -1,5 +1,7 @@
 <ion-view view-title="#next" ng-cloak>
     <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
+        </ion-refresher>
         <div class="item item-divider" ng-show="(stations | favouriteFilter).length > 0">
             Favoritter
         </div>
@@ -13,11 +15,11 @@
                         <strong>{{ station.Distance }}</strong> meter
                     </div>
                 </div>
-                <div class="row">
+                <!--<div class="row">
                     <div class="lineID-padding" ng-repeat="line in station.Lines">
                         {{ line.LineID }}<span ng-hide="$index === station.Lines.length - 1">, </span>    
                     </div>
-                </div>
+                </div>-->
             </ion-item>
         </ion-list>
         <div class="item item-divider">
@@ -33,11 +35,11 @@
                         <strong>{{ station.Distance }}</strong> meter
                     </div>
                 </div>
-                <div class="row">
+                <!--<div class="row">
                     <div class="lineID-padding" ng-repeat="line in station.Lines">
                         {{ line.LineID }}<span ng-hide="$index === station.Lines.length - 1">, </span>    
                     </div>
-                </div>
+                </div>-->
             </ion-item>
         </ion-list>
         
