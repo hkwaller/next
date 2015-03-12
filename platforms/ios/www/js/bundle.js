@@ -1,4 +1,64 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+var queue = [];
+var draining = false;
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    draining = true;
+    var currentQueue;
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        var i = -1;
+        while (++i < len) {
+            currentQueue[i]();
+        }
+        len = queue.length;
+    }
+    draining = false;
+}
+process.nextTick = function (fun) {
+    queue.push(fun);
+    if (!draining) {
+        setTimeout(drainQueue, 0);
+    }
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],2:[function(require,module,exports){
 var sortable = require('sortable-hash');
 
 var geo = {};
@@ -20,7 +80,7 @@ geo.encode = function (latitude, longitude, precision) {
 
 module.exports = geo;
 
-},{"sortable-hash":2}],2:[function(require,module,exports){
+},{"sortable-hash":3}],3:[function(require,module,exports){
 var bits = [16, 8, 4, 2, 1];
 var base32 = '0123456789bcdefghjkmnpqrstuvwxyz';
 
@@ -113,7 +173,7 @@ console.log(Hash.decode(Hash.encode([10, 10, 10]), 3));
 console.log(Hash.decode(Hash.encode([11, 10, 10]), 3));
 console.log(Hash.decode(Hash.encode([-2.4/180*100, 10.3/90*100]), 2));*/
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*! geolib 2.0.14 by Manuel Bieh
 * Library to provide geo functions like distance calculation,
 * conversion of decimal coordinates to sexagesimal and vice versa, etc.
@@ -1264,7 +1324,7 @@ console.log(Hash.decode(Hash.encode([-2.4/180*100, 10.3/90*100]), 2));*/
 	}
 
 }(this));
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (global){
 // http://www.rajdeepd.com/articles/chrome/localstrg/LocalStorageSample.htm
 
@@ -1322,7 +1382,7 @@ console.log(Hash.decode(Hash.encode([-2.4/180*100, 10.3/90*100]), 2));*/
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 //! moment.js
 //! version : 2.9.0
@@ -4369,7 +4429,7 @@ console.log(Hash.decode(Hash.encode([-2.4/180*100, 10.3/90*100]), 2));*/
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var mgrs = require('mgrs');
 
 function Point(x, y, z) {
@@ -4405,7 +4465,7 @@ Point.prototype.toMGRS = function(accuracy) {
   return mgrs.forward([this.x, this.y], accuracy);
 };
 module.exports = Point;
-},{"mgrs":72}],7:[function(require,module,exports){
+},{"mgrs":73}],8:[function(require,module,exports){
 var parseCode = require("./parseCode");
 var extend = require('./extend');
 var projections = require('./projections');
@@ -4440,7 +4500,7 @@ Projection.projections = projections;
 Projection.projections.start();
 module.exports = Projection;
 
-},{"./deriveConstants":37,"./extend":38,"./parseCode":42,"./projections":44}],8:[function(require,module,exports){
+},{"./deriveConstants":38,"./extend":39,"./parseCode":43,"./projections":45}],9:[function(require,module,exports){
 module.exports = function(crs, denorm, point) {
   var xin = point.x,
     yin = point.y,
@@ -4493,14 +4553,14 @@ module.exports = function(crs, denorm, point) {
   return point;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var sign = require('./sign');
 
 module.exports = function(x) {
   return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
 };
-},{"./sign":26}],10:[function(require,module,exports){
+},{"./sign":27}],11:[function(require,module,exports){
 var TWO_PI = Math.PI * 2;
 // SPI is slightly greater than Math.PI, so values that exceed the -180..180
 // degree range by a tiny amount don't get wrapped. This prevents points that
@@ -4512,35 +4572,35 @@ var sign = require('./sign');
 module.exports = function(x) {
   return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
 };
-},{"./sign":26}],11:[function(require,module,exports){
+},{"./sign":27}],12:[function(require,module,exports){
 module.exports = function(x) {
   if (Math.abs(x) > 1) {
     x = (x > 1) ? 1 : -1;
   }
   return Math.asin(x);
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(x) {
   return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(x) {
   return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function(x) {
   return (0.05859375 * x * x * (1 + 0.75 * x));
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = function(x) {
   return (x * x * x * (35 / 3072));
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function(a, e, sinphi) {
   var temp = e * sinphi;
   return a / Math.sqrt(1 - temp * temp);
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function(ml, e0, e1, e2, e3) {
   var phi;
   var dphi;
@@ -4557,7 +4617,7 @@ module.exports = function(ml, e0, e1, e2, e3) {
   //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
   return NaN;
 };
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 
 module.exports = function(eccent, q) {
@@ -4590,16 +4650,16 @@ module.exports = function(eccent, q) {
   //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
   return NaN;
 };
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function(e0, e1, e2, e3, phi) {
   return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
 };
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(eccent, sinphi, cosphi) {
   var con = eccent * sinphi;
   return cosphi / (Math.sqrt(1 - con * con));
 };
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 module.exports = function(eccent, ts) {
   var eccnth = 0.5 * eccent;
@@ -4616,7 +4676,7 @@ module.exports = function(eccent, ts) {
   //console.log("phi2z has NoConvergence");
   return -9999;
 };
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var C00 = 1;
 var C02 = 0.25;
 var C04 = 0.046875;
@@ -4641,7 +4701,7 @@ module.exports = function(es) {
   en[4] = t * es * C88;
   return en;
 };
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var pj_mlfn = require("./pj_mlfn");
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
@@ -4662,13 +4722,13 @@ module.exports = function(arg, es, en) {
   //..reportError("cass:pj_inv_mlfn: Convergence error");
   return phi;
 };
-},{"./pj_mlfn":24}],24:[function(require,module,exports){
+},{"./pj_mlfn":25}],25:[function(require,module,exports){
 module.exports = function(phi, sphi, cphi, en) {
   cphi *= sphi;
   sphi *= sphi;
   return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
 };
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = function(eccent, sinphi) {
   var con;
   if (eccent > 1.0e-7) {
@@ -4679,15 +4739,15 @@ module.exports = function(eccent, sinphi) {
     return (2 * sinphi);
   }
 };
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = function(x) {
   return x<0 ? -1 : 1;
 };
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = function(esinp, exp) {
   return (Math.pow((1 - esinp) / (1 + esinp), exp));
 };
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function (array){
   var out = {
     x: array[0],
@@ -4701,7 +4761,7 @@ module.exports = function (array){
   }
   return out;
 };
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 
 module.exports = function(eccent, phi, sinphi) {
@@ -4710,7 +4770,7 @@ module.exports = function(eccent, phi, sinphi) {
   con = Math.pow(((1 - con) / (1 + con)), com);
   return (Math.tan(0.5 * (HALF_PI - phi)) / con);
 };
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 exports.wgs84 = {
   towgs84: "0,0,0",
   ellipse: "WGS84",
@@ -4791,7 +4851,7 @@ exports.rnb72 = {
   ellipse: "intl",
   datumName: "Reseau National Belge 1972"
 };
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 exports.MERIT = {
   a: 6378137.0,
   rf: 298.257,
@@ -5007,7 +5067,7 @@ exports.sphere = {
   b: 6370997.0,
   ellipseName: "Normal Sphere (r=6370997)"
 };
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 exports.greenwich = 0.0; //"0dE",
 exports.lisbon = -9.131906111111; //"9d07'54.862\"W",
 exports.paris = 2.337229166667; //"2d20'14.025\"E",
@@ -5021,7 +5081,7 @@ exports.brussels = 4.367975; //"4d22'4.71\"E",
 exports.stockholm = 18.058277777778; //"18d3'29.8\"E",
 exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var proj = require('./Proj');
 var transform = require('./transform');
 var wgs84 = proj('WGS84');
@@ -5086,7 +5146,7 @@ function proj4(fromProj, toProj, coord) {
   }
 }
 module.exports = proj4;
-},{"./Proj":7,"./transform":70}],34:[function(require,module,exports){
+},{"./Proj":8,"./transform":71}],35:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
@@ -5492,7 +5552,7 @@ datum.prototype = {
 */
 module.exports = datum;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
 var PJD_GRIDSHIFT = 3;
@@ -5593,7 +5653,7 @@ module.exports = function(source, dest, point) {
 };
 
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 var globals = require('./global');
 var parseProj = require('./projString');
 var wkt = require('./wkt');
@@ -5650,7 +5710,7 @@ function defs(name) {
 globals(defs);
 module.exports = defs;
 
-},{"./global":39,"./projString":43,"./wkt":71}],37:[function(require,module,exports){
+},{"./global":40,"./projString":44,"./wkt":72}],38:[function(require,module,exports){
 var Datum = require('./constants/Datum');
 var Ellipsoid = require('./constants/Ellipsoid');
 var extend = require('./extend');
@@ -5708,7 +5768,7 @@ module.exports = function(json) {
   return json;
 };
 
-},{"./constants/Datum":30,"./constants/Ellipsoid":31,"./datum":34,"./extend":38}],38:[function(require,module,exports){
+},{"./constants/Datum":31,"./constants/Ellipsoid":32,"./datum":35,"./extend":39}],39:[function(require,module,exports){
 module.exports = function(destination, source) {
   destination = destination || {};
   var value, property;
@@ -5724,7 +5784,7 @@ module.exports = function(destination, source) {
   return destination;
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = function(defs) {
   defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
   defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
@@ -5737,7 +5797,7 @@ module.exports = function(defs) {
   defs['EPSG:102113'] = defs['EPSG:3857'];
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 var projs = [
   require('./projections/tmerc'),
   require('./projections/utm'),
@@ -5767,7 +5827,7 @@ module.exports = function(proj4){
     proj4.Proj.projections.add(proj);
   });
 };
-},{"./projections/aea":45,"./projections/aeqd":46,"./projections/cass":47,"./projections/cea":48,"./projections/eqc":49,"./projections/eqdc":50,"./projections/gnom":52,"./projections/krovak":53,"./projections/laea":54,"./projections/lcc":55,"./projections/mill":58,"./projections/moll":59,"./projections/nzmg":60,"./projections/omerc":61,"./projections/poly":62,"./projections/sinu":63,"./projections/somerc":64,"./projections/stere":65,"./projections/sterea":66,"./projections/tmerc":67,"./projections/utm":68,"./projections/vandg":69}],41:[function(require,module,exports){
+},{"./projections/aea":46,"./projections/aeqd":47,"./projections/cass":48,"./projections/cea":49,"./projections/eqc":50,"./projections/eqdc":51,"./projections/gnom":53,"./projections/krovak":54,"./projections/laea":55,"./projections/lcc":56,"./projections/mill":59,"./projections/moll":60,"./projections/nzmg":61,"./projections/omerc":62,"./projections/poly":63,"./projections/sinu":64,"./projections/somerc":65,"./projections/stere":66,"./projections/sterea":67,"./projections/tmerc":68,"./projections/utm":69,"./projections/vandg":70}],42:[function(require,module,exports){
 var proj4 = require('./core');
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = require('./Proj');
@@ -5780,7 +5840,7 @@ proj4.mgrs = require('mgrs');
 proj4.version = require('../package.json').version;
 require('./includedProjections')(proj4);
 module.exports = proj4;
-},{"../package.json":73,"./Point":6,"./Proj":7,"./common/toPoint":28,"./core":33,"./defs":36,"./includedProjections":40,"./transform":70,"mgrs":72}],42:[function(require,module,exports){
+},{"../package.json":74,"./Point":7,"./Proj":8,"./common/toPoint":29,"./core":34,"./defs":37,"./includedProjections":41,"./transform":71,"mgrs":73}],43:[function(require,module,exports){
 var defs = require('./defs');
 var wkt = require('./wkt');
 var projStr = require('./projString');
@@ -5817,7 +5877,7 @@ function parse(code){
 }
 
 module.exports = parse;
-},{"./defs":36,"./projString":43,"./wkt":71}],43:[function(require,module,exports){
+},{"./defs":37,"./projString":44,"./wkt":72}],44:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var PrimeMeridian = require('./constants/PrimeMeridian');
 
@@ -5944,7 +6004,7 @@ module.exports = function(defData) {
   return self;
 };
 
-},{"./constants/PrimeMeridian":32}],44:[function(require,module,exports){
+},{"./constants/PrimeMeridian":33}],45:[function(require,module,exports){
 var projs = [
   require('./projections/merc'),
   require('./projections/longlat')
@@ -5980,7 +6040,7 @@ exports.start = function() {
   projs.forEach(add);
 };
 
-},{"./projections/longlat":56,"./projections/merc":57}],45:[function(require,module,exports){
+},{"./projections/longlat":57,"./projections/merc":58}],46:[function(require,module,exports){
 var EPSLN = 1.0e-10;
 var msfnz = require('../common/msfnz');
 var qsfnz = require('../common/qsfnz');
@@ -6103,7 +6163,7 @@ exports.phi1z = function(eccent, qs) {
 };
 exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
-},{"../common/adjust_lon":10,"../common/asinz":11,"../common/msfnz":20,"../common/qsfnz":25}],46:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/asinz":12,"../common/msfnz":21,"../common/qsfnz":26}],47:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -6302,7 +6362,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
-},{"../common/adjust_lon":10,"../common/asinz":11,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/gN":16,"../common/imlfn":17,"../common/mlfn":19}],47:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/asinz":12,"../common/e0fn":13,"../common/e1fn":14,"../common/e2fn":15,"../common/e3fn":16,"../common/gN":17,"../common/imlfn":18,"../common/mlfn":20}],48:[function(require,module,exports){
 var mlfn = require('../common/mlfn');
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
@@ -6406,7 +6466,7 @@ exports.inverse = function(p) {
 
 };
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
-},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/gN":16,"../common/imlfn":17,"../common/mlfn":19}],48:[function(require,module,exports){
+},{"../common/adjust_lat":10,"../common/adjust_lon":11,"../common/e0fn":13,"../common/e1fn":14,"../common/e2fn":15,"../common/e3fn":16,"../common/gN":17,"../common/imlfn":18,"../common/mlfn":20}],49:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var qsfnz = require('../common/qsfnz');
 var msfnz = require('../common/msfnz');
@@ -6471,7 +6531,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["cea"];
 
-},{"../common/adjust_lon":10,"../common/iqsfnz":18,"../common/msfnz":20,"../common/qsfnz":25}],49:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/iqsfnz":19,"../common/msfnz":21,"../common/qsfnz":26}],50:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var adjust_lat = require('../common/adjust_lat');
 exports.init = function() {
@@ -6514,7 +6574,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
-},{"../common/adjust_lat":9,"../common/adjust_lon":10}],50:[function(require,module,exports){
+},{"../common/adjust_lat":10,"../common/adjust_lon":11}],51:[function(require,module,exports){
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
 var e2fn = require('../common/e2fn');
@@ -6626,7 +6686,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Equidistant_Conic", "eqdc"];
 
-},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/imlfn":17,"../common/mlfn":19,"../common/msfnz":20}],51:[function(require,module,exports){
+},{"../common/adjust_lat":10,"../common/adjust_lon":11,"../common/e0fn":13,"../common/e1fn":14,"../common/e2fn":15,"../common/e3fn":16,"../common/imlfn":18,"../common/mlfn":20,"../common/msfnz":21}],52:[function(require,module,exports){
 var FORTPI = Math.PI/4;
 var srat = require('../common/srat');
 var HALF_PI = Math.PI/2;
@@ -6673,7 +6733,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["gauss"];
 
-},{"../common/srat":27}],52:[function(require,module,exports){
+},{"../common/srat":28}],53:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var EPSLN = 1.0e-10;
 var asinz = require('../common/asinz');
@@ -6774,7 +6834,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["gnom"];
 
-},{"../common/adjust_lon":10,"../common/asinz":11}],53:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/asinz":12}],54:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 exports.init = function() {
   this.a = 6377397.155;
@@ -6874,7 +6934,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Krovak", "krovak"];
 
-},{"../common/adjust_lon":10}],54:[function(require,module,exports){
+},{"../common/adjust_lon":11}],55:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var FORTPI = Math.PI/4;
 var EPSLN = 1.0e-10;
@@ -7164,7 +7224,7 @@ exports.authlat = function(beta, APA) {
 };
 exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
 
-},{"../common/adjust_lon":10,"../common/qsfnz":25}],55:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/qsfnz":26}],56:[function(require,module,exports){
 var EPSLN = 1.0e-10;
 var msfnz = require('../common/msfnz');
 var tsfnz = require('../common/tsfnz');
@@ -7301,7 +7361,7 @@ exports.inverse = function(p) {
 
 exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
 
-},{"../common/adjust_lon":10,"../common/msfnz":20,"../common/phi2z":21,"../common/sign":26,"../common/tsfnz":29}],56:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/msfnz":21,"../common/phi2z":22,"../common/sign":27,"../common/tsfnz":30}],57:[function(require,module,exports){
 exports.init = function() {
   //no-op for longlat
 };
@@ -7313,7 +7373,7 @@ exports.forward = identity;
 exports.inverse = identity;
 exports.names = ["longlat", "identity"];
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 var msfnz = require('../common/msfnz');
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -7412,7 +7472,7 @@ exports.inverse = function(p) {
 
 exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 
-},{"../common/adjust_lon":10,"../common/msfnz":20,"../common/phi2z":21,"../common/tsfnz":29}],58:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/msfnz":21,"../common/phi2z":22,"../common/tsfnz":30}],59:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 /*
   reference
@@ -7459,7 +7519,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Miller_Cylindrical", "mill"];
 
-},{"../common/adjust_lon":10}],59:[function(require,module,exports){
+},{"../common/adjust_lon":11}],60:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var EPSLN = 1.0e-10;
 exports.init = function() {};
@@ -7538,7 +7598,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Mollweide", "moll"];
 
-},{"../common/adjust_lon":10}],60:[function(require,module,exports){
+},{"../common/adjust_lon":11}],61:[function(require,module,exports){
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
 /*
   reference
@@ -7758,7 +7818,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 var tsfnz = require('../common/tsfnz');
 var adjust_lon = require('../common/adjust_lon');
 var phi2z = require('../common/phi2z');
@@ -7927,7 +7987,7 @@ exports.inverse = function(p) {
 };
 
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
-},{"../common/adjust_lon":10,"../common/phi2z":21,"../common/tsfnz":29}],62:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/phi2z":22,"../common/tsfnz":30}],63:[function(require,module,exports){
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
 var e2fn = require('../common/e2fn');
@@ -8056,7 +8116,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["Polyconic", "poly"];
-},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/gN":16,"../common/mlfn":19}],63:[function(require,module,exports){
+},{"../common/adjust_lat":10,"../common/adjust_lon":11,"../common/e0fn":13,"../common/e1fn":14,"../common/e2fn":15,"../common/e3fn":16,"../common/gN":17,"../common/mlfn":20}],64:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var adjust_lat = require('../common/adjust_lat');
 var pj_enfn = require('../common/pj_enfn');
@@ -8163,7 +8223,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["Sinusoidal", "sinu"];
-},{"../common/adjust_lat":9,"../common/adjust_lon":10,"../common/asinz":11,"../common/pj_enfn":22,"../common/pj_inv_mlfn":23,"../common/pj_mlfn":24}],64:[function(require,module,exports){
+},{"../common/adjust_lat":10,"../common/adjust_lon":11,"../common/asinz":12,"../common/pj_enfn":23,"../common/pj_inv_mlfn":24,"../common/pj_mlfn":25}],65:[function(require,module,exports){
 /*
   references:
     Formules et constantes pour le Calcul pour la
@@ -8245,7 +8305,7 @@ exports.inverse = function(p) {
 
 exports.names = ["somerc"];
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var sign = require('../common/sign');
@@ -8412,7 +8472,7 @@ exports.inverse = function(p) {
 
 };
 exports.names = ["stere"];
-},{"../common/adjust_lon":10,"../common/msfnz":20,"../common/phi2z":21,"../common/sign":26,"../common/tsfnz":29}],66:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/msfnz":21,"../common/phi2z":22,"../common/sign":27,"../common/tsfnz":30}],67:[function(require,module,exports){
 var gauss = require('./gauss');
 var adjust_lon = require('../common/adjust_lon');
 exports.init = function() {
@@ -8471,7 +8531,7 @@ exports.inverse = function(p) {
 
 exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative"];
 
-},{"../common/adjust_lon":10,"./gauss":51}],67:[function(require,module,exports){
+},{"../common/adjust_lon":11,"./gauss":52}],68:[function(require,module,exports){
 var e0fn = require('../common/e0fn');
 var e1fn = require('../common/e1fn');
 var e2fn = require('../common/e2fn');
@@ -8608,7 +8668,7 @@ exports.inverse = function(p) {
 };
 exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
-},{"../common/adjust_lon":10,"../common/asinz":11,"../common/e0fn":12,"../common/e1fn":13,"../common/e2fn":14,"../common/e3fn":15,"../common/mlfn":19,"../common/sign":26}],68:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/asinz":12,"../common/e0fn":13,"../common/e1fn":14,"../common/e2fn":15,"../common/e3fn":16,"../common/mlfn":20,"../common/sign":27}],69:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var tmerc = require('./tmerc');
 exports.dependsOn = 'tmerc';
@@ -8628,7 +8688,7 @@ exports.init = function() {
 };
 exports.names = ["Universal Transverse Mercator System", "utm"];
 
-},{"./tmerc":67}],69:[function(require,module,exports){
+},{"./tmerc":68}],70:[function(require,module,exports){
 var adjust_lon = require('../common/adjust_lon');
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -8749,7 +8809,7 @@ exports.inverse = function(p) {
   return p;
 };
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
-},{"../common/adjust_lon":10,"../common/asinz":11}],70:[function(require,module,exports){
+},{"../common/adjust_lon":11,"../common/asinz":12}],71:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
@@ -8822,7 +8882,7 @@ module.exports = function transform(source, dest, point) {
 
   return point;
 };
-},{"./Proj":7,"./adjust_axis":8,"./common/toPoint":28,"./datum_transform":35}],71:[function(require,module,exports){
+},{"./Proj":8,"./adjust_axis":9,"./common/toPoint":29,"./datum_transform":36}],72:[function(require,module,exports){
 var D2R = 0.01745329251994329577;
 var extend = require('./extend');
 
@@ -9037,7 +9097,7 @@ module.exports = function(wkt, self) {
   return extend(self, obj.output);
 };
 
-},{"./extend":38}],72:[function(require,module,exports){
+},{"./extend":39}],73:[function(require,module,exports){
 
 
 
@@ -9774,7 +9834,7 @@ function getMinNorthing(zoneLetter) {
 
 }
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports={
   "name": "proj4",
   "version": "2.3.3",
@@ -9876,7 +9936,1054 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.3.tgz"
 }
 
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
+/**
+ * Copyright 2014, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+module.exports = {
+        StorageLRU: require('./src/StorageLRU'),
+        asyncify: require('./src/asyncify')
+    }
+
+},{"./src/StorageLRU":78,"./src/asyncify":79}],76:[function(require,module,exports){
+module.exports = function (arr, iterator, callback) {
+  callback = callback || function () {};
+  if (!Array.isArray(arr) || !arr.length) {
+      return callback();
+  }
+  var completed = 0;
+  var iterate = function () {
+    iterator(arr[completed], function (err) {
+      if (err) {
+        callback(err);
+        callback = function () {};
+      }
+      else {
+        ++completed;
+        if (completed >= arr.length) { callback(); }
+        else { iterate(); }
+      }
+    });
+  };
+  iterate();
+};
+
+},{}],77:[function(require,module,exports){
+(function (process){
+(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var setImmediate;
+
+    function addFromSetImmediateArguments(args) {
+        tasksByHandle[nextHandle] = partiallyApplied.apply(undefined, args);
+        return nextHandle++;
+    }
+
+    // This function accepts the same arguments as setImmediate, but
+    // returns a function that requires no arguments.
+    function partiallyApplied(handler) {
+        var args = [].slice.call(arguments, 1);
+        return function() {
+            if (typeof handler === "function") {
+                handler.apply(undefined, args);
+            } else {
+                (new Function("" + handler))();
+            }
+        };
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(partiallyApplied(runIfPresent, handle), 0);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    task();
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function installNextTickImplementation() {
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            process.nextTick(partiallyApplied(runIfPresent, handle));
+            return handle;
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            global.postMessage(messagePrefix + handle, "*");
+            return handle;
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            channel.port2.postMessage(handle);
+            return handle;
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+            return handle;
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            setTimeout(partiallyApplied(runIfPresent, handle), 0);
+            return handle;
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(new Function("return this")()));
+
+}).call(this,require('_process'))
+},{"_process":1}],78:[function(require,module,exports){
+/**
+ * Copyright 2014, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+'use strict';
+
+var ERR_DISABLED = {code: 1, message: 'disabled'};
+var ERR_DESERIALIZE = {code: 2, message: 'cannot deserialize'};
+var ERR_SERIALIZE = {code: 3, message: 'cannot serialize'};
+var ERR_CACHECONTROL = {code: 4, message: 'bad cacheControl'};
+var ERR_INVALIDKEY = {code: 5, message: 'invalid key'};
+var ERR_NOTENOUGHSPACE = {code: 6, message: 'not enough space'};
+var ERR_REVALIDATE = {code: 7, message: 'revalidate failed'};
+    // cache control fields
+var MAX_AGE = 'max-age';
+var STALE_WHILE_REVALIDATE = 'stale-while-revalidate';
+var DEFAULT_KEY_PREFIX = '';
+var DEFAULT_PRIORITY = 3;
+var DEFAULT_PURGE_LOAD_INCREASE = 500;
+var DEFAULT_PURGE_ATTEMPTS = 2;
+var CUR_VERSION = '1';
+
+var asyncEachSeries = require('async-each-series');
+require('setimmediate');
+
+ 
+function isDefined (x) { return x !== undefined; }
+
+function getIntegerOrDefault (x, defaultVal) {
+    if ((typeof x !== 'number') || (x % 1 !== 0)) {
+        return defaultVal;
+    }
+    return x;
+}
+
+function cloneError (err, moreInfo) {
+    var message = err.message;
+    if (moreInfo) {
+        message += ': ' + moreInfo;
+    }
+    return {code: err.code, message: message};
+}
+
+function merge () {
+    var merged = {};
+    for (var i = 0, len = arguments.length; i < len; i++) {
+        var obj = arguments[i];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                merged[key] = obj[key];
+            }
+        }
+    }
+    return merged;
+}
+
+function nowInSec () {
+    return Math.floor(new Date().getTime() / 1000);
+}
+
+/*
+ * Use this to sort meta records array.  Item to be purged first
+ * should be the first in the array after sort.
+ */
+function defaultPurgeComparator (meta1, meta2) {
+    // purge bad entries first
+    if (meta1.bad !== meta2.bad) {
+        return meta1.bad ? -1 : 1;
+    }
+    // purge truly stale one first
+    var now = nowInSec();
+    var stale1 = now >= (meta1.expires + meta1.stale);
+    var stale2 = now >= (meta2.expires + meta2.stale);
+    if (stale1 !== stale2) {
+        return stale1 ? -1 : 1;
+    }
+
+    // both fetchable (not truly staled); purge lowest priority one first
+    if (meta1.priority !== meta2.priority) {
+        return (meta1.priority > meta2.priority) ? -1 : 1;
+    }
+
+    // same priority; purge least access one first
+    if (meta1.access !== meta2.access) {
+        return (meta1.access < meta2.access) ? -1 : 1;
+    }
+    // compare size. big ones go first.
+    if (meta1.size > meta2.size) {
+        return -1;
+    } else if (meta1.size === meta2.size) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+function Meta (storageInterface, parser, options) {
+    this.storage = storageInterface;
+    this.parser = parser;
+    this.options = options || {};
+    this.records = [];
+}
+
+Meta.prototype.getMetaFromItem = function (key, item) {
+    var meta;
+    try {
+        meta = this.parser.parse(item).meta;
+        meta.key = key;
+    } catch (ignore) {
+        // ignore
+        meta = {key: key, bad: true, size: item.length};
+    }
+    return meta;
+};
+
+Meta.prototype.updateMetaRecord = function (key, callback) {
+    var self = this;
+
+    self.storage.getItem(key, function getItemCallback (err, item) {
+        if (!err) {
+            self.records.push(self.getMetaFromItem(key, item));
+        }
+        callback && callback();
+    });
+};
+
+Meta.prototype.generateRecordsHash = function () {
+    var self = this;
+    var retval = {};
+    self.records.forEach(function recordsIterator (record) {
+        retval[record.key] = true;
+    });
+    return retval;
+};
+
+Meta.prototype.init = function (scanSize, callback) {
+    // expensive operation
+    // go through all items in storage, get meta data
+    var self = this;
+    var storage = self.storage;
+    var keyPrefix = self.options.keyPrefix;
+    var doneInserting = 0;
+    if (scanSize <= 0) {
+        callback && callback();
+        return;
+    }
+
+    storage.keys(scanSize, function getKeysCallback (err, keys) {
+        var numKeys = keys.length;
+        if (numKeys <= 0) {
+            callback && callback();
+            return;
+        }
+        // generate the records hash
+        var recordsHash = self.generateRecordsHash();
+        keys.forEach(function keyIterator (key) {
+            // if the keyPrefix is different from the current options or we already have a record, ignore this key
+            if (!recordsHash[key] && (!keyPrefix || key.indexOf(keyPrefix) === 0)) {
+                self.updateMetaRecord(key, function updateMetaRecordCallback () {
+                    doneInserting += 1;
+                    recordsHash[key] = true;
+                    if (doneInserting === numKeys) {
+                       callback && callback();
+                    }
+                });
+            } else {
+                doneInserting += 1;
+                if (doneInserting === numKeys) {
+                    callback && callback();
+                }
+            }
+        });
+    });
+};
+
+Meta.prototype.sort = function (comparator) {
+    this.records.sort(comparator);
+};
+Meta.prototype.update = function (key, meta) {
+    for (var i = 0, len = this.records.length; i < len; i++) {
+        var record = this.records[i];
+        if (record.key === key) {
+            record.bad = false; // in case it was a bad record before
+            this.records[i] = merge(record, meta);
+            return this.records[i];
+        }
+    }
+    // record does not exist. create a new one.
+    meta = merge(meta, {key: key});
+    this.records.push(meta);
+    return meta;
+};
+Meta.prototype.remove = function (key) {
+    for (var i = 0, len = this.records.length; i < len; i++) {
+        if (this.records[i].key === key) {
+            this.records.splice(i, 1);
+            return;
+        }
+    }
+};
+Meta.prototype.numRecords = function () {
+    return this.records.length;
+};
+
+function Parser () {}
+Parser.prototype.format = function (meta, value) {
+    if (meta && meta.access > 0 && meta.expires > 0 && meta.stale >= 0 && meta.priority > 0 && meta.maxAge > 0) {
+        return '[' + [CUR_VERSION, meta.access, meta.expires, meta.maxAge, meta.stale, meta.priority].join(':') + ']' + value;
+    }
+    throw new Error('invalid meta');
+};
+Parser.prototype.parse = function (item) {
+    // format is:
+    // [<version>:<access_time_in_sec>:<expires_time_in_sec>:<max_age_in_sec>:<stale_time_in_sec>:<priority>]<value_string_can_be_very_long>
+    // in the future, parse version out first; then fields depending on version
+    var pos = item && item.indexOf(']');
+    if (!pos) {
+        throw new Error('missing meta');
+    }
+    var meta = item.substring(1, pos).split(':');
+    if (meta.length !== 6) {
+        throw new Error('invalid number of meta fields');
+    }
+    meta = {
+        version: meta[0],
+        access: parseInt(meta[1], 10),
+        expires: parseInt(meta[2], 10),
+        maxAge: parseInt(meta[3], 10),
+        stale: parseInt(meta[4], 10),
+        priority: parseInt(meta[5], 10),
+        size: item.length
+    };
+    if (isNaN(meta.access) || isNaN(meta.expires) || isNaN(meta.maxAge) || isNaN(meta.stale) || meta.access <= 0 || meta.expires <= 0 || meta.maxAge <= 0 || meta.stale < 0 || meta.priority <= 0) {
+        throw new Error('invalid meta fields');
+    }
+    return {
+        meta: meta,
+        value: item.substring(pos + 1)
+    };
+};
+
+function Stats (meta) {
+    this.hit = 0;
+    this.miss = 0;
+    this.stale = 0;
+    this.error = 0;
+    this.revalidateSuccess = 0;
+    this.revalidateFailure = 0;
+}
+Stats.prototype.toJSON = function () {
+    var stats = {
+        hit: this.hit,
+        miss: this.miss,
+        stale: this.stale,
+        error: this.error,
+        revalidateSuccess: this.revalidateSuccess,
+        revalidateFailure: this.revalidateFailure
+    };
+    return stats;
+};
+
+/**
+ * @class StorageLRU
+ * @constructor
+ * @param {Object} storageInterface  A storage object (such as window.localStorage, but not limited to localStorage)
+ *                   that conforms to the localStorage API.
+ * @param {Object} [options]
+ * @param {Number} [options.recheckDelay=-1]  If the underline storage is disabled, this option defines the delay time interval
+ *                   for re-checking whether the underline storage is re-enabled.  Default value is -1, which
+ *                   means no re-checking.
+ * @param {String} [options.keyPrefix=''] Storage key prefix.
+ * @param {Number} [options.purgeFactor=1]  Extra space to purge. E.g. if space needed for a new item is 1000 characters, LRU will actually
+ *                   try to purge (1000 + 1000 * purgeFactor) characters.
+ * @param {Number} [options.maxPurgeAttempts=2] The number of times to load 'purgeLoadIncrease' more keys if purge cannot initially
+ *                    find enough space.
+ * @param {Number} [options.purgeLoadIncrease=500] The number of extra keys to load with each purgeLoadAttempt when purge cannot initially
+ *                    find enough space.
+ * @param {Function} [options.purgedFn] The callback function to be executed, if an item is purged.  *Note* This function will be
+ *                   asynchronously called, meaning, you won't be able to cancel the purge.
+ * @param {Function} [options.purgeComparator] If you really want to, you can customize the comparator used to determine items'
+ *                   purge order.  The default comparator purges in this precendence order (from high to low):
+ *                      bad entry (invalid meta info),
+ *                      truly stale (passed stale-while-revaliate window),
+ *                      lowest priority,
+ *                      least recently accessed,
+ *                      bigger byte size
+ * @param {Function} [options.revalidateFn] The function to be executed to refetch the item if it becomes expired but still
+ *                   in the stale-while-revalidate window.
+ */
+function StorageLRU (storageInterface, options) {
+    var self = this;
+    options = options || {};
+    var callback = options.onInit;
+    self.options = {};
+    self.options.recheckDelay = isDefined(options.recheckDelay) ? options.recheckDelay : -1;
+    self.options.keyPrefix = options.keyPrefix || DEFAULT_KEY_PREFIX;
+    self.options.purgeLoadIncrease = getIntegerOrDefault(options.purgeLoadIncrease, DEFAULT_PURGE_LOAD_INCREASE);
+    self.options.maxPurgeAttempts = getIntegerOrDefault(options.maxPurgeAttempts, DEFAULT_PURGE_ATTEMPTS);
+    self.options.purgedFn = options.purgedFn;
+    var metaOptions = {
+        keyPrefix: self.options.keyPrefix
+    };
+    self._storage = storageInterface;
+    self._purgeComparator = options.purgeComparator || defaultPurgeComparator;
+    self._revalidateFn = options.revalidateFn;
+    self._parser = new Parser();
+    self._meta = new Meta(self._storage, self._parser, metaOptions);
+    self._stats = new Stats();
+    self._enabled = true;
+}
+
+/**
+ * Reports statistics information.
+ * @method stats
+ * @return {Object} statistics information, including:
+ *   - hit: Number of cache hits
+ *   - miss: Number of cache misses
+ *   - error: Number of errors occurred during getItem
+ *   - stale: Number of occurrances where stale items were returned (cache hit with data that
+ *            expired but still within stale-while-revalidate window)
+ */
+StorageLRU.prototype.stats = function () {
+    return this._stats.toJSON();
+};
+
+/**
+ * Gets a number of the keys of the items in the underline storage
+ * @method keys
+ * @param {Number} the number of keys to return
+ * @param {Funtion} callback
+ */
+StorageLRU.prototype.keys = function (num, callback) {
+    return this._storage.keys(num, callback);
+};
+
+/**
+ * Gets the item with the given key in the underline storage.  Note that if the item has exipired but
+ * is still in stale-while-revalidate window, its value will be revalidated if revalidateFn is provided
+ * when the StorageLRU instance was created.
+ * @method getItem
+ * @param {String} key  The key string
+ * @param {Object} options
+ * @param {Boolean} [options.json=false]  Whether the value should be deserialized to a JSON object.
+ * @param {Function} callback The callback function.
+ * @param {Object} callback.error The error object (an object with code, message fields) if get failed.
+ * @param {String|Object} callback.value The value.
+ * @param {Object} callback.meta Meta information. Containing isStale field.  isStale=true means this
+ *                    item has expired (max-age reached), but still within stale-while-revalidate window.
+ *                    isStale=false means this item has not reached its max-age.
+ */
+StorageLRU.prototype.getItem = function (key, options, callback) {
+    if (!key) {
+        callback && callback(cloneError(ERR_INVALIDKEY, key));
+        return;
+    }
+    var self = this;
+    var prefixedKey = self._prefix(key);
+    self._storage.getItem(prefixedKey, function getItemCallback (err, value) {
+        if (err || value === null || value === undefined) {
+            self._stats.miss++;
+            self._meta.remove(prefixedKey);
+            callback(cloneError(ERR_INVALIDKEY, key));
+            return;
+        }
+
+        var deserialized;
+        try {
+            deserialized = self._deserialize(value, options);
+        } catch (e) {
+            self._stats.error++;
+            callback(cloneError(ERR_DESERIALIZE, e.message));
+            return;
+        }
+        var meta = deserialized.meta,
+            now = nowInSec();
+
+        if ((meta.expires + meta.stale) < now) {
+            // item exists, but expired and passed stale-while-revalidate window.
+            // count as hit miss.
+            self._stats.miss++;
+            self.removeItem(key);
+            callback();
+            return;
+        }
+
+        // this is a cache hit
+        self._stats.hit++;
+
+        // update the access timestamp in the underline storage
+        try {
+            meta.access = now;
+            var serializedValue = self._serialize(deserialized.value, meta, options);
+            self._storage.setItem(prefixedKey, serializedValue, function setItemCallback (err) {
+                if (!err) {
+                    meta = self._meta.update(prefixedKey, meta);
+                }
+            });
+        } catch (ignore) {}
+
+        // is the item already expired but still in the stale-while-revalidate window?
+        var isStale = meta.expires < now;
+        if (isStale) {
+            self._stats.stale++;
+            try {
+                self._revalidate(key, meta, {json: !!(options && options.json)});
+            } catch (ignore) {}
+        }
+        callback(null, deserialized.value, {isStale: isStale});
+    });
+};
+
+/**
+ * Calls the revalidateFn to fetch a fresh copy of a stale item.
+ * @method _revalidate
+ * @param {String} key The item key
+ * @param {Object} meta  The meta record for this item
+ * @param {Object} options
+ * @param {Boolean} [options.json=false]  Whether the value is a JSON object.
+ * @param {Function} [callback]
+ * @param {Object} callback.error The error object (an object with code, message fields) if revalidateFn failed to fetch the item.
+ * @private
+ */
+StorageLRU.prototype._revalidate = function (key, meta, options, callback) {
+    var self = this;
+
+    // if revalidateFn is defined, refetch item and save it to storage
+    if ('function' !== typeof self._revalidateFn) {
+        callback && callback();
+        return;
+    }
+
+    self._revalidateFn(key, function revalidated (err, value) {
+        if (err) {
+            self._stats.revalidateFailure++;
+            callback && callback(cloneError(ERR_REVALIDATE, err.message));
+            return;
+        }
+        try {
+            var now = nowInSec();
+
+            // update the size and expires fields, and inherit other fields.
+            // Especially, do not update access timestamp.
+            var newMeta = {
+                access: meta.access,
+                maxAge: meta.maxAge,
+                expires: now + meta.maxAge,
+                stale: meta.stale,
+                priority: meta.priority
+            };
+
+            // save into the underline storage and update meta record
+            var serializedValue = self._serialize(value, newMeta, options);
+            var prefixedKey = self._prefix(key);
+            self._storage.setItem(prefixedKey, serializedValue, function setItemCallback (err) {
+                if (!err) {
+                    newMeta.size = serializedValue.length;
+                    self._meta.update(prefixedKey, newMeta);
+
+                    self._stats.revalidateSuccess++;
+                } else {
+                    self._stats.revalidateFailure++;
+                }
+            });
+        } catch (e) {
+            self._stats.revalidateFailure++;
+            callback && callback(cloneError(ERR_REVALIDATE, e.message));
+            return;
+        }
+        callback && callback();
+    });
+};
+
+/**
+ * Saves the item with the given key in the underline storage
+ * @method setItem
+ * @param {String} key  The key string
+ * @param {String|Object} value  The value string or JSON object
+ * @param {Object} options
+ * @param {Boolean} options.cacheControl  Required.  Use the syntax as HTTP Cache-Control header.  To be
+ *                   able to use LRU, you need to have a positive "max-age" value (in seconds), e.g. "max-age=300".
+ *                   Another very useful field is "stale-while-revalidate", e.g. "max-age=300,stale-while-revalidate=6000".
+ *                   If an item has expired (max-age reached), but still within stale-while-revalidate window,
+ *                   LRU will allow retrieval the item, but tag it with isStale=true in the callback.
+ *                   **Note**:
+ *                    - LRU does not try to refetch the item when it is stale-while-revaliate.
+ *                    - Having "no-cache" or "no-store" will abort the operation with invalid cache control error. 
+ * @param {Boolean} [options.json=false]  Whether the value should be serialized to a string before saving.
+ * @param {Number} [options.priority=3]  The priority of the item.  Items with lower priority will be purged before
+ *                    items with higher priority, assuming other conditions are the same.
+ * @param {Function} [callback] The callback function.
+ * @param {Object} callback.error The error object (an object with code, message fields) if setItem failed.
+ */
+StorageLRU.prototype.setItem = function (key, value, options, callback) {
+    if (!key) {
+        callback && callback(cloneError(ERR_INVALIDKEY, key));
+        return;
+    }
+
+    var self = this;
+    if (!self._enabled) {
+        callback && callback(cloneError(ERR_DISABLED));
+        return;
+    }
+
+    // parse cache control
+    var cacheControl = self._parseCacheControl(options && options.cacheControl);
+    if (cacheControl['no-cache'] || cacheControl['no-store'] || !cacheControl[MAX_AGE] || cacheControl[MAX_AGE] <= 0) {
+        callback && callback(cloneError(ERR_CACHECONTROL));
+        return;
+    }
+
+    // serialize value (along with meta data)
+    var now = nowInSec();
+    var priority = (options && options.priority) || DEFAULT_PRIORITY;
+    var meta = {
+        expires: now + cacheControl[MAX_AGE],
+        maxAge: cacheControl[MAX_AGE],
+        stale: cacheControl[STALE_WHILE_REVALIDATE] || 0,
+        priority: priority,
+        access: now
+    };
+    var serializedValue;
+    try {
+        serializedValue = self._serialize(value, meta, options);
+    } catch (serializeError) {
+        callback && callback(cloneError(ERR_SERIALIZE));
+        return;
+    }
+
+    // save into the underline storage and update meta record
+    var prefixedKey = self._prefix(key);
+    self._storage.setItem(prefixedKey, serializedValue, function setItemCallback (err) {
+        if (!err) {
+            meta.size = serializedValue.length;
+            self._meta.update(prefixedKey, meta);
+            callback && callback();
+            return;
+        } else {
+            //check to see if there is at least 1 valid key
+            self.keys(1, function getKeysCallback (err, keysArr) {
+                if (keysArr.length === 0) {
+                    // if numItems is 0, private mode is on or storage is disabled.
+                    // callback with error and return
+                    self._markAsDisabled();
+                    callback && callback(cloneError(ERR_DISABLED));
+                    return;
+                }
+                // purge and save again
+                var spaceNeeded = serializedValue.length;
+                self.purge(spaceNeeded, function purgeCallback (err) {
+                    if (err) {
+                        // not enough space purged
+                        callback && callback(cloneError(ERR_NOTENOUGHSPACE));
+                        return;
+                    }
+                    // purged enough space, now try to save again
+                    self._storage.setItem(prefixedKey, serializedValue, function setItemCallback (err) {
+                        if (err) {
+                            callback && callback(cloneError(ERR_NOTENOUGHSPACE));
+                        } else {
+                            self._meta.update(prefixedKey, meta);
+                            // setItem succeeded after the purge
+                            callback && callback();
+                        }
+                    });
+                });
+            });
+        }
+    });
+};
+
+/**
+ * @method removeItem
+ * @param {String} key  The key string
+ * @param {Function} [callback] The callback function.
+ * @param {Object} callback.error The error object (an object with code, message fields) if removeItem failed.
+ */
+StorageLRU.prototype.removeItem = function (key, callback) {
+    if (!key) {
+        callback && callback(cloneError(ERR_INVALIDKEY, key));
+        return;
+    }
+    var self = this;
+    key = self._prefix(key);
+    self._storage.removeItem(key, function removeItemCallback (err) {
+        if (err) {
+            callback && callback(cloneError(ERR_INVALIDKEY, key));
+            return;
+        }
+        self._meta.remove(key);
+        callback && callback();
+    });
+};
+
+/**
+ * @method _parseCacheControl
+ * @param {String} str  The cache control string, following HTTP Cache-Control header syntax.
+ * @return {Object} 
+ * @private
+ */
+StorageLRU.prototype._parseCacheControl = function (str) {
+    var cacheControl = {};
+    if (str) {
+        var parts = str.toLowerCase().split(',');
+        for (var i = 0, len = parts.length; i < len; i++) {
+            var kv = parts[i].split('=');
+            if (kv.length === 2) {
+                cacheControl[kv[0]] = kv[1];
+            } else if (kv.length === 1) {
+                cacheControl[kv[0]] = true;
+            }
+        }
+        if (cacheControl[MAX_AGE]) {
+            cacheControl[MAX_AGE] = parseInt(cacheControl[MAX_AGE], 10) || 0;
+        }
+        if (cacheControl[STALE_WHILE_REVALIDATE]) {
+            cacheControl[STALE_WHILE_REVALIDATE] = parseInt(cacheControl[STALE_WHILE_REVALIDATE], 10) || 0;
+        }
+    }
+    return cacheControl;
+};
+
+/**
+ * Prefix the item key with the keyPrefix defined in "options" when LRU instance was created.
+ * @method _prefix
+ * @param {String} key  The item key.
+ * @return {String} The prefixed key.
+ * @private
+ */
+StorageLRU.prototype._prefix = function (key) {
+    return this.options.keyPrefix + key;
+};
+
+/**
+ * Remove the prefix from the prefixed item key.
+ * The keyPrefix is defined in "options" when LRU instance was created.
+ * @method _deprefix
+ * @param {String} prefixedKey  The prefixed item key.
+ * @return {String} The item key.
+ * @private
+ */
+StorageLRU.prototype._deprefix = function (prefixedKey) {
+    var prefix = this.options.keyPrefix;
+    return prefix ? prefixedKey.substring(prefix.length) : prefixedKey;
+};
+
+/**
+ * Mark the storage as disabled.  For example, when in Safari private mode, localStorage
+ * is disabled.  During setItem(), LRU will check whether the underline storage
+ * is disabled.
+ * If the LRU was created with a recheckDelay option, LRU will re-check whether the underline
+ * storage is disabled. after the specified delay time.
+ * @method _markAsDisabled
+ * @private
+ */
+StorageLRU.prototype._markAsDisabled = function () {
+    var self = this;
+    self._enabled = false;
+    // set a timeout to mark the cache back to enabled so that status can be checked again
+    var recheckDelay = self.options.recheckDelay;
+    if (recheckDelay > 0) {
+        setTimeout(function reEnable() {
+            self._enabled = true;
+        }, recheckDelay);
+    }
+};
+
+/**
+ * Serializes the item value and meta info into a string.
+ * @method _serialize
+ * @param {String|Object} value
+ * @param {Object} meta  Meta info for this item, such as access ts, expire ts, stale-while-revalidate window size
+ * @param {Object} options
+ * @param {Boolean} [options.json=false]
+ * @return {String} the serialized string to store in underline storage
+ * @private
+ * @throw Error
+ */
+StorageLRU.prototype._serialize = function (value, meta, options) {
+    var v = (options && options.json) ? JSON.stringify(value) : value;
+    return this._parser.format(meta, v);
+};
+
+/**
+ * De-serializes the stored string into item value and meta info.
+ * @method _deserialize
+ * @param {String} str The stored string
+ * @param {Object} options
+ * @param {Boolean} [options.json=false]
+ * @return {Object} An object containing "value" (for item value) and "meta" (Meta data object for this item, such as access ts, expire ts, stale-while-revalidate window size).
+ * @private
+ * @throw Error
+ */
+StorageLRU.prototype._deserialize = function (str, options) {
+    var parsed = this._parser.parse(str);
+    return {
+        meta: parsed.meta,
+        value: options.json? JSON.parse(parsed.value) : parsed.value
+    };
+};
+
+/**
+ * Purge the underline storage to make room for new data.  If options.purgedFn is defined
+ * when LRU instance was created, this function will invoke it with the array if purged keys asynchronously.
+ * If the meta data for all objects has not yet been built, then it will occur in this function.
+ * @method purge
+ * @param {Number} spaceNeeded The char count of space needed for the new data.  Note that
+ *                   if options.purgeFactor is defined when LRU instance was created, extra space
+ *                   will be purged. E.g. if spaceNeeded is 1000 characters, LRU will actually
+ *                   try to purge (1000 + 1000 * purgeFactor) characters.
+ * @param {Boolean} forcePurge True if we want to ignore un-initialized records, else false;
+ * @param {Function} callback  
+ * @param {Error} callback.error  if the space that we were able to purge was less than spaceNeeded.
+ */
+StorageLRU.prototype.purge = function (spaceNeeded, callback) {
+    var self = this;
+    var factor = Math.max(0, self.options.purgeFactor) || 1;
+    var padding = Math.round(spaceNeeded * factor);
+
+    var removeData = {
+        purged: [],
+        recordsToRemove: [],
+        size: spaceNeeded + padding
+    };
+
+    var attempts = [];
+    for (var i = 0; i < self.options.maxPurgeAttempts; i++) {
+        attempts.push((i + 1) * self.options.purgeLoadIncrease);
+    }
+
+    asyncEachSeries(attempts, function purgeAttempt(loadSize, attemptDone) {
+        removeData.recordsToRemove = [];
+        removeData.purged = [];
+
+        self._meta.init(loadSize, function doneInit() {
+            self._meta.sort(self._purgeComparator);
+            asyncEachSeries(self._meta.records, function removeItem(record, cb) {
+                // mark record to remove, to remove in batch later for performance
+                record.remove = true;
+                removeData.purged.push(self._deprefix(record.key)); // record purged key
+                self._storage.removeItem(record.key, function removeItemCallback (err) {
+                    // if there was an error removing, remove the record but assume we still need some space
+                    if (!err) {
+                        removeData.size = removeData.size - record.size;
+                    }
+                    if (removeData.size > 0) {
+                        cb(); // keep removing
+                    } else {
+                        cb(true); // done removing
+                    }
+                });
+            }, function itemsRemoved(ignore) {
+                // remove records that were marked to remove
+                self._meta.records = self._meta.records.filter(function shouldKeepRecord(record) {
+                    return record.remove !== true;
+                });
+
+                // invoke purgedFn if it is defined
+                var purgedCallback = self.options.purgedFn;
+                var purged = removeData.purged;
+                if (purgedCallback && purged.length > 0) {
+                    // execute the purged callback asynchronously to prevent library users
+                    // from potentially slow down the purge process by executing long tasks
+                    // in this callback.
+                    setImmediate(function purgeTimeout() {
+                        purgedCallback(purged);
+                    });
+                }
+
+                if (removeData.size <= padding) {
+                    // removed enough space, stop subsequent purge attempts
+                    attemptDone(true);
+                } else {
+                    attemptDone();
+                }
+            });
+        });
+    }, function attemptsDone() {
+        // async series reached the end, either because all attempts were tried,
+        // or enough space was already freed.
+
+        // if enough space was made for spaceNeeded, consider purge as success
+        if (callback) {
+            if (removeData.size <= padding) {
+                callback();
+            } else {
+                callback(new Error('still need ' + (removeData.size - padding)));
+            }
+        }
+    });
+};
+
+module.exports = StorageLRU;
+},{"async-each-series":76,"setimmediate":77}],79:[function(require,module,exports){
+/**
+ * 
+ * A simple mixin to go around syncronous storage interfaces (such as html5 local storage).
+ * 
+ * @param {Object} syncObject The syncronous storage object.
+ */
+function asyncify (syncObject) {
+    var retval = {
+        getItem: function (key, callback) {
+            callback(null, syncObject.getItem(key));
+        },
+        setItem: function (key, value, callback) {
+            try {
+                syncObject.setItem(key, value);
+            } catch (e) {
+                callback(e);
+                return;
+            }
+            callback(null, value);
+        },
+        removeItem: function (key, callback) {
+            syncObject.removeItem(key);
+            callback();
+        }
+    };
+     // be smart about wrapping local storage
+    if (!syncObject.keys && (typeof syncObject.length === 'number')) {
+        retval.keys = function getKeylistFromIndices (num, callback) {
+            var arr = [];
+            var limit = (num > syncObject.length) ? syncObject.length : num;
+            for (var i = 0, len = limit; i < len; i++) {
+                arr.push(syncObject.key(i));
+            }
+            callback(null, arr);
+        };
+    }
+    return retval;
+}
+
+module.exports = asyncify;
+},{}],80:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -10959,7 +12066,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":75,"reduce":76}],75:[function(require,module,exports){
+},{"emitter":81,"reduce":82}],81:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -11125,7 +12232,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],76:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -11157,6 +12264,9 @@ var request = require('superagent');
 var geolib = require('geolib');
 var moment = require('moment');
 var GeoHash = require('geo-hash');
+var StorageLRU = require('storage-lru').StorageLRU;
+var asyncify = require('storage-lru').asyncify;
+
 if (!global.localStorage) {
   global.localStorage = require('localStorage');
 }
@@ -11170,19 +12280,42 @@ try {
   preferredStationsByGeoHash = {};
 }
 
+var lruCache = new StorageLRU(asyncify(localStorage));
+
 /*
  * Feed in latitude, longitude and number of wanted stops, will call callback with (err,result)
  * where result is an array of station objects. For example of a station object, see below!
  */
 exports.getStationList = function(lat, lng, numberofstops, callback) {
-  var coords = proj4('EPSG:25832', {
-    x: lng,
-    y: lat
-  });
-  var url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x=" + Math.round(coords.x) + ",y=" + Math.round(coords.y) + ")&proposals=" + numberofstops;
 
-  request.get(url, function(res) {
-    var stations = res.body;
+  var cacheKey = 'getStationList:' + GeoHash.encode(lng, lat, 8) + ':' + numberofstops;
+
+  lruCache.getItem(cacheKey, { json: true }, function (error, stations) {
+    if (stations) {
+      callback(null, augmentStations(stations));
+    } else {
+      var coords = proj4('EPSG:25832', {
+        x: lng,
+        y: lat
+      });
+      var url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x=" + Math.round(coords.x) + ",y=" + Math.round(coords.y) + ")&proposals=" + numberofstops;
+
+      request.get(url, function(res) {
+        var stations = res.body;
+
+        lruCache.setItem(cacheKey, stations, {
+          json: true,
+          cacheControl: 'max-age=' + (86400 * 30),
+        }, function (error) {
+          if (error) throw error;
+        });
+
+        callback(null, augmentStations(stations));
+      });
+    }
+  });
+
+  function augmentStations(stations) {
     stations.forEach(function(station, index) {
       var latLngXY = proj4('EPSG:25832', 'WGS84', {
         x: station.X,
@@ -11198,7 +12331,11 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
       });
 
       var geoHash = GeoHash.encode(lng, lat, 7);
-      station.Preference = (preferredStationsByGeoHash[geoHash] && preferredStationsByGeoHash[geoHash][station.ID]) || 0;
+      station.Preference = (
+        preferredStationsByGeoHash[geoHash] &&
+        preferredStationsByGeoHash[geoHash][station.ID] &&
+        preferredStationsByGeoHash[geoHash][station.ID].preference
+      ) || 0;
       station.Index = index;
     });
 
@@ -11208,8 +12345,8 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
       return dPreference === 0 ? dIndex : dPreference;
     });
 
-    callback(null, stations);
-  });
+    return stations;
+  }
 };
 
 /*
@@ -11217,25 +12354,48 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
  * is an array of departures. For example of a departure object, see below!
  */
 exports.getDeparturesForStation = function(ID, callback) {
-  request.get("http://api.trafikanten.no/ReisRest/RealTime/GetAllDepartures/" + ID, function(res) {
-    callback(null, res.body.map(function(dep){
-      dep.MinutesToDeparture = moment(dep.ExpectedDepartureTime).diff(moment(),'minutes');
-      return dep;
-    }));
+  var cacheKey = 'getDeparturesForStation:' + ID;
+  lruCache.getItem(cacheKey, { json: true }, function (error, departures) {
+    if (departures) {
+      return callback(null, augmentDepartures(departures));
+    } else {
+      request.get("http://api.trafikanten.no/ReisRest/RealTime/GetAllDepartures/" + ID, function(res) {
+        var departures = res.body;
+
+        lruCache.setItem(cacheKey, departures, {
+          json: true,
+          cacheControl: 'max-age=' + 25,
+        }, function (error) {
+          if (error) throw error;
+        });
+
+        callback(null, augmentDepartures(departures));
+      });
+    }
   });
+
+  function augmentDepartures(departures) {
+    return (departures || []).map(function(departure){
+      departure.MinutesToDeparture = moment(departure.ExpectedDepartureTime).diff(moment(),'minutes');
+      return departure;
+    });
+  }
 };
 
-exports.preferStation = function (ID, lat, lng) {
+exports.preferStation = function (station, lat, lng) {
   var geoHash = GeoHash.encode(lng, lat, 7);
   if (!(geoHash in preferredStationsByGeoHash)) {
     preferredStationsByGeoHash[geoHash] = {};
   }
 
-  if (!(ID in preferredStationsByGeoHash[geoHash])) {
-    preferredStationsByGeoHash[geoHash][ID] = 0;
+  if (!(station.ID in preferredStationsByGeoHash[geoHash])) {
+    preferredStationsByGeoHash[geoHash][station.ID] = {
+      station: station,
+      preference: 0
+    };
   }
 
-  preferredStationsByGeoHash[geoHash][ID]++;
+  preferredStationsByGeoHash[geoHash][station.ID].preference++;
   localStorage.setItem('preferred-stations', JSON.stringify(preferredStationsByGeoHash));
 };
 
@@ -11246,9 +12406,9 @@ exports.getPreferredStation = function (lat, lng) {
   var preferredStation = null;
   if (preferredStations) {
     Object.keys(preferredStations).forEach(function (ID) {
-      if (preferredStations[ID] > largestPreference) {
-        largestPreference = preferredStations[ID];
-        preferredStation = ID;
+      if (preferredStations[ID].preference > largestPreference) {
+        largestPreference = preferredStations[ID].preference;
+        preferredStation = preferredStations[ID].station;
       }
     });
   }
@@ -11335,4 +12495,4 @@ var departureExample = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"geo-hash":1,"geolib":3,"localStorage":4,"moment":5,"proj4":41,"superagent":74}]},{},[]);
+},{"geo-hash":2,"geolib":4,"localStorage":5,"moment":6,"proj4":42,"storage-lru":75,"superagent":80}]},{},[]);

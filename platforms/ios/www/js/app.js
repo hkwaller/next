@@ -29,13 +29,13 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     url: '/station-overview',
     controller: 'OverviewCtrl',
     templateUrl: 'templates/stations-overview.html'
-  })
+  });
   
    $urlRouterProvider.otherwise("/station-overview");
 })
 
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, ApiService, StationService) {
     
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, $timeout, ApiService, StationService) {
     ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
 
     if (StationService.getStation() != null) {
@@ -45,48 +45,89 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
     function getLinesFromApi(id) {
         ApiService.getDeparturesForStation(id, (function(err, lines) {
-            $scope.lines = lines;
-            $scope.$apply();
+            $timeout(function() {
+                $scope.lines = lines;
+                $scope.$apply();
+            });
         }));
     }
-    
-    $ionicPlatform.ready(function() {
-        $cordovaGeolocation.getCurrentPosition()
-            .then(function (position) {
-              var lat  = position.coords.latitude
-              var long = position.coords.longitude
-              console.log(lat + " " + long);
-            }, function(err) {
-              // error
-        });
-    });
 
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
         $scope.selectedStation = $scope.stations[index];
         $scope.activeIndex = index;
-    }
+    };
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);
         $scope.$broadcast('scroll.refreshComplete');
-    }
+    };
 
 })
 
-.controller('OverviewCtrl', function($scope, $location, ApiService, StationService) {
     
+.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
 
-    ApiService.getStationList(59.932624, 10.734738, 5, (function(err, stations) {
-        $scope.stations = stations;
-        console.log(stations);
-        $scope.$apply();
-    }));
+    var lat;
+    var lng;
+
+    $ionicPlatform.ready(function() {
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function (position) {
+              lat  = position.coords.latitude;
+              lng = position.coords.longitude;
+
+              // Oslo: 59.932624, 10.734738
+              // Ytterby: 57.863906199999995 11.9110967
+
+              console.log("Coordinates from cordova geolocation",lat,lng);
+
+              if ((lng+"").substr(0,4)==="11.9"){
+                lat = 59.932624;
+                lng = 10.734738;
+                console.log("But since you are in Ytterby we'll use",lat,lng,"instead! :)");
+              }
+
+              var preferredStation = ApiService.getPreferredStation(lat, lng);
+              if (preferredStation) {
+                $ionicViewSwitcher.nextTransition('none');
+                StationService.setStation(preferredStation);
+                $location.path('/station-detail');
+              }
+             getStationsFromApi(lat, lng, 7);
+              ApiService.getStationList(lat, lng, 5, function(err, stations) {
+                  $timeout(function() {
+                      $scope.stations = stations;
+                      $scope.$apply();
+                  })
+              });
+
+            }, function(err) {
+              console.log("Error getting current position! :(",err);
+            });
+    });
     
     $scope.goToStation = function(station) {
-        StationService.setStation(station);        
+        if (station && lat && lng) {
+          ApiService.preferStation(station, lat, lng);
+        }
+        StationService.setStation(station);
         $location.path('/station-detail');
+    };
+    
+    function getStationsFromApi(lat, lng, count) {
+        ApiService.getStationList(lat, lng, count, function(err, stations) {
+          $timeout(function() {
+              $scope.stations = stations;
+              $scope.$apply();
+          })
+      });
     }
+    
+    $scope.refresh = function() {
+        getStationsFromApi(lat, lng, 7);
+        $scope.$broadcast('scroll.refreshComplete');
+    };
     
 });
