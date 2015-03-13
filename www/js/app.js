@@ -127,6 +127,12 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         getLinesFromApi($scope.selectedStation.ID);
         $scope.$broadcast('scroll.refreshComplete');
     };
+    
+    $scope.findImg = function(line) {
+        console.log(line);
+        if (line.LineRef < 20) return "../img/trikk.png";
+        else return "../img/buss.png";
+    }
 
 })
 
