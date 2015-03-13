@@ -22,10 +22,13 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
-            <ion-item ng-repeat="line in lines | limitTo:10">
-                <div class="row">
-                    <div class="col col-20">
-                        <span class="line line-{{line.LineRef}}">{{ line.LineRef }}</span>
+            <ion-item ng-repeat="line in lines | limitTo:10" class="no-padding">
+                <div class="row custom-row-padding">
+                    <div class="col col-10">
+                        <span class="line">{{ line.LineRef }}</span>
+                    </div>
+                    <div class="col col-10 text-center img-col">
+                        <img ng-src="../img/trikk.png" class="small-img">
                     </div>
                     <div class="col col-60 line-name">
                         <strong>{{ line.DestinationDisplay }}</strong>

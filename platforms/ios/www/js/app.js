@@ -33,38 +33,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
   
    $urlRouterProvider.otherwise("/station-overview");
 })
-
-    
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, $timeout, ApiService, StationService) {
-    ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
-
-    if (StationService.getStation() != null) {
-        $scope.selectedStation = StationService.getStation();
-        getLinesFromApi($scope.selectedStation.ID);
-    }
-
-    function getLinesFromApi(id) {
-        ApiService.getDeparturesForStation(id, (function(err, lines) {
-            $timeout(function() {
-                $scope.lines = lines;
-                $scope.$apply();
-            });
-        }));
-    }
-
-    $scope.activeIndex = 0;
-    $scope.slideChanged = function(index) {
-        $scope.selectedStation = $scope.stations[index];
-        $scope.activeIndex = index;
-    };
-
-    $scope.refresh = function() {
-        getLinesFromApi($scope.selectedStation.ID);
-        $scope.$broadcast('scroll.refreshComplete');
-    };
-
-})
-
     
 .controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
@@ -130,4 +98,42 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         $scope.$broadcast('scroll.refreshComplete');
     };
     
-});
+})
+    
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, $timeout, ApiService, StationService) {
+    ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
+
+    if (StationService.getStation() != null) {
+        $scope.selectedStation = StationService.getStation();
+        getLinesFromApi($scope.selectedStation.ID);
+    }
+
+    function getLinesFromApi(id) {
+        ApiService.getDeparturesForStation(id, (function(err, lines) {
+            $timeout(function() {
+                $scope.lines = lines;
+                $scope.$apply();
+            });
+        }));
+    }
+
+    $scope.activeIndex = 0;
+    $scope.slideChanged = function(index) {
+        $scope.selectedStation = $scope.stations[index];
+        $scope.activeIndex = index;
+    };
+
+    $scope.refresh = function() {
+        getLinesFromApi($scope.selectedStation.ID);
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+    
+    $scope.findImg = function(line) {
+        console.log(line);
+        if (line.LineRef < 20) return "../img/trikk.png";
+        else return "../img/buss.png";
+    }
+
+})
+
+
