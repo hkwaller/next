@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "bundle-external": "say sorry you are not clever enough, you should ask david to do this for you, he is much smarter than you",
-    "bundle-external-forreal": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
+    "bundle-external-forrealz": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
     "browser": "open -a Google\\ Chrome\\ Canary --args --disable-web-security"
   }
 }
