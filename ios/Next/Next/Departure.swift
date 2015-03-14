@@ -14,10 +14,10 @@ enum Type {
 import Foundation
 
 class Departure {
-    var lineNumber: String?
-    var lineDestination: String?
-    var timeToDeparture: String?
-    var type: Type?
+    var lineNumber: String
+    var lineDestination: String
+    var timeToDeparture: String
+    var type: Type
     
     init(lineNumber: String, lineDestination: String, timeToDeparture: String, imageType: String) {
         self.lineNumber = lineNumber

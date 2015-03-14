@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Next/DepartureTableViewCell.swift"
+            timestampString = "448053574.617782"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "DepartureTableViewCell"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.timeLabel.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UILabel&gt;"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.666344"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.timeLabel.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UILabel&gt;"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.667518"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.timeLabel.materializeForSet : weak Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.UILabel&gt;"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.667676"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.init (Next.DepartureTableViewCell.Type)(style : C.UITableViewCellStyle, reuseIdentifier : Swift.Optional&lt;Swift.String&gt;) -&gt; Next.DepartureTableViewCell"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.667797"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "211">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.init (Next.DepartureTableViewCell.Type)(frame : C.CGRect) -&gt; Next.DepartureTableViewCell"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.667918"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "194">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.init (Next.DepartureTableViewCell.Type)() -&gt; Next.DepartureTableViewCell"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.668038"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "127">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Next.DepartureTableViewCell.init (Next.DepartureTableViewCell.Type)(coder : ObjectiveC.NSCoder) -&gt; Next.DepartureTableViewCell"
+                  moduleName = "Next"
+                  urlString = "file:///Users/hkwaller/Documents/Hemsidor/next/ios/Next/Next/DepartureTableViewCell.swift"
+                  timestampString = "448053574.668159"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "138">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -9,24 +9,30 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var lineNumberLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var lineDestinationLabel: UILabel!
-    @IBOutlet weak var typeImgView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
-    var lines = [Departure(lineNumber: "17", lineDestination: "Rikshospitalet", timeToDeparture: "2", imageType: "trikk")]
+    var lines: [Departure] = [Departure(lineNumber: "17", lineDestination: "Rikshospitalet", timeToDeparture: "2", imageType: "trikk"),
+                Departure(lineNumber: "20", lineDestination: "Skøyen", timeToDeparture: "5", imageType: "buss"),
+                Departure(lineNumber: "25", lineDestination: "Majorstuen", timeToDeparture: "9", imageType: "buss")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
+    override func viewWillAppear(animated: Bool) {
+        
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        tableView.layoutMargins = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        var tblView = UIView(frame: CGRectZero)
+        tableView.tableFooterView = tblView
+        tableView.tableFooterView?.hidden = true
+        tableView.backgroundColor = UIColor(r: 208, g: 204, b: 204)
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -42,9 +48,12 @@ class ViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("customCell") as UITableViewCell
         
+        var cell:DepartureTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("customCell") as DepartureTableViewCell!
         
+        var dep: Departure = lines[indexPath.row]
+        cell.loadItem(d: dep)
+                
         return cell
     }
 
