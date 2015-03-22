@@ -1,4 +1,4 @@
-<ion-view view-title="#next" ng-cloak>
+<ion-view view-title="#neste" ng-cloak>
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
         </ion-refresher>
@@ -15,6 +15,9 @@
                         <strong>{{ station.Distance }}</strong> m
                     </div>
                 </div>
+                <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
+                Nullstill
+              </ion-option-button>
                 <!--<div class="row">
                     <div class="lineID-padding" ng-repeat="line in station.Lines">
                         {{ line.LineID }}<span ng-hide="$index === station.Lines.length - 1">, </span>    
@@ -31,7 +34,7 @@
                     <div class="col col-90 station-overview-name">
                         {{ station.Name }}
                     </div>
-                    <div class="col col-10">
+                    <div class="col col-10 padding-right">
                         <strong>{{ station.Distance }}</strong> m
                     </div>
                 </div>
