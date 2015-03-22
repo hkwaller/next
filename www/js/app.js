@@ -105,10 +105,13 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
 })
     
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, $timeout, ApiService, StationService) {
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService) {
     
     //ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
-
+    $ionicLoading.show({
+      template: 'Laster inn avganger...'
+    });
+    
     if (StationService.getStation() != null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
@@ -119,6 +122,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
+                $ionicLoading.hide();
             });
         }));
     }
