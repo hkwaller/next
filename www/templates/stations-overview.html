@@ -8,11 +8,11 @@
         <ion-list>
             <ion-item ng-repeat="station in stations | favouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
-                    <div class="col col-80 station-overview-name">
+                    <div class="col col-90 station-overview-name">
                         {{ station.Name }}
                     </div>
-                    <div class="col col-20">
-                        <strong>{{ station.Distance }}</strong> meter
+                    <div class="col col-10">
+                        <strong>{{ station.Distance }}</strong> m
                     </div>
                 </div>
                 <!--<div class="row">
@@ -28,11 +28,11 @@
         <ion-list>
             <ion-item ng-repeat="station in stations | noFavouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
-                    <div class="col col-80 station-overview-name">
+                    <div class="col col-90 station-overview-name">
                         {{ station.Name }}
                     </div>
-                    <div class="col col-20">
-                        <strong>{{ station.Distance }}</strong> meter
+                    <div class="col col-10">
+                        <strong>{{ station.Distance }}</strong> m
                     </div>
                 </div>
                 <!--<div class="row">
