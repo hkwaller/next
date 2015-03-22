@@ -74,10 +74,14 @@
     padding: 0 0 .3em 0;
 }
 
-.padding-right {
-    padding-right: 1em;
+.wrap-text {
+    overflow: hidden;
 }
 
-.wrap-text {
-    text-overflow: clip;
+.text-center {
+    text-align: center;
+}
+
+.no-padding {
+    padding: 0;
 }

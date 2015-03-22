@@ -19,22 +19,36 @@
           </div>-->
     </ion-header-bar>
     <ion-content>
-        <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
+        <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
+            <div class="item item-divider">
+             <div class="row no-padding">
+                <div class="col col-20 no-padding">
+                    Linje
+                 </div>  
+                 <div class="col col-60 no-padding">
+                    Destinasjon
+                 </div>  
+                 <div class="col col-20 no-padding text-center">
+                    Tid
+                 </div>  
+                 
+            </div>
+            </div>
             <ion-item ng-repeat="line in lines | limitTo:10" class="no-padding">
                 <div class="row custom-row-padding">
-                    <div class="col col-10">
-                        <span class="line wrap-text">{{ line.LineRef }}</span>
+                    <div class="col col-10 text-center">
+                        <span class="line wrap-text text-center">{{ line.LineRef }}</span>
                     </div>
                     <div class="col col-10 text-center img-col">
                         <img ng-src="{{findImg(line)}}" class="small-img">
                     </div>
-                    <div class="col col-60 line-name">
-                        <strong>{{ line.DestinationDisplay }}</strong>
+                    <div class="col col-60 line-name wrap-text">
+                        {{ line.DestinationDisplay }}
                     </div>
                     <div class="col col-20 padding-right">
-                        {{ line.MinutesToDeparture }} min
+                        <strong>{{ line.MinutesToDeparture }}</strong> min
                     </div>
                 </div>
             </ion-item>
