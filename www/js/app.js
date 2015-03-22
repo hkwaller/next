@@ -63,8 +63,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 StationService.setStation(preferredStation);
                 $location.path('/station-detail');
               }
-             getStationsFromApi(lat, lng, 7);
-              ApiService.getStationList(lat, lng, 5, function(err, stations) {
+             getStationsFromApi(lat, lng, 15);
+              ApiService.getStationList(lat, lng, 15, function(err, stations) {
                   $timeout(function() {
                       $scope.stations = stations;
                       $scope.$apply();
@@ -94,14 +94,20 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     }
     
     $scope.refresh = function() {
-        getStationsFromApi(lat, lng, 7);
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function (position) {
+              lat  = position.coords.latitude;
+              lng = position.coords.longitude;
+              getStationsFromApi(lat, lng, 15);
+        })
         $scope.$broadcast('scroll.refreshComplete');
     };
     
 })
     
 .controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $cordovaGeolocation, $timeout, ApiService, StationService) {
-    ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
+    
+    //ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
 
     if (StationService.getStation() != null) {
         $scope.selectedStation = StationService.getStation();
@@ -130,8 +136,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
     $scope.findImg = function(line) {
         console.log(line);
-        if (line.LineRef < 20) return "../img/trikk.png";
-        else return "../img/buss.png";
+        if (line.LineRef < 20) return "/img/trikk.png";
+        else return "/img/buss.png";
     }
 
 })
