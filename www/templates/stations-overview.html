@@ -29,7 +29,7 @@
             Alle
         </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | noFavouriteFilter" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
                     <div class="col col-80 station-overview-name">
                         {{ station.Name }}
