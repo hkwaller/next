@@ -31,25 +31,26 @@
                     Destinasjon
                  </div>  
                  <div class="col col-20 no-padding text-center">
-                    Tid
+                    <img src="./img/klokke.png" class="section-header-image">
                  </div>  
                  
             </div>
             </div>
-            <ion-item ng-repeat="line in lines | limitTo:10" class="no-padding">
+            <ion-item ng-repeat="line in lines | limitTo:10 | detailFilter" class="no-padding">
                 <div class="row custom-row-padding">
-                    <div class="col col-10 text-center">
-                        <span class="line wrap-text text-center">{{ line.LineRef }}</span>
-                    </div>
-                    <div class="col col-10 text-center img-col">
-                        <img ng-src="{{findImg(line)}}" class="small-img">
+                    <div class="col col-20 text-center">
+                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19}">{{ line.LineRef }}</span>
                     </div>
                     <div class="col col-60 line-name wrap-text">
                         {{ line.DestinationDisplay }}
                     </div>
-                    <div class="col col-20 padding-right">
-                        <strong>{{ line.MinutesToDeparture }}</strong> min
+                    <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture > 0">
+                        <strong>{{ line.MinutesToDeparture }}</strong> m
                     </div>
+                    <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture <= 0">
+                        <strong>Nå</strong>
+                    </div>
+                    
                 </div>
             </ion-item>
         </ion-list>

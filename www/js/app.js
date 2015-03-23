@@ -126,6 +126,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
+    //var j = JSON.parse(window.localStorage.getItem('preferred-stations'));
 
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
