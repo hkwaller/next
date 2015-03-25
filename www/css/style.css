@@ -1,11 +1,14 @@
+* {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+}
+
 .line {
-    padding: 0;
-    font-size: 1.3em;
-    height: 80%;
-    padding: .5em;
-    color: #fff;
-    background-color: rgb(61, 140, 255);
-    font-weight: 300;
+    width: 3em;
+    font-size: 1.4em;
+    padding: .3em .4em;
+    color: #4D4F53;
+    border: 2px solid rgb(61, 140, 255);
+    font-weight: 400;
     border-radius: 10em;
 }
 
@@ -13,9 +16,14 @@
     background-color: #E32D22;
 }
 
+.sub-header-bar {
+    font-size: 1em;
+    font-weight: 600;
+}
+
 .line-name {
-    font-weight: 400;
-    font-size: 1.1em;
+    font-weight: 500;
+    font-size: 1em;
 }
 
 .detail-time {
@@ -32,10 +40,12 @@
 
 .bar {
     padding: 0;
+    background-color: #037AFF;
 }
 
 .pane {
-    background: #bebebe;   
+    background: url('../img/background.png'); 
+    background-position: top;
 }
 
 .text-center {
@@ -92,4 +102,13 @@
 .custom-padding-right {
     padding-right: 1em;
     text-align: right;
+}
+
+.time-to-departure {
+    font-size: 1.2em;
+    font-weight: 300;
+}
+
+.minutes {
+    font-size: .8em;
 }

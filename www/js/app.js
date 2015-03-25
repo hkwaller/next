@@ -18,7 +18,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $stateProvider
   .state('detail', {
     url: '/station-detail',
@@ -32,6 +32,9 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
   });
   
    $urlRouterProvider.otherwise("/station-overview");
+    
+    $ionicConfigProvider.backButton.previousTitleText(false).text('');
+
 })
     
 .controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {

@@ -16,21 +16,21 @@
             <div class="col col-10" ng-show="activeIndex !== stations.length - 1">
                 <i class="icon ion-chevron-right"></i>
             </div>
-          </div>-->
-    </ion-header-bar>
+          </div>
+    </ion-header-bar>-->
     <ion-content>
-        <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()">
+        <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
         </ion-refresher>
         <ion-list>
             <div class="item item-divider">
-             <div class="row no-padding">
+             <div class="row no-padding sub-header-bar">
                 <div class="col col-20 no-padding">
                     Linje
                  </div>  
-                 <div class="col col-60 no-padding">
+                 <div class="col col-70 no-padding">
                     Destinasjon
                  </div>  
-                 <div class="col col-20 no-padding text-center">
+                 <div class="col col-10 no-padding text-center">
                     <img src="./img/klokke.png" class="section-header-image">
                  </div>  
                  
@@ -45,10 +45,10 @@
                         {{ line.DestinationDisplay }}
                     </div>
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture > 0">
-                        <strong>{{ line.MinutesToDeparture }}</strong> m
+                        <span class="time-to-departure">{{ line.MinutesToDeparture }}</span><span class="minutes"> m</span>
                     </div>
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture <= 0">
-                        <strong>Nå</strong>
+                        <span class="time-to-departure">Nå</strong>
                     </div>
                     
                 </div>
