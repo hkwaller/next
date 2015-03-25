@@ -12,7 +12,7 @@
                         {{ station.Name }}
                     </div>
                     <div class="col col-10">
-                        <strong>{{ station.Distance }}</strong> m
+                        <span class="distance-to-stop"><strong>{{ station.Distance }}</strong></span> m
                     </div>
                 </div>
                 <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
@@ -25,6 +25,7 @@
                 </div>-->
             </ion-item>
         </ion-list>
+        <div class="divider-thingy"></div>
         <div class="item item-divider sub-header-bar">
             Alle
         </div>
@@ -35,7 +36,7 @@
                         {{ station.Name }}
                     </div>
                     <div class="col col-20">
-                        <strong>{{ station.Distance }}</strong> m
+                        <span class="distance-to-stop"><strong>{{ station.Distance }}</strong></span> m
                     </div>
                 </div>
                 <!--<div class="row">

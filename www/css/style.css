@@ -43,8 +43,13 @@
     background-color: #037AFF;
 }
 
+.ion-nav-view {
+    background: #fff; 
+}
+
 .pane {
-    background: url('../img/background.png'); 
+    background: #fff;
+    background-image: url('../img/background.png'); 
     background-position: top;
 }
 
@@ -111,4 +116,13 @@
 
 .minutes {
     font-size: .8em;
+}
+
+.distance-to-stop {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.divider-thingy {
+    height: 1em;
 }

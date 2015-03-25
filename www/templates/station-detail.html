@@ -45,10 +45,10 @@
                         {{ line.DestinationDisplay }}
                     </div>
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture > 0">
-                        <span class="time-to-departure">{{ line.MinutesToDeparture }}</span><span class="minutes"> m</span>
+                        <span class="time-to-departure"><strong>{{ line.MinutesToDeparture }}</strong></span><span class="minutes"> min</span>
                     </div>
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture <= 0">
-                        <span class="time-to-departure">Nå</strong>
+                        <span class="minutes">Nå</strong>
                     </div>
                     
                 </div>
