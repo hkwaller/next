@@ -37,11 +37,12 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
 })
     
-.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
+.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
 
     var lat;
     var lng;
+    $ionicLoading.hide();
 
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
@@ -110,7 +111,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
 .controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService) {
     
-    //ApiService.getStationList(59.932624, 10.734738, 5, console.log.bind(console));
     $ionicLoading.show({
       template: 'Laster inn avganger...'
     });
@@ -129,7 +129,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
-    //var j = JSON.parse(window.localStorage.getItem('preferred-stations'));
 
     $scope.activeIndex = 0;
     $scope.slideChanged = function(index) {
