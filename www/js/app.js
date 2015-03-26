@@ -107,6 +107,12 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         $scope.$broadcast('scroll.refreshComplete');
     };
     
+
+    $scope.reset = function(station) {
+        ApiService.unpreferStation(station, lat, lng);
+        getStationsFromApi(lat, lng, 15);
+    };
+
 })
     
 .controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService) {
