@@ -67,13 +67,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 StationService.setStation(preferredStation);
                 $location.path('/station-detail');
               }
-             getStationsFromApi(lat, lng, 15);
-              ApiService.getStationList(lat, lng, 15, function(err, stations) {
-                  $timeout(function() {
-                      $scope.stations = stations;
-                      $scope.$apply();
-                  })
-              });
+              getStationsFromApi(lat, lng, 15);
 
             }, function(err) {
               console.log("Error getting current position! :(",err);
