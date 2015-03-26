@@ -112,7 +112,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 .controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService) {
     
     $ionicLoading.show({
-      template: 'Laster inn avganger...'
+      template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
     });
     
     if (StationService.getStation() != null) {
@@ -122,6 +122,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
     function getLinesFromApi(id) {
         ApiService.getDeparturesForStation(id, (function(err, lines) {
+            console.log(err);
+            console.log(lines);
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
