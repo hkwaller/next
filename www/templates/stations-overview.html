@@ -30,7 +30,7 @@
         <ion-list>
             <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
-                    <div class="col col-80 line-name">
+                    <div class="col col-80 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
                         <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
                         <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
