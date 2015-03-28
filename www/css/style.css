@@ -3,31 +3,48 @@
 }
 
 .line {
-    width: 3em;
     font-size: 1.4em;
-    padding: .3em .4em;
+    padding: 0.5em 0.4em 0.5em 0.4em;
     color: #4D4F53;
-    border: 2px solid rgb(61, 140, 255);
+    background-image: url('../img/octagon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     font-weight: 400;
-    border-radius: 10em;
 }
 
 .line-buss {
-    border: 2px solid #E32D22;
+    background-image: url('../img/circle.png');
+    background-position: center;
+    margin-top: 1em;
 }
 
 .sub-header-bar {
-    font-size: 1em;
+    font-size: 0.8em;
     font-weight: 600;
+}
+
+.sub-header-bar-overview {
+    font-size: .9em;
+    font-weight: 600;
+    color: #4D4F53;
 }
 
 .line-name {
     font-weight: 500;
-    font-size: 1em;
+    font-family: 'HelveticaNeue-Light';
+    color: #4D4F53;
+    font-size: .9em;
+    padding-left: .7em;
+    overflow: hidden;
+}
+
+.no-padding-left {
+    padding-left: 0;
 }
 
 .detail-time {
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .station-row {
@@ -60,27 +77,12 @@
     padding-right: .5em;
 }
 
-.station-overview-name {
-    font-size: 1.1em;
-    font-weight: 400;
-    padding-left: 0;
-}
-
-.small-img {
-    height: 35px;
-}
-
 .item.no-padding {
     padding: 0;
 }
 
 .custom-row-padding {
     padding: 1.5em .5em 1em 0;
-}
-
-.img-col {
-    float: left;
-    padding: 0 0 .3em 0;
 }
 
 .wrap-text {
@@ -109,17 +111,26 @@
 }
 
 .time-to-departure {
+    font-family: 'HelveticaNeue-Light';
+    display: inline-block;
+    font-weight: 400;
     font-size: 1.2em;
-    font-weight: 300;
+    padding-right: .2em;
 }
 
 .minutes {
-    font-size: .8em;
+    display: inline-block;
+    font-size: .7em;
+    vertical-align: 20%;
+    color: #979797;
 }
 
 .distance-to-stop {
-    font-size: 1.1em;
+    display: inline-block;
+    font-family: 'HelveticaNeue-Light';
+    font-size: 1.2em;
     font-weight: 500;
+    padding-right: .2em;
 }
 
 .divider-thingy {
@@ -128,4 +139,13 @@
 
 .loading-icon {
     padding-top: 1em;
+}
+
+.now {
+    font-size: 1em;
+}
+
+.thumbnail {
+    width: .6em;
+    margin-left: .2em;
 }
