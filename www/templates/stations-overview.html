@@ -2,49 +2,43 @@
     <ion-content>
         <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
         </ion-refresher>
-        <div class="item item-divider sub-header-bar" ng-show="(stations | favouriteFilter).length > 0">
+        <div class="item item-divider sub-header-bar-overview" ng-show="(stations | favouriteFilter).length > 0">
             Favoritter
         </div>
         <ion-list>
             <ion-item ng-repeat="station in stations | orderBy:'Distance' | favouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
-                    <div class="col col-90 station-overview-name">
-                        {{ station.Name }}
+                    <div class="col col-90 line-name no-padding-left">
+                        {{ station.Name | maxCharFilter }}
+                        <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
+                        <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
                     </div>
                     <div class="col col-10">
-                        <span class="distance-to-stop"><strong>{{ station.Distance }}</strong></span> m
+                        <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes">m</div>
                     </div>
                 </div>
                 <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
                 Fjern favoritt
               </ion-option-button>
-                <!--<div class="row">
-                    <div class="lineID-padding" ng-repeat="line in station.Lines">
-                        {{ line.LineID }}<span ng-hide="$index === station.Lines.length - 1">, </span>    
-                    </div>
-                </div>-->
             </ion-item>
                     <div class="divider-thingy"></div>
 
         </ion-list>
-        <div class="item item-divider sub-header-bar">
+        <div class="item item-divider sub-header-bar-overview">
             Alle
         </div>
         <ion-list>
             <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)">
                 <div class="row">
-                    <div class="col col-80 station-overview-name">
-                        {{ station.Name }}
+                    <div class="col col-80 line-name">
+                        {{ station.Name | maxCharFilter }}
+                        <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
+                        <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
                     </div>
                     <div class="col col-20">
-                        <span class="distance-to-stop"><strong>{{ station.Distance }}</strong></span> m
+                        <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes">m</div>
                     </div>
                 </div>
-                <!--<div class="row">
-                    <div class="lineID-padding" ng-repeat="line in station.Lines">
-                        {{ line.LineID }}<span ng-hide="$index === station.Lines.length - 1">, </span>    
-                    </div>
-                </div>-->
             </ion-item>
         </ion-list>
         
