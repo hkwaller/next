@@ -15,13 +15,18 @@
 
 .line-buss {
     background-image: url('../img/circle.png');
-    background-position: center;
     margin-top: 1em;
+}
+
+.line-sub {
+    background-image: url('../img/polygon.png');
+    padding: .8em;
 }
 
 .sub-header-bar {
     font-size: 0.8em;
     font-weight: 600;
+    color: #4D4F53;
 }
 
 .sub-header-bar-overview {
