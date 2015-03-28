@@ -42,8 +42,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
     var lat;
     var lng;
-    $ionicLoading.hide();
-
+    
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
@@ -91,6 +90,26 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
       });
     }
     
+    $scope.servedByTram = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID < 20) {
+                return true;
+            }
+        }
+        
+        return false;
+      }     
+    
+    $scope.servedByBus = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID > 20 && station.Lines[i].LineID < 100) {
+                return true;
+            }
+        }
+        
+        return false;
+      }     
+    
     $scope.refresh = function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
@@ -122,8 +141,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
     function getLinesFromApi(id) {
         ApiService.getDeparturesForStation(id, (function(err, lines) {
-            console.log(err);
-            console.log(lines);
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
@@ -142,11 +159,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         getLinesFromApi($scope.selectedStation.ID);
         $scope.$broadcast('scroll.refreshComplete');
     };
-    
-    $scope.findImg = function(line) {
-        if (line.LineRef < 20) return "./img/trikk.png";
-        else return "./img/buss.png";
-    }
 
 })
 
