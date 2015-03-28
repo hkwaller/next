@@ -39,7 +39,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
 .controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
-
+        $ionicLoading.show({
+      template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+    });
+    
     var lat;
     var lng;
     
@@ -67,6 +70,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 $location.path('/station-detail');
               }
               getStationsFromApi(lat, lng, 15);
+            $ionicLoading.hide();
 
             }, function(err) {
               console.log("Error getting current position! :(",err);
