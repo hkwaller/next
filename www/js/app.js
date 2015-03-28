@@ -92,17 +92,26 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
     $scope.servedByTram = function(station) {
         for (var i = 0; i < station.Lines.length; i++) {
-            if (station.Lines[i].LineID < 20) {
+            if (station.Lines[i].LineID > 10 && station.Lines[i].LineID < 20) {
                 return true;
             }
         }
-        
         return false;
       }     
     
     $scope.servedByBus = function(station) {
         for (var i = 0; i < station.Lines.length; i++) {
             if (station.Lines[i].LineID > 20 && station.Lines[i].LineID < 100) {
+                return true;
+            }
+        }
+        
+        return false;
+      } 
+    
+     $scope.servedBySub = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID < 10) {
                 return true;
             }
         }
@@ -122,6 +131,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
 
     $scope.reset = function(station) {
+        console.log("resetting..");
         ApiService.unpreferStation(station, lat, lng);
         getStationsFromApi(lat, lng, 15);
     };
@@ -148,12 +158,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
-
-    $scope.activeIndex = 0;
-    $scope.slideChanged = function(index) {
-        $scope.selectedStation = $scope.stations[index];
-        $scope.activeIndex = index;
-    };
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);

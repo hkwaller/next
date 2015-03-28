@@ -12,6 +12,7 @@
                         {{ station.Name | maxCharFilter }}
                         <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
                         <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
+                        <img src="./img/polygon.png" class="thumbnail"  ng-show="servedBySub(station)">
                     </div>
                     <div class="col col-10">
                         <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes">m</div>
@@ -34,6 +35,7 @@
                         {{ station.Name | maxCharFilter }}
                         <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
                         <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
+                        <img src="./img/sub.png" class="thumbnail"  ng-show="servedBySub(station)">
                     </div>
                     <div class="col col-20">
                         <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes">m</div>
