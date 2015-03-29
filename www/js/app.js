@@ -151,7 +151,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
 
 })
     
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService) {
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService, $filter) {
     
     $ionicLoading.show({
       template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
@@ -169,8 +169,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
-                
-                if ($scope.lines.length === 0) $scope.hidden = false
+
+                if (lines.length === 0 || $filter('detailFilter')(lines).length === 0) $scope.hidden = false
                 else $scope.hidden = true;
                 
                 $ionicLoading.hide();
