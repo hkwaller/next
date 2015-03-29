@@ -163,7 +163,8 @@
 }
 
 .no-hits {
-    font-size: 1.5em;
+    font-size: 1.3em;
+    color: #4D4F53;
 }
 
 .center {
@@ -196,3 +197,20 @@
     -ms-flex-align: center;
     align-items: center;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden-overview {
+    display: none;
+}
+
+.visible-overview {
+    display: block;
+}
+

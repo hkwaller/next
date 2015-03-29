@@ -1,4 +1,4 @@
-<ion-view view-title="{{selectedStation.Name}}" class="text-wrap" ng-cloak>
+<ion-view view-title="{{selectedStation.Name}}" class="text-wrap" ng-cloak ng-init="hidden = true">
     <ion-content scrollbar-y="false" ng-show="lines.length > 0">
         <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
         </ion-refresher>
@@ -36,7 +36,7 @@
             </ion-item>
         </ion-list>
     </ion-content>
-    <ion-content class="center" ng-show="lines.length === 0">
+    <ion-content class="center hidden" ng-class="{'visible': !hidden}">
         <div class="row">
             <div class="col text-center">
                 <span class="no-hits">Ingen avganger funnet :(</span>

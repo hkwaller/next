@@ -155,6 +155,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
       template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
     });
     
+    $scope.hidden = true;
+    
     if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
@@ -165,8 +167,12 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
+                
+                if ($scope.lines.length === 0) $scope.hidden = false
+                else $scope.hidden = true;
+                
                 $ionicLoading.hide();
-            }, 500);
+            },500);
         }));
     }
 
