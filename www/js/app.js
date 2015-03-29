@@ -90,6 +90,9 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
           $timeout(function() {
               $scope.stations = stations;
               $scope.$apply();
+              
+              if (stations.length === 0) $scope.hidden = false;
+              else $scope.hidden = true;
           })
       });
     }
@@ -172,14 +175,11 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 else $scope.hidden = true;
                 
                 $ionicLoading.hide();
-            },500);
+            });
         }));
     }
 
     $scope.refresh = function() {
-        $ionicLoading.show({
-          template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
-        });
         getLinesFromApi($scope.selectedStation.ID);
         $scope.$broadcast('scroll.refreshComplete');
     };
