@@ -1,5 +1,5 @@
 <ion-view view-title="neste" ng-cloak>
-    <ion-content>
+    <ion-content scrollbar-y="false">
         <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
         </ion-refresher>
         <div class="item item-divider sub-header-bar-overview" ng-show="(stations | favouriteFilter).length > 0">
@@ -22,8 +22,7 @@
                 Fjern favoritt
               </ion-option-button>
             </ion-item>
-                    <div class="divider-thingy"></div>
-
+            <div class="divider-thingy" ng-show="(stations | favouriteFilter).length > 0"></div>
         </ion-list>
         <div class="item item-divider sub-header-bar-overview">
             Alle
