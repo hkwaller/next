@@ -3,8 +3,8 @@
 }
 
 .line {
-    font-size: 1.4em;
-    padding: 0.5em 0.4em 0.5em 0.4em;
+    font-size: 1.2em;
+    padding: 0.7em 0.6em 0.7em 0.6em;
     color: #4D4F53;
     background-image: url('../img/octagon.png');
     background-size: contain;
@@ -15,6 +15,7 @@
 
 .line-buss {
     background-image: url('../img/circle.png');
+    padding: .7em;
     margin-top: 1em;
 }
 
@@ -37,7 +38,7 @@
 
 .line-name {
     font-weight: 500;
-    font-family: 'HelveticaNeue-Light';
+    font-family: 'HelveticaNeue';
     color: #4D4F53;
     font-size: .9em;
     padding-left: .7em;
@@ -111,7 +112,7 @@
 }
 
 .custom-padding-right {
-    padding-right: 1em;
+    padding-right: .5em;
     text-align: right;
 }
 
@@ -126,7 +127,7 @@
 .minutes {
     display: inline-block;
     font-size: .7em;
-    vertical-align: 20%;
+    vertical-align: 10%;
     color: #979797;
 }
 
