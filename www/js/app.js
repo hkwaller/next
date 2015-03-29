@@ -12,8 +12,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
-      
-      $cordovaStatusbar.style(1);
+    $cordovaStatusbar.style(1);
   });
 })
 
@@ -90,7 +89,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
           $timeout(function() {
               $scope.stations = stations;
               $scope.$apply();
-              
               if (stations.length === 0) $scope.hidden = false;
               else $scope.hidden = true;
           })
@@ -169,7 +167,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
-
                 if (lines.length === 0 || $filter('detailFilter')(lines).length === 0) $scope.hidden = false
                 else $scope.hidden = true;
                 

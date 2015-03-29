@@ -5,42 +5,38 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
-		1F9EE5C34B0D44A3BC9FFEEA /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F910D3C63DA40EFB4DE06FE /* CDVLogger.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		301BF552109A68D80062928A /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 301BF535109A57CC0062928A /* libCordova.a */; };
 		302D95F114D2391D003F00A1 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 302D95EF14D2391D003F00A1 /* MainViewController.m */; };
 		302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302D95F014D2391D003F00A1 /* MainViewController.xib */; };
 		305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */; };
-		310108681AC363CE00A50AA4 /* appicon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 3101085C1AC363CE00A50AA4 /* appicon-60.png */; };
-		310108691AC363CE00A50AA4 /* appicon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3101085D1AC363CE00A50AA4 /* appicon-60@2x.png */; };
-		3101086A1AC363CE00A50AA4 /* appicon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3101085E1AC363CE00A50AA4 /* appicon-60@3x.png */; };
-		3101086B1AC363CE00A50AA4 /* appicon-Small-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 3101085F1AC363CE00A50AA4 /* appicon-Small-40.png */; };
-		3101086C1AC363CE00A50AA4 /* appicon-Small-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108601AC363CE00A50AA4 /* appicon-Small-40@2x.png */; };
-		3101086D1AC363CE00A50AA4 /* appicon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108611AC363CE00A50AA4 /* appicon-Small.png */; };
-		3101086E1AC363CE00A50AA4 /* appicon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108621AC363CE00A50AA4 /* appicon-Small@2x.png */; };
-		3101086F1AC363CE00A50AA4 /* appicon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108631AC363CE00A50AA4 /* appicon-Small@3x.png */; };
-		310108701AC363CE00A50AA4 /* appicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108641AC363CE00A50AA4 /* appicon.png */; };
-		310108711AC363CE00A50AA4 /* appicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108651AC363CE00A50AA4 /* appicon@2x.png */; };
-		310108721AC363CE00A50AA4 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 310108661AC363CE00A50AA4 /* iTunesArtwork */; };
-		310108731AC363CE00A50AA4 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 310108671AC363CE00A50AA4 /* iTunesArtwork@2x */; };
-		3101087A1AC363D800A50AA4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108741AC363D800A50AA4 /* Default-568h@2x.png */; };
-		3101087B1AC363D800A50AA4 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108751AC363D800A50AA4 /* Default-667h@2x.png */; };
-		3101087C1AC363D800A50AA4 /* Default-Landscape-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108761AC363D800A50AA4 /* Default-Landscape-736h@3x.png */; };
-		3101087D1AC363D800A50AA4 /* Default-Portrait-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108771AC363D800A50AA4 /* Default-Portrait-736h@3x.png */; };
-		3101087E1AC363D800A50AA4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108781AC363D800A50AA4 /* Default.png */; };
-		3101087F1AC363D800A50AA4 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 310108791AC363D800A50AA4 /* Default@2x.png */; };
-		310108811AC3640000A50AA4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 310108801AC3640000A50AA4 /* Images.xcassets */; };
+		31981FDA1AC856D20090781B /* Default-Landscape-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FD41AC856D20090781B /* Default-Landscape-736h@3x.png */; };
+		31981FDB1AC856D20090781B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FD51AC856D20090781B /* Default-568h@2x.png */; };
+		31981FDC1AC856D20090781B /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FD61AC856D20090781B /* Default-667h@2x.png */; };
+		31981FDD1AC856D20090781B /* Default-Portrait-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FD71AC856D20090781B /* Default-Portrait-736h@3x.png */; };
+		31981FDE1AC856D20090781B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FD81AC856D20090781B /* Default.png */; };
+		31981FDF1AC856D20090781B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FD91AC856D20090781B /* Default@2x.png */; };
+		31981FEB1AC8575F0090781B /* appicon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE11AC8575F0090781B /* appicon-60.png */; };
+		31981FEC1AC8575F0090781B /* appicon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE21AC8575F0090781B /* appicon-60@2x.png */; };
+		31981FED1AC8575F0090781B /* appicon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE31AC8575F0090781B /* appicon-60@3x.png */; };
+		31981FEE1AC8575F0090781B /* appicon-Small-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE41AC8575F0090781B /* appicon-Small-40.png */; };
+		31981FEF1AC8575F0090781B /* appicon-Small-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE51AC8575F0090781B /* appicon-Small-40@2x.png */; };
+		31981FF01AC8575F0090781B /* appicon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE61AC8575F0090781B /* appicon-Small.png */; };
+		31981FF11AC8575F0090781B /* appicon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE71AC8575F0090781B /* appicon-Small@2x.png */; };
+		31981FF21AC8575F0090781B /* appicon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE81AC8575F0090781B /* appicon-Small@3x.png */; };
+		31981FF31AC8575F0090781B /* appicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FE91AC8575F0090781B /* appicon.png */; };
+		31981FF41AC8575F0090781B /* appicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31981FEA1AC8575F0090781B /* appicon@2x.png */; };
+		31981FF61AC8577C0090781B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31981FF51AC8577C0090781B /* Images.xcassets */; };
+		532F379EB2E247D3AE9F96A6 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = AB33CC131F62430B9A17232E /* CDVDevice.m */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
-		5C53646BB1874AD191EF26B5 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AABEFA787645CC9028D358 /* CDVDevice.m */; };
-		66F880DA0CF24EBFA5FC52D1 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D00026942F34E90AF12203B /* CDVStatusBar.m */; };
-		AE44FE3E01234999B2FFF959 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E99A54EE56544E9CBC8BCF76 /* CoreLocation.framework */; };
-		B2820376CF6445FFADDDE9ED /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 3482FDCB247F4FA28CA4083F /* IonicKeyboard.m */; };
-		C0AD3E7054D5495EA9E50B81 /* UIWebViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3484E6FD73450F87CB3C44 /* UIWebViewExtension.m */; };
-		EF1B35CF85F3418A94ACC5DD /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C8ADA5B85984F82881D39C8 /* CDVLocation.m */; };
+		62A977AD3F0A4768A26C86BB /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5023F840F4BD3B6BE16D2 /* CDVLocation.m */; };
+		6A5AEC54FCC840E1B8D9F778 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C9848CE353446782D84F76 /* CoreLocation.framework */; };
+		7161A1124D334249AD09E744 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6A058CE14D4BD8AA6F4DAA /* CDVStatusBar.m */; };
+		CB423701E5B74731ADBD36D0 /* UIWebViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 563124BCF169488088C0308F /* UIWebViewExtension.m */; };
+		DEB0B3EA7054476E9507F26A /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E53ECC517DC4F61BBEED9F9 /* IonicKeyboard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,52 +57,48 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0D00026942F34E90AF12203B /* CDVStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVStatusBar.m; path = org.apache.cordova.statusbar/CDVStatusBar.m; sourceTree = "<group>"; };
-		0F910D3C63DA40EFB4DE06FE /* CDVLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLogger.m; path = org.apache.cordova.console/CDVLogger.m; sourceTree = "<group>"; };
+		1C73FA81147E4E159F0D1868 /* CDVStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVStatusBar.h; path = org.apache.cordova.statusbar/CDVStatusBar.h; sourceTree = "<group>"; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* next.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = next.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2B6A058CE14D4BD8AA6F4DAA /* CDVStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVStatusBar.m; path = org.apache.cordova.statusbar/CDVStatusBar.m; sourceTree = "<group>"; };
 		301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		301BF56E109A69640062928A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = SOURCE_ROOT; };
 		302D95EE14D2391D003F00A1 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		302D95EF14D2391D003F00A1 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		302D95F014D2391D003F00A1 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		3101085C1AC363CE00A50AA4 /* appicon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-60.png"; sourceTree = "<group>"; };
-		3101085D1AC363CE00A50AA4 /* appicon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-60@2x.png"; sourceTree = "<group>"; };
-		3101085E1AC363CE00A50AA4 /* appicon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-60@3x.png"; sourceTree = "<group>"; };
-		3101085F1AC363CE00A50AA4 /* appicon-Small-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small-40.png"; sourceTree = "<group>"; };
-		310108601AC363CE00A50AA4 /* appicon-Small-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small-40@2x.png"; sourceTree = "<group>"; };
-		310108611AC363CE00A50AA4 /* appicon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small.png"; sourceTree = "<group>"; };
-		310108621AC363CE00A50AA4 /* appicon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small@2x.png"; sourceTree = "<group>"; };
-		310108631AC363CE00A50AA4 /* appicon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small@3x.png"; sourceTree = "<group>"; };
-		310108641AC363CE00A50AA4 /* appicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appicon.png; sourceTree = "<group>"; };
-		310108651AC363CE00A50AA4 /* appicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon@2x.png"; sourceTree = "<group>"; };
-		310108661AC363CE00A50AA4 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
-		310108671AC363CE00A50AA4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
-		310108741AC363D800A50AA4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		310108751AC363D800A50AA4 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
-		310108761AC363D800A50AA4 /* Default-Landscape-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape-736h@3x.png"; sourceTree = "<group>"; };
-		310108771AC363D800A50AA4 /* Default-Portrait-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait-736h@3x.png"; sourceTree = "<group>"; };
-		310108781AC363D800A50AA4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		310108791AC363D800A50AA4 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		310108801AC3640000A50AA4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = next/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		31981FD41AC856D20090781B /* Default-Landscape-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape-736h@3x.png"; path = "../../../../../../../Downloads/55132c2b37e8f/app/assets/iphone/Default-Landscape-736h@3x.png"; sourceTree = "<group>"; };
+		31981FD51AC856D20090781B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../../../../../../Downloads/55132c2b37e8f/app/assets/iphone/Default-568h@2x.png"; sourceTree = "<group>"; };
+		31981FD61AC856D20090781B /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-667h@2x.png"; path = "../../../../../../../Downloads/55132c2b37e8f/app/assets/iphone/Default-667h@2x.png"; sourceTree = "<group>"; };
+		31981FD71AC856D20090781B /* Default-Portrait-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait-736h@3x.png"; path = "../../../../../../../Downloads/55132c2b37e8f/app/assets/iphone/Default-Portrait-736h@3x.png"; sourceTree = "<group>"; };
+		31981FD81AC856D20090781B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../../../../../../../Downloads/55132c2b37e8f/app/assets/iphone/Default.png; sourceTree = "<group>"; };
+		31981FD91AC856D20090781B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../../../../../../../Downloads/55132c2b37e8f/app/assets/iphone/Default@2x.png"; sourceTree = "<group>"; };
+		31981FE11AC8575F0090781B /* appicon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-60.png"; sourceTree = SOURCE_ROOT; };
+		31981FE21AC8575F0090781B /* appicon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-60@2x.png"; sourceTree = SOURCE_ROOT; };
+		31981FE31AC8575F0090781B /* appicon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-60@3x.png"; sourceTree = SOURCE_ROOT; };
+		31981FE41AC8575F0090781B /* appicon-Small-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small-40.png"; sourceTree = SOURCE_ROOT; };
+		31981FE51AC8575F0090781B /* appicon-Small-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small-40@2x.png"; sourceTree = SOURCE_ROOT; };
+		31981FE61AC8575F0090781B /* appicon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small.png"; sourceTree = SOURCE_ROOT; };
+		31981FE71AC8575F0090781B /* appicon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small@2x.png"; sourceTree = SOURCE_ROOT; };
+		31981FE81AC8575F0090781B /* appicon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-Small@3x.png"; sourceTree = SOURCE_ROOT; };
+		31981FE91AC8575F0090781B /* appicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appicon.png; sourceTree = SOURCE_ROOT; };
+		31981FEA1AC8575F0090781B /* appicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon@2x.png"; sourceTree = SOURCE_ROOT; };
+		31981FF51AC8577C0090781B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = next/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* next-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "next-Prefix.pch"; sourceTree = "<group>"; };
-		3482FDCB247F4FA28CA4083F /* IonicKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IonicKeyboard.m; path = com.ionic.keyboard/IonicKeyboard.m; sourceTree = "<group>"; };
-		570E4721AA67416C95A384C5 /* CDVLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLogger.h; path = org.apache.cordova.console/CDVLogger.h; sourceTree = "<group>"; };
+		4E53ECC517DC4F61BBEED9F9 /* IonicKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IonicKeyboard.m; path = com.ionic.keyboard/IonicKeyboard.m; sourceTree = "<group>"; };
+		563124BCF169488088C0308F /* UIWebViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIWebViewExtension.m; path = com.ionic.keyboard/UIWebViewExtension.m; sourceTree = "<group>"; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		6A6268791E66408597444817 /* CDVDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVDevice.h; path = org.apache.cordova.device/CDVDevice.h; sourceTree = "<group>"; };
-		6F1BBCA33FE44BD29FBFDEED /* UIWebViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIWebViewExtension.h; path = com.ionic.keyboard/UIWebViewExtension.h; sourceTree = "<group>"; };
-		7C3484E6FD73450F87CB3C44 /* UIWebViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIWebViewExtension.m; path = com.ionic.keyboard/UIWebViewExtension.m; sourceTree = "<group>"; };
-		8C8ADA5B85984F82881D39C8 /* CDVLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLocation.m; path = org.apache.cordova.geolocation/CDVLocation.m; sourceTree = "<group>"; };
+		5C4ADD87615A4E6E9E872D87 /* UIWebViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIWebViewExtension.h; path = com.ionic.keyboard/UIWebViewExtension.h; sourceTree = "<group>"; };
+		7C4084EB6FB8472FB38DAFDF /* CDVLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLocation.h; path = org.apache.cordova.geolocation/CDVLocation.h; sourceTree = "<group>"; };
+		7EC5023F840F4BD3B6BE16D2 /* CDVLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLocation.m; path = org.apache.cordova.geolocation/CDVLocation.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* next-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "next-Info.plist"; path = "../next-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		94104234B8B0456E9DD5ACD4 /* CDVStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVStatusBar.h; path = org.apache.cordova.statusbar/CDVStatusBar.h; sourceTree = "<group>"; };
-		B01A0C4EE5C94DA199722908 /* CDVLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLocation.h; path = org.apache.cordova.geolocation/CDVLocation.h; sourceTree = "<group>"; };
-		C8AABEFA787645CC9028D358 /* CDVDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVDevice.m; path = org.apache.cordova.device/CDVDevice.m; sourceTree = "<group>"; };
-		DD5EECF195FA45E48941A065 /* IonicKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IonicKeyboard.h; path = com.ionic.keyboard/IonicKeyboard.h; sourceTree = "<group>"; };
-		E99A54EE56544E9CBC8BCF76 /* CoreLocation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A7C9848CE353446782D84F76 /* CoreLocation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		AB33CC131F62430B9A17232E /* CDVDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVDevice.m; path = org.apache.cordova.device/CDVDevice.m; sourceTree = "<group>"; };
+		CB6CF20AEC4540E79614844F /* IonicKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IonicKeyboard.h; path = com.ionic.keyboard/IonicKeyboard.h; sourceTree = "<group>"; };
+		E7A15DEA99744F4399CE5992 /* CDVDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVDevice.h; path = org.apache.cordova.device/CDVDevice.h; sourceTree = "<group>"; };
 		EB87FDF21871DA7A0020F90C /* merges */ = {isa = PBXFileReference; lastKnownFileType = folder; name = merges; path = ../../merges; sourceTree = "<group>"; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
@@ -122,7 +114,7 @@
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
-				AE44FE3E01234999B2FFF959 /* CoreLocation.framework in Frameworks */,
+				6A5AEC54FCC840E1B8D9F778 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,9 +173,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				310108801AC3640000A50AA4 /* Images.xcassets */,
-				308D052D1370CCF300D202BF /* icons */,
-				308D05311370CCF300D202BF /* splash */,
+				31981FF51AC8577C0090781B /* Images.xcassets */,
+				31981FD31AC856C70090781B /* splash */,
+				31981FBA1AC856B90090781B /* icons */,
 				8D1107310486CEB800E47090 /* next-Info.plist */,
 			);
 			name = Resources;
@@ -196,7 +188,7 @@
 				5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
-				E99A54EE56544E9CBC8BCF76 /* CoreLocation.framework */,
+				A7C9848CE353446782D84F76 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -212,53 +204,49 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				3482FDCB247F4FA28CA4083F /* IonicKeyboard.m */,
-				7C3484E6FD73450F87CB3C44 /* UIWebViewExtension.m */,
-				DD5EECF195FA45E48941A065 /* IonicKeyboard.h */,
-				6F1BBCA33FE44BD29FBFDEED /* UIWebViewExtension.h */,
-				0F910D3C63DA40EFB4DE06FE /* CDVLogger.m */,
-				570E4721AA67416C95A384C5 /* CDVLogger.h */,
-				C8AABEFA787645CC9028D358 /* CDVDevice.m */,
-				6A6268791E66408597444817 /* CDVDevice.h */,
-				8C8ADA5B85984F82881D39C8 /* CDVLocation.m */,
-				B01A0C4EE5C94DA199722908 /* CDVLocation.h */,
-				0D00026942F34E90AF12203B /* CDVStatusBar.m */,
-				94104234B8B0456E9DD5ACD4 /* CDVStatusBar.h */,
+				AB33CC131F62430B9A17232E /* CDVDevice.m */,
+				E7A15DEA99744F4399CE5992 /* CDVDevice.h */,
+				4E53ECC517DC4F61BBEED9F9 /* IonicKeyboard.m */,
+				563124BCF169488088C0308F /* UIWebViewExtension.m */,
+				CB6CF20AEC4540E79614844F /* IonicKeyboard.h */,
+				5C4ADD87615A4E6E9E872D87 /* UIWebViewExtension.h */,
+				2B6A058CE14D4BD8AA6F4DAA /* CDVStatusBar.m */,
+				1C73FA81147E4E159F0D1868 /* CDVStatusBar.h */,
+				7EC5023F840F4BD3B6BE16D2 /* CDVLocation.m */,
+				7C4084EB6FB8472FB38DAFDF /* CDVLocation.h */,
 			);
 			name = Plugins;
 			path = next/Plugins;
 			sourceTree = SOURCE_ROOT;
 		};
-		308D052D1370CCF300D202BF /* icons */ = {
+		31981FBA1AC856B90090781B /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				3101085C1AC363CE00A50AA4 /* appicon-60.png */,
-				3101085D1AC363CE00A50AA4 /* appicon-60@2x.png */,
-				3101085E1AC363CE00A50AA4 /* appicon-60@3x.png */,
-				3101085F1AC363CE00A50AA4 /* appicon-Small-40.png */,
-				310108601AC363CE00A50AA4 /* appicon-Small-40@2x.png */,
-				310108611AC363CE00A50AA4 /* appicon-Small.png */,
-				310108621AC363CE00A50AA4 /* appicon-Small@2x.png */,
-				310108631AC363CE00A50AA4 /* appicon-Small@3x.png */,
-				310108641AC363CE00A50AA4 /* appicon.png */,
-				310108651AC363CE00A50AA4 /* appicon@2x.png */,
-				310108661AC363CE00A50AA4 /* iTunesArtwork */,
-				310108671AC363CE00A50AA4 /* iTunesArtwork@2x */,
+				31981FE11AC8575F0090781B /* appicon-60.png */,
+				31981FE21AC8575F0090781B /* appicon-60@2x.png */,
+				31981FE31AC8575F0090781B /* appicon-60@3x.png */,
+				31981FE41AC8575F0090781B /* appicon-Small-40.png */,
+				31981FE51AC8575F0090781B /* appicon-Small-40@2x.png */,
+				31981FE61AC8575F0090781B /* appicon-Small.png */,
+				31981FE71AC8575F0090781B /* appicon-Small@2x.png */,
+				31981FE81AC8575F0090781B /* appicon-Small@3x.png */,
+				31981FE91AC8575F0090781B /* appicon.png */,
+				31981FEA1AC8575F0090781B /* appicon@2x.png */,
 			);
-			path = icons;
+			name = icons;
 			sourceTree = "<group>";
 		};
-		308D05311370CCF300D202BF /* splash */ = {
+		31981FD31AC856C70090781B /* splash */ = {
 			isa = PBXGroup;
 			children = (
-				310108741AC363D800A50AA4 /* Default-568h@2x.png */,
-				310108751AC363D800A50AA4 /* Default-667h@2x.png */,
-				310108761AC363D800A50AA4 /* Default-Landscape-736h@3x.png */,
-				310108771AC363D800A50AA4 /* Default-Portrait-736h@3x.png */,
-				310108781AC363D800A50AA4 /* Default.png */,
-				310108791AC363D800A50AA4 /* Default@2x.png */,
+				31981FD41AC856D20090781B /* Default-Landscape-736h@3x.png */,
+				31981FD51AC856D20090781B /* Default-568h@2x.png */,
+				31981FD61AC856D20090781B /* Default-667h@2x.png */,
+				31981FD71AC856D20090781B /* Default-Portrait-736h@3x.png */,
+				31981FD81AC856D20090781B /* Default.png */,
+				31981FD91AC856D20090781B /* Default@2x.png */,
 			);
-			path = splash;
+			name = splash;
 			sourceTree = "<group>";
 		};
 		EB87FDF11871DA420020F90C /* Staging */ = {
@@ -344,26 +332,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3101086E1AC363CE00A50AA4 /* appicon-Small@2x.png in Resources */,
-				310108811AC3640000A50AA4 /* Images.xcassets in Resources */,
-				3101087E1AC363D800A50AA4 /* Default.png in Resources */,
-				3101086F1AC363CE00A50AA4 /* appicon-Small@3x.png in Resources */,
-				310108701AC363CE00A50AA4 /* appicon.png in Resources */,
-				3101086A1AC363CE00A50AA4 /* appicon-60@3x.png in Resources */,
-				3101087B1AC363D800A50AA4 /* Default-667h@2x.png in Resources */,
-				310108711AC363CE00A50AA4 /* appicon@2x.png in Resources */,
-				3101087D1AC363D800A50AA4 /* Default-Portrait-736h@3x.png in Resources */,
-				3101087A1AC363D800A50AA4 /* Default-568h@2x.png in Resources */,
-				3101086B1AC363CE00A50AA4 /* appicon-Small-40.png in Resources */,
-				310108691AC363CE00A50AA4 /* appicon-60@2x.png in Resources */,
-				310108721AC363CE00A50AA4 /* iTunesArtwork in Resources */,
-				3101086C1AC363CE00A50AA4 /* appicon-Small-40@2x.png in Resources */,
-				310108681AC363CE00A50AA4 /* appicon-60.png in Resources */,
-				3101086D1AC363CE00A50AA4 /* appicon-Small.png in Resources */,
-				3101087C1AC363D800A50AA4 /* Default-Landscape-736h@3x.png in Resources */,
-				3101087F1AC363D800A50AA4 /* Default@2x.png in Resources */,
+				31981FDE1AC856D20090781B /* Default.png in Resources */,
+				31981FF11AC8575F0090781B /* appicon-Small@2x.png in Resources */,
+				31981FDA1AC856D20090781B /* Default-Landscape-736h@3x.png in Resources */,
+				31981FF21AC8575F0090781B /* appicon-Small@3x.png in Resources */,
+				31981FDD1AC856D20090781B /* Default-Portrait-736h@3x.png in Resources */,
+				31981FDB1AC856D20090781B /* Default-568h@2x.png in Resources */,
+				31981FDC1AC856D20090781B /* Default-667h@2x.png in Resources */,
+				31981FDF1AC856D20090781B /* Default@2x.png in Resources */,
+				31981FF31AC8575F0090781B /* appicon.png in Resources */,
+				31981FF61AC8577C0090781B /* Images.xcassets in Resources */,
+				31981FED1AC8575F0090781B /* appicon-60@3x.png in Resources */,
+				31981FF41AC8575F0090781B /* appicon@2x.png in Resources */,
+				31981FEE1AC8575F0090781B /* appicon-Small-40.png in Resources */,
+				31981FEC1AC8575F0090781B /* appicon-60@2x.png in Resources */,
+				31981FEF1AC8575F0090781B /* appicon-Small-40@2x.png in Resources */,
+				31981FEB1AC8575F0090781B /* appicon-60.png in Resources */,
+				31981FF01AC8575F0090781B /* appicon-Small.png in Resources */,
 				302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */,
-				310108731AC363CE00A50AA4 /* iTunesArtwork@2x in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,12 +381,11 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
-				B2820376CF6445FFADDDE9ED /* IonicKeyboard.m in Sources */,
-				C0AD3E7054D5495EA9E50B81 /* UIWebViewExtension.m in Sources */,
-				1F9EE5C34B0D44A3BC9FFEEA /* CDVLogger.m in Sources */,
-				5C53646BB1874AD191EF26B5 /* CDVDevice.m in Sources */,
-				EF1B35CF85F3418A94ACC5DD /* CDVLocation.m in Sources */,
-				66F880DA0CF24EBFA5FC52D1 /* CDVStatusBar.m in Sources */,
+				532F379EB2E247D3AE9F96A6 /* CDVDevice.m in Sources */,
+				DEB0B3EA7054476E9507F26A /* IonicKeyboard.m in Sources */,
+				CB423701E5B74731ADBD36D0 /* UIWebViewExtension.m in Sources */,
+				7161A1124D334249AD09E744 /* CDVStatusBar.m in Sources */,
+				62A977AD3F0A4768A26C86BB /* CDVLocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

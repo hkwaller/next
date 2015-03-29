@@ -1,0 +1,55 @@
+<ion-view view-title="neste" ng-init="hidden = true" ng-cloak>
+    <ion-content scrollbar-y="false" ng-show="stations.length > 0">
+        <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
+        </ion-refresher>
+        <div class="item item-divider sub-header-bar-overview hidden-overview" ng-class="{'visible-overview': (stations | favouriteFilter).length > 0}">
+            Favoritter
+        </div>
+        <ion-list>
+            <ion-item ng-repeat="station in stations | orderBy:'Distance' | favouriteFilter" ng-click="goToStation(station)">
+                <div class="row">
+                    <div class="col col-90 line-name no-padding-left">
+                        {{ station.Name | maxCharFilter }}
+                        <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
+                        <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
+                        <img src="./img/polygon.png" class="thumbnail"  ng-show="servedBySub(station)">
+                    </div>
+                    <div class="col col-10">
+                        <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes">m</div>
+                    </div>
+                </div>
+                <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
+                Fjern favoritt
+              </ion-option-button>
+            </ion-item>
+            <div class="divider-thingy" ng-show="(stations | favouriteFilter).length > 0"></div>
+        </ion-list>
+        <div class="item item-divider sub-header-bar-overview">
+            Alle
+        </div>
+        <ion-list>
+            <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)">
+                <div class="row">
+                    <div class="col col-80 line-name no-padding-left">
+                        {{ station.Name | maxCharFilter }}
+                        <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
+                        <img src="./img/trikk.png" class="thumbnail" ng-show="servedByTram(station)">
+                        <img src="./img/sub.png" class="thumbnail" ng-show="servedBySub(station)">
+                        <img src="./img/greenbus.png" class="thumbnail" ng-show="servedByLongDistanceBus(station)">
+                    </div>
+                    <div class="col col-20 custom-padding-right">
+                        <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes">m</div>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+        <ion-content class="center hidden" ng-class="{'visible': !hidden}">
+        <div class="row">
+            <div class="col text-center">
+                <span class="no-hits">Ingen stasjoner funnet <br>i nærheten av deg :(</span>
+                <button class="button button-positive button-outline custom-button" ng-click="refresh()">Prøv igjen</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

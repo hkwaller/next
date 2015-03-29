@@ -23,7 +23,10 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "org.apache.cordova.statusbar"
+    "org.apache.cordova.device",
+    "com.ionic.keyboard",
+    "org.apache.cordova.statusbar",
+    "org.apache.cordova.geolocation"
   ],
   "scripts": {
     "bundle-external": "say sorry you are not clever enough, you should ask david to do this for you, he is much smarter than you",

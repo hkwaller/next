@@ -127,9 +127,14 @@
 .minutes {
     display: inline-block;
     font-size: .7em;
-    vertical-align: 10%;
+    vertical-align: 20%;
     color: #979797;
 }
+
+.overview-vertical {
+    vertical-align: 10%;
+}
+
 
 .distance-to-stop {
     display: inline-block;
@@ -149,6 +154,7 @@
 
 .now {
     font-size: 1em;
+    padding-right: .5em;
 }
 
 .thumbnail {

@@ -3,18 +3,17 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation'])
+angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation', 'ngCordova.plugins.statusbar'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $cordovaStatusbar) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
-    if(window.StatusBar) {
-      StatusBar.styleLightContent();
-    }
+      
+      $cordovaStatusbar.style(1);
   });
 })
 
@@ -39,11 +38,13 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
 .controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
-
+        $ionicLoading.show({
+      template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+    });
+    
     var lat;
     var lng;
-    $ionicLoading.hide();
-
+    
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function (position) {
@@ -67,13 +68,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 StationService.setStation(preferredStation);
                 $location.path('/station-detail');
               }
-             getStationsFromApi(lat, lng, 15);
-              ApiService.getStationList(lat, lng, 15, function(err, stations) {
-                  $timeout(function() {
-                      $scope.stations = stations;
-                      $scope.$apply();
-                  })
-              });
+              getStationsFromApi(lat, lng, 15);
+            $ionicLoading.hide();
 
             }, function(err) {
               console.log("Error getting current position! :(",err);
@@ -93,9 +89,48 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
           $timeout(function() {
               $scope.stations = stations;
               $scope.$apply();
+              
+              if (stations.length === 0) $scope.hidden = false;
+              else $scope.hidden = true;
           })
       });
     }
+    
+    $scope.servedByTram = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID > 10 && station.Lines[i].LineID < 20) {
+                return true;
+            }
+        }
+        return false;
+      }     
+    
+    $scope.servedByBus = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID > 20 && station.Lines[i].LineID < 100) {
+                return true;
+            }
+        }
+        return false;
+      } 
+    
+     $scope.servedBySub = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID < 10) {
+                return true;
+            }
+        }
+        return false;
+      } 
+     
+     $scope.servedByLongDistanceBus = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID > 200 && station.Lines[i].LineID < 1000) {
+                return true;
+            }
+        }
+        return false;
+      }     
     
     $scope.refresh = function() {
         $cordovaGeolocation.getCurrentPosition()
@@ -107,15 +142,24 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         $scope.$broadcast('scroll.refreshComplete');
     };
     
+
+    $scope.reset = function(station) {
+        console.log("resetting..");
+        ApiService.unpreferStation(station, lat, lng);
+        getStationsFromApi(lat, lng, 15);
+    };
+
 })
     
 .controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService) {
     
     $ionicLoading.show({
-      template: 'Laster inn avganger...'
+      template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
     });
     
-    if (StationService.getStation() != null) {
+    $scope.hidden = true;
+    
+    if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
     }
@@ -125,26 +169,19 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
+                
+                if ($scope.lines.length === 0) $scope.hidden = false
+                else $scope.hidden = true;
+                
                 $ionicLoading.hide();
             });
         }));
     }
 
-    $scope.activeIndex = 0;
-    $scope.slideChanged = function(index) {
-        $scope.selectedStation = $scope.stations[index];
-        $scope.activeIndex = index;
-    };
-
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);
         $scope.$broadcast('scroll.refreshComplete');
     };
-    
-    $scope.findImg = function(line) {
-        if (line.LineRef < 20) return "./img/trikk.png";
-        else return "./img/buss.png";
-    }
 
 })
 

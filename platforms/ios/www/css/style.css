@@ -1,0 +1,216 @@
+* {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+}
+
+.line {
+    font-size: 1.2em;
+    padding: 0.7em 0.6em 0.7em 0.6em;
+    color: #4D4F53;
+    background-image: url('../img/octagon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-weight: 400;
+}
+
+.line-buss {
+    background-image: url('../img/circle.png');
+    padding: .7em;
+    margin-top: 1em;
+}
+
+.line-sub {
+    background-image: url('../img/polygon.png');
+    padding: .7em;
+}
+
+.sub-header-bar {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #4D4F53;
+}
+
+.sub-header-bar-overview {
+    font-size: .9em;
+    font-weight: 600;
+    color: #4D4F53;
+}
+
+.line-name {
+    font-weight: 500;
+    font-family: 'HelveticaNeue';
+    color: #4D4F53;
+    font-size: 1em;
+    padding-left: .7em;
+    overflow: hidden;
+}
+
+.no-padding-left {
+    padding-left: 0;
+}
+
+.detail-time {
+    font-size: 1.1em;
+}
+
+.station-row {
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: 300;
+    padding: .5em;
+    background: #e0dddd;
+}
+
+.bar {
+    background-color: #037AFF;
+}
+
+.ion-nav-view {
+    background: #fff; 
+}
+
+.pane {
+    background: #fff;
+    background-image: url('../img/background.png'); 
+    background-position: top;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.lineID-padding {
+    padding-right: .5em;
+}
+
+.item.no-padding {
+    padding: 0;
+}
+
+.custom-row-padding {
+    padding: 1.5em .5em 1em 0;
+}
+
+.wrap-text {
+    overflow: hidden;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.section-header {
+    color: #4D4F53;
+}
+
+.section-header-image {
+    height: 1.2em;
+}
+
+.custom-padding-right {
+    padding-right: .5em;
+    text-align: right;
+}
+
+.time-to-departure {
+    font-family: 'HelveticaNeue-Light';
+    display: inline-block;
+    font-weight: 400;
+    font-size: 1.2em;
+    padding-right: .2em;
+}
+
+.minutes {
+    display: inline-block;
+    font-size: .7em;
+    vertical-align: 10%;
+    color: #979797;
+}
+
+.distance-to-stop {
+    display: inline-block;
+    font-family: 'HelveticaNeue-Light';
+    font-size: 1.1em;
+    font-weight: 500;
+    padding-right: .2em;
+}
+
+.divider-thingy {
+    height: 1em;
+}
+
+.loading-icon {
+    padding-top: 1em;
+}
+
+.now {
+    font-size: 1em;
+}
+
+.thumbnail {
+    width: .6em;
+    margin-left: .2em;
+}
+
+.custom-button {
+    width: 16em;
+    margin-top: 3em;
+    display: block;
+}
+
+.no-hits {
+    font-size: 1.3em;
+    color: #4D4F53;
+}
+
+.center {
+  display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden-overview {
+    display: none;
+}
+
+.visible-overview {
+    display: block;
+}
+
