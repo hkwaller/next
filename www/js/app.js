@@ -74,6 +74,15 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
               console.log("Error getting current position! :(",err);
             });
     });
+    
+    $ionicPlatform.on('resume', function() {
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function (position) {
+              lat  = position.coords.latitude;
+              lng = position.coords.longitude;
+              getStationsFromApi(lat, lng, 15);
+        })
+    })
 
     $scope.goToStation = function(station) {
         if (station && lat && lng) {
@@ -174,6 +183,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
+    
+    $ionicPlatform.on('resume', function() {
+          getLinesFromApi($scope.selectedStation.ID);
+    })
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);
