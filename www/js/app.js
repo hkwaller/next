@@ -3,18 +3,17 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation'])
+angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation', 'ngCordova.plugins.statusbar'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $cordovaStatusbar) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
-    if(window.StatusBar) {
-      StatusBar.styleLightContent();
-    }
+      
+      $cordovaStatusbar.style(1);
   });
 })
 
@@ -76,7 +75,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
               console.log("Error getting current position! :(",err);
             });
     });
-    
+
     $scope.goToStation = function(station) {
         if (station && lat && lng) {
           ApiService.preferStation(station, lat, lng);
@@ -84,6 +83,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         StationService.setStation(station);
         $location.path('/station-detail');
     };
+    
     
     function getStationsFromApi(lat, lng, count) {
         ApiService.getStationList(lat, lng, count, function(err, stations) {
@@ -145,7 +145,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
 
     $scope.reset = function(station) {
-        console.log("resetting..");
         ApiService.unpreferStation(station, lat, lng);
         getStationsFromApi(lat, lng, 15);
     };
