@@ -1,5 +1,5 @@
 <ion-view view-title="{{selectedStation.Name}}" class="text-wrap" ng-cloak>
-    <ion-content scrollbar-y="false">
+    <ion-content scrollbar-y="false" ng-show="lines.length > 0">
         <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
         </ion-refresher>
         <ion-list>
@@ -35,5 +35,13 @@
                 </div>
             </ion-item>
         </ion-list>
+    </ion-content>
+    <ion-content class="center" ng-show="lines.length === 0">
+        <div class="row">
+            <div class="col text-center">
+                <span class="no-hits">Ingen avganger funnet :(</span>
+                <button class="button button-positive button-outline custom-button" ng-click="refresh()">Prøv igjen</button>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

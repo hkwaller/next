@@ -166,11 +166,14 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 $scope.lines = lines;
                 $scope.$apply();
                 $ionicLoading.hide();
-            });
+            }, 500);
         }));
     }
 
     $scope.refresh = function() {
+        $ionicLoading.show({
+          template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+        });
         getLinesFromApi($scope.selectedStation.ID);
         $scope.$broadcast('scroll.refreshComplete');
     };
