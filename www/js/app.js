@@ -109,7 +109,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 return true;
             }
         }
-        
         return false;
       } 
     
@@ -119,7 +118,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 return true;
             }
         }
-        
         return false;
       } 
      
@@ -129,7 +127,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 return true;
             }
         }
-        
         return false;
       }     
     
@@ -161,8 +158,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
-            console.log($scope.selectedStation);
-
     }
 
     function getLinesFromApi(id) {
@@ -174,7 +169,6 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
-    
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);

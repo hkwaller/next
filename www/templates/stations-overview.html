@@ -6,7 +6,7 @@
             Favoritter
         </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | orderBy:'Distance' | favouriteFilter" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in stations | orderBy:'Distance' | favouriteFilter" ng-click="goToStation(station)" class="repeat-animation">
                 <div class="row">
                     <div class="col col-90 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
@@ -28,7 +28,7 @@
             Alle
         </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)" class="repeat-animation">
                 <div class="row">
                     <div class="col col-80 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
