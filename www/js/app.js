@@ -121,6 +121,16 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         }
         
         return false;
+      } 
+     
+     $scope.servedByLongDistanceBus = function(station) {
+        for (var i = 0; i < station.Lines.length; i++) {
+            if (station.Lines[i].LineID > 200 && station.Lines[i].LineID < 1000) {
+                return true;
+            }
+        }
+        
+        return false;
       }     
     
     $scope.refresh = function() {
@@ -151,6 +161,8 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
+            console.log($scope.selectedStation);
+
     }
 
     function getLinesFromApi(id) {
@@ -162,6 +174,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
+    
 
     $scope.refresh = function() {
         getLinesFromApi($scope.selectedStation.ID);

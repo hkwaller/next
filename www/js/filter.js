@@ -29,7 +29,7 @@ angular.module('next.filters', [])
         var toReturn = [];
         if (input === undefined) return;
         for (var i = 0; i < input.length; i++) {
-            if (input[i].LineRef.length <= 2 && input[i].MinutesToDeparture < 20) {
+            if (input[i].LineRef.length <= 3 && input[i].MinutesToDeparture < 20) {
                 toReturn.push(input[i]);
             }    
         }
