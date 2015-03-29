@@ -148,7 +148,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
       template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
     });
     
-    if (StationService.getStation() != null) {
+    if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi($scope.selectedStation.ID);
     }
