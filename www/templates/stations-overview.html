@@ -10,10 +10,7 @@
                 <div class="row">
                     <div class="col col-90 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
-                        <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
-                        <img src="./img/trikk.png" class="thumbnail"  ng-show="servedByTram(station)">
-                        <img src="./img/polygon.png" class="thumbnail"  ng-show="servedBySub(station)">
-                        <img src="./img/greenbus.png" class="thumbnail" ng-show="servedByLongDistanceBus(station)">
+                        <img ng-repeat="type in station.ServedBy track by $index" ng-src="./img/{{type}}.png" class="thumbnail">
                     </div>
                     <div class="col col-10">
                         <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes overview-vertical">m</div>
@@ -33,10 +30,7 @@
                 <div class="row">
                     <div class="col col-80 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
-                        <img src="./img/buss.png" class="thumbnail" ng-show="servedByBus(station)">
-                        <img src="./img/trikk.png" class="thumbnail" ng-show="servedByTram(station)">
-                        <img src="./img/sub.png" class="thumbnail" ng-show="servedBySub(station)">
-                        <img src="./img/greenbus.png" class="thumbnail" ng-show="servedByLongDistanceBus(station)">
+                        <img ng-repeat="type in station.ServedBy track by $index" src="./img/{{type}}.png" class="thumbnail">
                     </div>
                     <div class="col col-20 custom-padding-right">
                         <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes overview-vertical">m</div>

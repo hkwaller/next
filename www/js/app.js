@@ -68,7 +68,7 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
                 $location.path('/station-detail');
               }
               getStationsFromApi(lat, lng, 15);
-            $ionicLoading.hide();
+              $ionicLoading.hide();
 
             }, function(err) {
               console.log("Error getting current position! :(",err);
@@ -99,49 +99,31 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     function getStationsFromApi(lat, lng, count) {
         ApiService.getStationList(lat, lng, count, function(err, stations) {
           $timeout(function() {
+              angular.forEach(stations, function(val, key) {
+                val.ServedBy = [];
+                angular.forEach(val.Lines, function(lineVal, lineKey) {
+                    if (lineVal.LineID < 10 && (val.ServedBy.indexOf("sub") === -1)) {
+                        val.ServedBy.push("sub");
+                        return;
+                    } else if (lineVal.LineID > 10 && lineVal.LineID < 20 && (val.ServedBy.indexOf("trikk") === -1)) {
+                        val.ServedBy.push("trikk");
+                        return;
+                    } else if (lineVal.LineID >= 20 && lineVal.LineID < 100 && (val.ServedBy.indexOf("buss") === -1)) {
+                        val.ServedBy.push("buss");
+                        return;
+                    } else if (lineVal.LineID > 200 && lineVal.LineID < 1000 && (val.ServedBy.indexOf("greenbus") === -1)) {
+                        val.ServedBy.push("greenbus");
+                        return;
+                    }
+                })
+              })
               $scope.stations = stations;
               $scope.$apply();
               if (stations.length === 0) $scope.hidden = false;
               else $scope.hidden = true;
           })
       });
-    }
-    
-    $scope.servedByTram = function(station) {
-        for (var i = 0; i < station.Lines.length; i++) {
-            if (station.Lines[i].LineID > 10 && station.Lines[i].LineID < 20) {
-                return true;
-            }
-        }
-        return false;
-      }     
-    
-    $scope.servedByBus = function(station) {
-        for (var i = 0; i < station.Lines.length; i++) {
-            if (station.Lines[i].LineID > 20 && station.Lines[i].LineID < 100) {
-                return true;
-            }
-        }
-        return false;
-      } 
-    
-     $scope.servedBySub = function(station) {
-        for (var i = 0; i < station.Lines.length; i++) {
-            if (station.Lines[i].LineID < 10) {
-                return true;
-            }
-        }
-        return false;
-      } 
-     
-     $scope.servedByLongDistanceBus = function(station) {
-        for (var i = 0; i < station.Lines.length; i++) {
-            if (station.Lines[i].LineID > 200 && station.Lines[i].LineID < 1000) {
-                return true;
-            }
-        }
-        return false;
-      }     
+    }    
     
     $scope.refresh = function() {
         $cordovaGeolocation.getCurrentPosition()
@@ -188,7 +170,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     }
     
     $ionicPlatform.on('resume', function() {
-          getLinesFromApi($scope.selectedStation.ID);
+        $ionicLoading.show({
+          template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+        });
+        getLinesFromApi($scope.selectedStation.ID);
     })
 
     $scope.refresh = function() {
