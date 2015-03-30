@@ -21,8 +21,14 @@
 
 .line-sub {
     background-image: url('../img/polygon.png');
-    padding: .7em;
+    padding: 1em;
 }
+
+.line-longdistance {
+    background-image: url('../img/rectangle.png');
+    padding: .6em;
+}
+
 
 .sub-header-bar {
     font-size: 0.8em;
@@ -109,6 +115,7 @@
 
 .section-header-image {
     height: 1.2em;
+    padding-top: .2em;
 }
 
 .custom-padding-right {
