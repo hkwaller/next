@@ -6,9 +6,12 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  api: ['./lib/api.js']
 };
 
 gulp.task('default', ['sass']);
@@ -25,8 +28,21 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('browserify-api', function() {
+  return browserify('./lib/api.js')
+    .require('./lib/api.js', {
+      expose: '/lib/api'
+    })
+    .bundle()
+    //Pass desired output filename to vinyl-source-stream
+    .pipe(source('bundle.js'))
+    // Start piping stream to tasks!
+    .pipe(gulp.dest('./www/js/'));
+});
+
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.api, ['browserify-api']);
 });
 
 gulp.task('install', ['git-check'], function() {
