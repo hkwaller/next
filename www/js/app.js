@@ -87,6 +87,9 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     $scope.goToStation = function(station) {
         if (station && lat && lng) {
           ApiService.preferStation(station, lat, lng);
+          setTimeout(function() {
+            getStationsFromApi(lat, lng, 15);
+          }, 1000)
         }
         StationService.setStation(station);
         $location.path('/station-detail');
