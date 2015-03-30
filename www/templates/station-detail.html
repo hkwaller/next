@@ -17,7 +17,7 @@
                  
             </div>
             </div>
-            <ion-item ng-repeat="line in lines | limitTo:10 | detailFilter" class="no-padding repeat-animation">
+            <ion-item ng-repeat="line in lines | limitTo:10 | detailFilter" class="no-padding">
                 <div class="row custom-row-padding">
                     <div class="col col-20 text-center">
                         <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.LineRef }}</span>

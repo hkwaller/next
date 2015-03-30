@@ -12267,6 +12267,9 @@ var GeoHash = require('geo-hash');
 var StorageLRU = require('storage-lru').StorageLRU;
 var asyncify = require('storage-lru').asyncify;
 
+var STATION_LIST_GEO_HASH_PRECISION = 8; // ≤ 38.2m × 19.1m
+var PREFER_STATION_GEO_HASH_PRECISION = 7; // ≤ 153m  × 153m
+
 if (!global.localStorage) {
   global.localStorage = require('localStorage');
 }
@@ -12288,7 +12291,7 @@ var lruCache = new StorageLRU(asyncify(localStorage));
  */
 exports.getStationList = function(lat, lng, numberofstops, callback) {
 
-  var cacheKey = 'getStationList:' + GeoHash.encode(lng, lat, 15) + ':' + numberofstops;
+  var cacheKey = 'getStationList:' + GeoHash.encode(lng, lat, STATION_LIST_GEO_HASH_PRECISION) + ':' + numberofstops;
 
   lruCache.getItem(cacheKey, { json: true }, function (error, stations) {
     if (stations) {
@@ -12330,7 +12333,7 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
         longitude: latLngXY.x
       });
 
-      var geoHash = GeoHash.encode(lng, lat, 15);
+      var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
       station.Preference = (
         preferredStationsByGeoHash[geoHash] &&
         preferredStationsByGeoHash[geoHash][station.ID] &&
@@ -12383,7 +12386,7 @@ exports.getDeparturesForStation = function(ID, callback) {
 };
 
 exports.preferStation = function (station, lat, lng) {
-  var geoHash = GeoHash.encode(lng, lat, 15);
+  var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
   if (!(geoHash in preferredStationsByGeoHash)) {
     preferredStationsByGeoHash[geoHash] = {};
   }
@@ -12397,11 +12400,11 @@ exports.preferStation = function (station, lat, lng) {
 
   preferredStationsByGeoHash[geoHash][station.ID].preference++;
   localStorage.setItem('preferred-stations', JSON.stringify(preferredStationsByGeoHash));
-    
 };
 
+
 exports.unpreferStation = function (station, lat, lng) {
-  var geoHash = GeoHash.encode(lng, lat, 15);
+  var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
 
   if (
     geoHash in preferredStationsByGeoHash &&
@@ -12415,7 +12418,7 @@ exports.unpreferStation = function (station, lat, lng) {
 
 
 exports.getPreferredStation = function (lat, lng) {
-  var geoHash = GeoHash.encode(lng, lat, 15);
+  var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
   var preferredStations = preferredStationsByGeoHash[geoHash];
   var largestPreference = 0;
   var preferredStation = null;
