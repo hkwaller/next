@@ -24,12 +24,29 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     templateUrl: 'templates/station-detail.html'
   })
   .state('overview', {
-    url: '/station-overview',
+    url: '/stations-overview',
     controller: 'OverviewCtrl',
-    templateUrl: 'templates/stations-overview.html'
-  });
+    templateUrl: 'templates/stations-overview.html',
+//      resolve: {
+//            mess:function($location)
+//            {
+//                var t=(sessionStorage.logged).toString();
+//                if(t=="true")
+//                {
+//                    $location.path('/home');
+//                    //redirectTo: '/home';
+//                }
+//            }
+//        }
+  })
   
-   $urlRouterProvider.otherwise("/station-overview");
+  .state('onboarding', {
+    url: '/onboarding',
+    controller: 'OnboardingCtrl',
+    templateUrl: 'templates/onboarding.html'
+  })
+  
+   $urlRouterProvider.otherwise("/stations-overview");
     
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
@@ -181,6 +198,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         $scope.$broadcast('scroll.refreshComplete');
     };
 
+}).controller('OnboardingCtrl', function($scope, $location) {
+    $scope.goToOverview = function() {
+        $location.path('/stations-overview');
+    }
 })
 
 

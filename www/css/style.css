@@ -227,3 +227,21 @@
     display: block;
 }
 
+
+/********************
+
+    ONBOARDING
+
+********************/
+
+.scroll, .slider {
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.onboarding-img {
+    width: 100%;
+    vertical-align: bottom;
+}
