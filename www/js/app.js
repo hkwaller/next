@@ -165,9 +165,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     $ionicLoading.show({
       template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
     });
-    
-    $scope.hidden = true;
-    
+
+    $scope.hasDepartures = false;
+    $scope.isLoaded = false;
+
     if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi({ id: $scope.selectedStation.ID });
@@ -177,10 +178,10 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
         ApiService.getDeparturesForStation(options, (function(err, lines) {
             $timeout(function() {
                 $scope.lines = lines;
+                $scope.isLoaded = true;
+                $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
                 $scope.$apply();
-                if (lines.length === 0 || $filter('detailFilter')(lines).length === 0) $scope.hidden = false
-                else $scope.hidden = true;
-                
+
                 $ionicLoading.hide();
             });
         }));
