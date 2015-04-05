@@ -186,18 +186,23 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
             });
         }));
     }
-    
-    $ionicPlatform.on('resume', function() {
-        $ionicLoading.show({
-          template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
-        });
-        getLinesFromApi($scope.selectedStation.ID);
-    })
 
-    $scope.refresh = function() {
-        getLinesFromApi($scope.selectedStation.ID);
+    $scope.refresh = function(options) {
+        var options = options || {};
+        if (options.showLoadingOverlay) {
+            $ionicLoading.show({
+              template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+            });
+        }
+        getLinesFromApi({ id: $scope.selectedStation.ID, force: true });
         $scope.$broadcast('scroll.refreshComplete');
     };
+
+    $ionicPlatform.on('resume', function() {
+        $scope.refresh({
+            showLoadingOverlay: true
+        });
+    })
 
 }).controller('OnboardingCtrl', function($scope, $location) {
     $scope.goToOverview = function() {
