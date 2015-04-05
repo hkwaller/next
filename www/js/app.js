@@ -170,11 +170,11 @@ angular.module('next', ['ionic', 'next.services', 'next.filters', 'ngCordova.plu
     
     if (StationService.getStation() !== null) {
         $scope.selectedStation = StationService.getStation();
-        getLinesFromApi($scope.selectedStation.ID);
+        getLinesFromApi({ id: $scope.selectedStation.ID });
     }
 
-    function getLinesFromApi(id) {
-        ApiService.getDeparturesForStation(id, (function(err, lines) {
+    function getLinesFromApi(options) {
+        ApiService.getDeparturesForStation(options, (function(err, lines) {
             $timeout(function() {
                 $scope.lines = lines;
                 $scope.$apply();
