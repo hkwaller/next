@@ -256,6 +256,10 @@
 }
 
 .onboarding-img {
-    width: 100%;
+    width: 70%;
     vertical-align: bottom;
+}
+
+.onboarding-button {
+    width: 60%;
 }
