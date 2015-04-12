@@ -5,15 +5,19 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('next', ['ionic', 'next.controllers', 'next.services', 'next.filters', 'ngCordova.plugins.geolocation', 'ngCordova.plugins.statusbar'])
 
-.run(function($ionicPlatform, $cordovaStatusbar) {
+.run(function($rootScope, $ionicPlatform, $cordovaStatusbar, $location) {
     $ionicPlatform.ready(function() {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         }
         $cordovaStatusbar.style(1);
     });
+        
+    if (window.localStorage['seenOnboarding']) {
+        $location.path('/station-overview');
+    } else {
+        $location.path('/onboarding');
+    }
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -26,25 +30,13 @@ angular.module('next', ['ionic', 'next.controllers', 'next.services', 'next.filt
         .state('overview', {
             url: '/stations-overview',
             controller: 'OverviewCtrl',
-            templateUrl: 'templates/stations-overview.html',
-            //      resolve: {
-            //            mess:function($location)
-            //            {
-            //                var t=(sessionStorage.logged).toString();
-            //                if(t=="true")
-            //                {
-            //                    $location.path('/home');
-            //                    //redirectTo: '/home';
-            //                }
-            //            }
-            //        }
+            templateUrl: 'templates/stations-overview.html'
         })
-
-    .state('onboarding', {
-        url: '/onboarding',
-        controller: 'OnboardingCtrl',
-        templateUrl: 'templates/onboarding.html'
-    })
+        .state('onboarding', {
+            url: '/onboarding',
+            controller: 'OnboardingCtrl',
+            templateUrl: 'templates/onboarding.html'
+        })
 
     $urlRouterProvider.otherwise("/stations-overview");
 
