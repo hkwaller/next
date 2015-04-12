@@ -12,15 +12,10 @@ angular.module('next', ['ionic', 'next.controllers', 'next.services', 'next.filt
         }
         $cordovaStatusbar.style(1);
     });
-        
-    if (window.localStorage['seenOnboarding']) {
-        $location.path('/station-overview');
-    } else {
-        $location.path('/onboarding');
-    }
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    
     $stateProvider
         .state('detail', {
             url: '/station-detail',
@@ -35,10 +30,15 @@ angular.module('next', ['ionic', 'next.controllers', 'next.services', 'next.filt
         .state('onboarding', {
             url: '/onboarding',
             controller: 'OnboardingCtrl',
-            templateUrl: 'templates/onboarding.html'
+            templateUrl: 'templates/onboarding.html',
+            onEnter: function($state) {
+                if (!window.localStorage.seenOnboarding) {
+                    $state.go('overview');
+                }
+            }
         })
 
-    $urlRouterProvider.otherwise("/stations-overview");
+    $urlRouterProvider.otherwise("/onboarding");
 
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
