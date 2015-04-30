@@ -21,10 +21,6 @@
   animation:enter_animation 0.05s;
 }
 
-.repeat-animation.ng-leave {
-  -webkit-animation:leave_animation 0.3s;
-  animation:leave_animation 0.3s;
-}
 
 @-webkit-keyframes enter_animation {
   from { opacity:0; }
@@ -34,14 +30,4 @@
 @keyframes enter_animation {
   from { opacity:0; }
   to { opacity:1; }
-}
-
-@-webkit-keyframes leave_animation {
-  from { opacity:1; }
-  to { opacity:0; }
-}
-
-@keyframes leave_animation {
-  from { opacity:1; }
-  to { opacity:0; }
 }

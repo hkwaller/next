@@ -1,26 +1,26 @@
-<ion-view view-title="{{selectedStation.Name}}" class="text-wrap" ng-cloak ng-init="hidden = true">
-    <ion-content scrollbar-y="false" ng-show="lines.length > 0">
-        <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="ripple">
+<ion-view view-title="{{selectedStation.Name}}" class="text-wrap" ng-cloak>
+    <ion-content scrollbar-y="false" ng-show="isLoaded && hasDepartures">
+        <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="spiral">
         </ion-refresher>
         <ion-list>
             <div class="item item-divider">
              <div class="row no-padding sub-header-bar">
                 <div class="col col-20 no-padding">
                     Linje
-                 </div>  
+                 </div>
                  <div class="col col-70 no-padding">
                     Destinasjon
-                 </div>  
+                 </div>
                  <div class="col col-10 no-padding text-center">
                     <img src="./img/klokke.png" class="section-header-image">
-                 </div>  
-                 
+                 </div>
+
             </div>
             </div>
-            <ion-item ng-repeat="line in lines | limitTo:10 | detailFilter" class="no-padding repeat-adnimation">
+            <ion-item ng-repeat="line in lines | limitTo:10 | detailFilter" class="no-padding">
                 <div class="row custom-row-padding">
                     <div class="col col-20 text-center">
-                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.LineRef }}</span>
+                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19 && line.LineRef < 100, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.LineRef }}</span>
                     </div>
                     <div class="col col-60 line-name wrap-text">
                         {{ line.DestinationDisplay }}
@@ -31,16 +31,16 @@
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture <= 0">
                         <span class="now">Nå</span>
                     </div>
-                    
+
                 </div>
             </ion-item>
         </ion-list>
     </ion-content>
-    <ion-content class="center hidden" ng-class="{'visible': !hidden}">
+    <ion-content class="center" ng-show="isLoaded && !hasDepartures">
         <div class="row">
             <div class="col text-center">
                 <span class="no-hits">Ingen avganger funnet :(</span>
-                <button class="button button-positive button-outline custom-button" ng-click="refresh()">Prøv igjen</button>
+                <button class="button button-positive button-outline custom-button" ng-click="refresh({ showLoadingOverlay: true })">Prøv igjen</button>
             </div>
         </div>
     </ion-content>
