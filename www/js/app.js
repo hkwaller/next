@@ -32,7 +32,8 @@ angular.module('next', ['ionic', 'next.controllers', 'next.services', 'next.filt
             controller: 'OnboardingCtrl',
             templateUrl: 'templates/onboarding.html',
             onEnter: function($state) {
-                if (!window.localStorage.seenOnboarding) {
+                var store = window.localStorage.seenOnboarding;
+                if (store) {
                     $state.go('overview');
                 }
             }
