@@ -1,5 +1,5 @@
 angular.module('next.controllers', [])
-.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
+.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
     $ionicLoading.show({
         template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
@@ -85,6 +85,9 @@ angular.module('next.controllers', [])
                 })
                 $scope.stations = stations;
                 $scope.$apply();
+                
+                $ionicScrollDelegate.scrollTop(true);
+
                 if (stations.length === 0) $scope.hidden = false;
                 else $scope.hidden = true;
             })
@@ -108,7 +111,7 @@ angular.module('next.controllers', [])
 
 })
 
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $cordovaGeolocation, $timeout, ApiService, StationService, $filter) {
+.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $timeout, ApiService, StationService, $filter) {
 
     $ionicLoading.show({
         template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
@@ -123,7 +126,7 @@ angular.module('next.controllers', [])
             id: $scope.selectedStation.ID
         });                
     }
-
+    
     function getLinesFromApi(options) {
         ApiService.getDeparturesForStation(options, (function(err, lines) {
             $timeout(function() {
@@ -132,6 +135,7 @@ angular.module('next.controllers', [])
                 $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
                 $scope.$apply();
                 
+                $ionicScrollDelegate.scrollTop(true);
                 $ionicLoading.hide();
             });
         }));
