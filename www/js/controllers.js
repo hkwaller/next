@@ -85,7 +85,8 @@ angular.module('next.controllers', [])
                 })
                 $scope.stations = stations;
                 $scope.$apply();
-                
+
+                $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
 
                 if (stations.length === 0) $scope.hidden = false;
@@ -134,7 +135,8 @@ angular.module('next.controllers', [])
                 $scope.isLoaded = true;
                 $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
                 $scope.$apply();
-                
+
+                $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
                 $ionicLoading.hide();
             });
@@ -152,7 +154,6 @@ angular.module('next.controllers', [])
             id: $scope.selectedStation.ID,
             force: true
         });
-        $scope.$broadcast('scroll.refreshComplete');
     };
 
     $ionicPlatform.on('resume', function() {
