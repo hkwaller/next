@@ -1,7 +1,7 @@
 <ion-view view-title="neste" ng-init="hidden = true" hide-back-button="true" ng-cloak>
     <ion-nav-buttons side="right">
       <button class="button button-clear" id="top-bar-img" ng-click="goToSearch()">
-        
+
       </button>
     </ion-nav-buttons>
     <ion-content scrollbar-y="false" ng-show="stations.length > 0">
@@ -22,8 +22,8 @@
                     </div>
                 </div>
                 <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
-                Fjern favoritt
-              </ion-option-button>
+                  Fjern favoritt
+                </ion-option-button>
             </ion-item>
             <div class="divider-thingy" ng-show="(stations | favouriteFilter).length > 0"></div>
         </ion-list>
