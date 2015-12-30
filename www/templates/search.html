@@ -4,10 +4,8 @@
           <div class="item item-input-inset">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios7-search placeholder-icon"></i>
-                <input id="searchKey" type="search" placeholder="Skriv inn navn på stoppested" ng-model="searchString" autocorrect="off" >
-                <button class="button button-clear button-small" ng-click="clear()">X</button>
+                <input class="searchfield" id="searchKey" type="search" ng-change="search(searchString)" placeholder="Skriv inn navn på stoppested" ng-model="searchString" autocorrect="off" >
               </label>
-            <button class="button button-clear button-small" ng-click="search(searchString)">Søk</button>
           </div>
         </div>
         <ion-list class="search-list">
