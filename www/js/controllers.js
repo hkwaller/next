@@ -1,9 +1,11 @@
 angular.module('next.controllers', [])
-.controller('OverviewCtrl', function($scope, $location, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
+.controller('OverviewCtrl', function($scope, $rootScope, $location, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
     $scope.stations = [];
     $ionicLoading.show({
-        template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+        template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
     });
+
+    $rootScope.cancel = $ionicLoading.hide();
 
     var lat;
     var lng;
@@ -117,11 +119,12 @@ angular.module('next.controllers', [])
 
 })
 
-.controller('DetailCtrl', function($scope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $timeout, ApiService, StationService, $filter) {
+.controller('DetailCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $timeout, ApiService, StationService, $filter) {
 
     $ionicLoading.show({
-        template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+        template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
     });
+    $rootScope.cancel = $ionicLoading.hide;
 
     $scope.hasDepartures = false;
     $scope.isLoaded = false;
@@ -140,7 +143,6 @@ angular.module('next.controllers', [])
                 $scope.isLoaded = true;
                 $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
                 $scope.$apply();
-
                 $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
                 $ionicLoading.hide();
@@ -152,7 +154,7 @@ angular.module('next.controllers', [])
         var options = options || {};
         if (options.showLoadingOverlay) {
             $ionicLoading.show({
-                template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+                template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
             });
         }
         getLinesFromApi({
@@ -201,11 +203,6 @@ angular.module('next.controllers', [])
                     $scope.$apply();
                 })
             })
-    }
-
-    $scope.clear = function(searchString) {
-        console.log(searchString);
-        searchString = "";
     }
 
     $scope.goToStation = function(station) {
