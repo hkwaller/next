@@ -1,0 +1,28 @@
+<ion-view class="text-wrap" view-title="Søk" ng-cloak>
+    <ion-content scrollbar-y="false">
+        <div class="custom-list">
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios7-search placeholder-icon"></i>
+                <input id="searchKey" type="search" placeholder="Skriv inn navn på stoppested" ng-model="searchString" autocorrect="off" >
+                <button class="button button-clear button-small" ng-click="clear()">X</button>
+              </label>
+            <button class="button button-clear button-small" ng-click="search(searchString)">Søk</button>
+          </div>
+        </div>
+        <ion-list class="search-list">
+            <ion-item ng-repeat="station in stations | orderBy:'Distance'" ng-click="goToStation(station)">
+                <div class="row">
+                    <div class="col col-80 line-name no-padding-left">
+                        {{ station.Name | maxCharFilter }}
+                        <img ng-repeat="type in station.ServedBy track by $index" ng-src="./img/{{type}}.png" class="thumbnail">
+                    </div>
+                    <div class="col col-20">
+                        <div class="distance-to-stop">{{ station.Distance }}</div><div class="minutes overview-vertical">m</div>
+                    </div>
+                </div>
+            </ion-item>
+            <div class="divider-thingy" ng-show="(stations | favouriteFilter).length > 0"></div>
+        </ion-list>
+    </ion-content>
+</ion-view>
