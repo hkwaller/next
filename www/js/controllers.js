@@ -7,7 +7,9 @@ angular.module('next.controllers', [])
 
     var lat;
     var lng;
-    
+
+    var NUM_STATIONS = 15;
+
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
@@ -32,20 +34,20 @@ angular.module('next.controllers', [])
                     StationService.setStation(preferredStation);
                     $location.path('/station-detail');
                 }
-                getStationsFromApi(lat, lng, 15);
+                getStationsFromApi(lat, lng);
                 $ionicLoading.hide();
 
             }, function(err) {
                 console.log("Error getting current position! :(", err);
             });
     });
-    
+
     $ionicPlatform.on('resume', function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                getStationsFromApi(lat, lng, 15);
+                getStationsFromApi(lat, lng);
             })
     })
 
@@ -53,17 +55,17 @@ angular.module('next.controllers', [])
         if (station && lat && lng) {
             ApiService.preferStation(station, lat, lng);
             setTimeout(function() {
-                getStationsFromApi(lat, lng, 15);
+                getStationsFromApi(lat, lng);
             }, 1000)
         }
-        
+
         StationService.setStation(station);
         $location.path('/station-detail');
     };
 
 
-    function getStationsFromApi(lat, lng, count) {
-        ApiService.getStationList(lat, lng, count, function(err, stations) {
+    function getStationsFromApi(lat, lng) {
+        ApiService.getStationList(lat, lng, NUM_STATIONS, function(err, stations) {
             $timeout(function() {
                 angular.forEach(stations, function(val, key) {
                     val.ServedBy = [];
@@ -85,7 +87,8 @@ angular.module('next.controllers', [])
                 })
                 $scope.stations = stations;
                 $scope.$apply();
-                
+
+                $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
 
                 if (stations.length === 0) $scope.hidden = false;
@@ -99,14 +102,13 @@ angular.module('next.controllers', [])
             .then(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                getStationsFromApi(lat, lng, 15);
-            })
-        $scope.$broadcast('scroll.refreshComplete');
+                getStationsFromApi(lat, lng);
+            });
     };
 
     $scope.reset = function(station) {
         ApiService.unpreferStation(station, lat, lng);
-        getStationsFromApi(lat, lng, 15);
+        getStationsFromApi(lat, lng);
     };
 
 })
@@ -124,9 +126,9 @@ angular.module('next.controllers', [])
         $scope.selectedStation = StationService.getStation();
         getLinesFromApi({
             id: $scope.selectedStation.ID
-        });                
+        });
     }
-    
+
     function getLinesFromApi(options) {
         ApiService.getDeparturesForStation(options, (function(err, lines) {
             $timeout(function() {
@@ -134,7 +136,8 @@ angular.module('next.controllers', [])
                 $scope.isLoaded = true;
                 $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
                 $scope.$apply();
-                
+
+                $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
                 $ionicLoading.hide();
             });
@@ -152,7 +155,6 @@ angular.module('next.controllers', [])
             id: $scope.selectedStation.ID,
             force: true
         });
-        $scope.$broadcast('scroll.refreshComplete');
     };
 
     $ionicPlatform.on('resume', function() {
