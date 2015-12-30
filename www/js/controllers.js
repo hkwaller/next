@@ -51,6 +51,10 @@ angular.module('next.controllers', [])
             })
     })
 
+    $scope.goToSearch = function() {
+        $location.path('/search');
+    }
+
     $scope.goToStation = function(station) {
         if (station && lat && lng) {
             ApiService.preferStation(station, lat, lng);
@@ -164,7 +168,85 @@ angular.module('next.controllers', [])
     })
 
 
-}).controller('OnboardingCtrl', function($scope, $location) {
+})
+
+.controller('SearchCtrl', function($scope, $ionicLoading, $rootScope, ApiService, $cordovaGeolocation, $timeout, StationService, $location) {
+    $scope.stations = [];
+    $scope.searchString = "";
+    $rootScope.cancel = $ionicLoading.hide;
+    $scope.searchButtonTitle = "";
+
+    $scope.search = function(stationName) {
+
+        if (stationName.length > 0) {
+          $scope.searchButtonTitle = "Tøm";
+        }
+
+        $scope.stations = [];
+        if (stationName.length < 4) return;
+
+        $ionicLoading.show({
+            noBackdrop: true,
+            scope: $scope,
+            template: 'Søker...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
+        });
+
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                ApiService.getStationByName(stationName, lat, lng, function(err, stations) {
+                    $scope.stations = stations;
+                    $ionicLoading.hide();
+                    $scope.$apply();
+                })
+            })
+    }
+
+    $scope.clear = function(searchString) {
+        console.log(searchString);
+        searchString = "";
+    }
+
+    $scope.goToStation = function(station) {
+        StationService.setStation(station);
+        $location.path('/station-detail');
+    }
+
+    function getStationsFromApi(lat, lng, count) {
+        ApiService.getStationList(lat, lng, count, function(err, stations) {
+            $timeout(function() {
+                angular.forEach(stations, function(val, key) {
+                    val.ServedBy = [];
+                    angular.forEach(val.Lines, function(lineVal, lineKey) {
+                        if (lineVal.LineID < 10 && (val.ServedBy.indexOf("sub") === -1)) {
+                            val.ServedBy.push("sub");
+                            return;
+                        } else if (lineVal.LineID > 10 && lineVal.LineID < 20 && (val.ServedBy.indexOf("trikk") === -1)) {
+                            val.ServedBy.push("trikk");
+                            return;
+                        } else if (lineVal.LineID >= 20 && lineVal.LineID < 100 && (val.ServedBy.indexOf("buss") === -1)) {
+                            val.ServedBy.push("buss");
+                            return;
+                        } else if (lineVal.LineID > 200 && lineVal.LineID < 1000 && (val.ServedBy.indexOf("greenbus") === -1)) {
+                            val.ServedBy.push("greenbus");
+                            return;
+                        }
+                    })
+                })
+                $scope.stations = stations;
+                $scope.$apply();
+
+                $ionicScrollDelegate.scrollTop(true);
+
+                if (stations.length === 0) $scope.hidden = false;
+                else $scope.hidden = true;
+            })
+        });
+    }
+})
+
+.controller('OnboardingCtrl', function($scope, $location) {
     $scope.goToOverview = function() {
         window.localStorage['seenOnboarding'] = true;
         $location.path('/stations-overview');
