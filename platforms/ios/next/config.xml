@@ -17,9 +17,6 @@
     <feature name="Keyboard">
         <param name="ios-package" onload="true" value="IonicKeyboard" />
     </feature>
-    <feature name="Console">
-        <param name="ios-package" value="CDVLogger" />
-    </feature>
     <feature name="Device">
         <param name="ios-package" value="CDVDevice" />
     </feature>
@@ -35,9 +32,13 @@
     <feature name="NetworkStatus">
         <param name="ios-package" value="CDVConnection" />
     </feature>
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
+    </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
     <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
+    <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
     <icon height="50" src="resources/ios/icon/icon-50.png" width="50" />
     <icon height="100" src="resources/ios/icon/icon-50@2x.png" width="100" />
     <icon height="60" src="resources/ios/icon/icon-60.png" width="60" />
@@ -72,5 +73,5 @@
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="none" />
-    <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
+    <icon src="resources/ios/icon/icon-40@2x.png" />
 </widget>

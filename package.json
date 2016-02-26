@@ -12,6 +12,7 @@
     "gulp-sass": "^0.7.1",
     "localStorage": "~1.0.3",
     "moment": "^2.4.0",
+    "node-sass": "^3.4.2",
     "proj4": "^2.3.3",
     "storage-lru": "^0.1.0",
     "superagent": "^0.21.0"
@@ -30,8 +31,7 @@
     "org.apache.cordova.geolocation"
   ],
   "scripts": {
-    "bundle-external": "say sorry you are not clever enough, you should ask david to do this for you, he is much smarter than you",
-    "bundle-external-forrealz": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
+    "bundle": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
     "browser": "open -a Google\\ Chrome\\ Canary --args --disable-web-security"
   }
 }

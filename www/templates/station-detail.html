@@ -14,7 +14,6 @@
                  <div class="col col-10 no-padding text-center">
                     <img src="./img/klokke.png" class="section-header-image">
                  </div>
-
             </div>
             </div>
             <ion-item ng-repeat="line in lines | limitTo:20 | detailFilter" class="no-padding">
@@ -23,7 +22,7 @@
                         <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19 && line.LineRef < 100, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.LineRef }}</span>
                     </div>
                     <div class="col col-60 line-name wrap-text">
-                        {{ line.DestinationDisplay }}
+                        {{ line.DestinationName }}
                     </div>
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture > 0">
                         <div class="time-to-departure">{{ line.MinutesToDeparture }}</div><div class="minutes"> min</div>
@@ -31,7 +30,6 @@
                     <div class="col col-20 custom-padding-right detail-time" ng-show="line.MinutesToDeparture <= 0">
                         <span class="now">Nå</span>
                     </div>
-
                 </div>
             </ion-item>
         </ion-list>

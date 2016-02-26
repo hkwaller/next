@@ -28,5 +28,8 @@ node_modules
 .lock-wscript
 
 www/js/bundle.js
-
+www/lib
+resources
+plugins
+ios
 platforms

@@ -5,9 +5,12 @@
 ***********************/
 
 * {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 
 .center {
   display: -webkit-box;
@@ -61,6 +64,28 @@
     OTHER STUFF
 
 *********************************/
+
+#top-bar-img {
+    background: url('../img/magnifying_glass.png');
+    background-size: contain;
+    height: 30px;
+    width: 30px;
+    margin-top: 4px;
+}
+
+#search-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+}
+
+.custom-list {
+    position: relative;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 0;
+}
 
 .line {
     font-size: 1.2em;
@@ -132,12 +157,12 @@
 }
 
 .ion-nav-view {
-    background: #fff; 
+    background: #fff;
 }
 
 .pane {
     background: #fff;
-    background-image: url('../img/background.png'); 
+    background-image: url('../img/background.png');
     background-position: top;
 }
 
@@ -262,4 +287,18 @@
 
 .onboarding-button {
     width: 60%;
+}
+
+/********************
+
+    SEARCH
+
+********************/
+
+.searchfield {
+  width: 100%;
+}
+
+.button-cancel-search {
+  margin-top: 20px;
 }

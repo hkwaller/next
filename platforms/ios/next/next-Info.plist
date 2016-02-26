@@ -32,16 +32,13 @@
     <true/>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string></string>
-    <key>NSMainNibFile</key>
-    <string></string>
     <key>NSMainNibFile~ipad</key>
     <string></string>
-    <key>UISupportedInterfaceOrientations~ipad</key>
-    <array>
-      <string>UIInterfaceOrientationPortrait</string>
-      <string>UIInterfaceOrientationLandscapeLeft</string>
-      <string>UIInterfaceOrientationPortraitUpsideDown</string>
-      <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <!--Include to allow all connections (DANGER)-->
+      <key>NSAllowsArbitraryLoads</key>
+          <true/>
+    </dict>
   </dict>
 </plist>

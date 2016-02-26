@@ -40,12 +40,12 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "org.apache.cordova.console": "0.2.13",
     "org.apache.cordova.device": "0.3.0",
     "com.ionic.keyboard": "1.0.4",
     "org.apache.cordova.statusbar": "0.1.10",
     "org.apache.cordova.geolocation": "0.3.12",
-    "org.apache.cordova.network-information": "0.2.15"
+    "org.apache.cordova.network-information": "0.2.15",
+    "cordova-plugin-console": "1.0.2"
 }
 // BOTTOM OF METADATA
 });
