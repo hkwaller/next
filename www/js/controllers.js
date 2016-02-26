@@ -124,6 +124,7 @@ angular.module('next.controllers', [])
     $ionicLoading.show({
         template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
     });
+
     $rootScope.cancel = $ionicLoading.hide;
 
     $scope.hasDepartures = false;
@@ -139,14 +140,16 @@ angular.module('next.controllers', [])
     function getLinesFromApi(options) {
         ApiService.getDeparturesForStation(options, (function(err, lines) {
             $timeout(function() {
+                console.log(lines);
                 $scope.lines = lines;
                 $scope.isLoaded = true;
                 $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
                 $scope.$apply();
+                console.log(lines);
                 $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
                 $ionicLoading.hide();
-            });
+            }, 500);
         }));
     }
 
