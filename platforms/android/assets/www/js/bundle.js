@@ -12267,6 +12267,9 @@ var GeoHash = require('geo-hash');
 var StorageLRU = require('storage-lru').StorageLRU;
 var asyncify = require('storage-lru').asyncify;
 
+var STATION_LIST_TIMEOUT = 20000;
+var DEPARTURES_TIMEOUT = 20000;
+
 var STATION_LIST_GEO_HASH_PRECISION = 8; // ≤ 38.2m × 19.1m
 var PREFER_STATION_GEO_HASH_PRECISION = 7; // ≤ 153m  × 153m
 
@@ -12293,32 +12296,29 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
 
     var cacheKey = 'getStationList:' + GeoHash.encode(lng, lat, STATION_LIST_GEO_HASH_PRECISION) + ':' + numberofstops;
 
-    lruCache.getItem(cacheKey, {
-        json: true
-    }, function(error, stations) {
-        if (stations) {
-            callback(null, augmentStations(stations));
-        } else {
-            var coords = proj4('EPSG:25832', {
-                x: lng,
-                y: lat
-            });
-            var url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x=" + Math.round(coords.x) + ",y=" + Math.round(coords.y) + ")&proposals=" + numberofstops;
-
-            request.get(url, function(res) {
-                var stations = res.body;
-
-                lruCache.setItem(cacheKey, stations, {
-                    json: true,
-                    cacheControl: 'max-age=' + (86400 * 30),
-                }, function(error) {
-                    if (error) throw error;
-                });
-
-                callback(null, augmentStations(stations));
-            });
-        }
+    var coords = proj4('EPSG:25832', {
+        x: lng,
+        y: lat
     });
+    var url = "http://reis.ruter.no/reisrest/stop/getcloseststopsbycoordinates/?coordinates=(x=" + Math.round(coords.x) + ",y=" + Math.round(coords.y) + ")&proposals=" + numberofstops;
+    console.log(url);
+    request
+        .get(url)
+        .timeout(STATION_LIST_TIMEOUT)
+        .end(function(err, res) {
+            if (err) return callback(err);
+
+            var stations = res.body;
+            console.log(stations);
+            lruCache.setItem(cacheKey, stations, {
+                json: true,
+                cacheControl: 'max-age=' + (86400 * 30),
+            }, function(error) {
+                if (error) throw error;
+            });
+
+            callback(null, augmentStations(stations));
+        });
 
     function augmentStations(stations) {
         stations.forEach(function(station, index) {
@@ -12354,42 +12354,30 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
     }
 };
 
+
+
 /*
  * Feed in an options object containing a station id, will call callback with (err,result) where result
  * is an array of departures. For example of a departure object, see below!
  */
 exports.getDeparturesForStation = function(options, callback) {
-    if (typeof options !== 'object') throw new Error('Options object required');
 
     var ID = options.id;
-    var force = options.force;
 
-    var cacheKey = 'getDeparturesForStation:' + ID;
-    lruCache.getItem(cacheKey, {
-        json: true
-    }, function(error, departures) {
-        if (departures && !force) {
-            return callback(null, augmentDepartures(departures));
-        } else {
-            request.get("http://api.trafikanten.no/ReisRest/RealTime/GetAllDepartures/" + ID, function(res) {
-                var departures = res.body;
+    request.get("http://crossorigin.me/http://reisapi.ruter.no/StopVisit/GetDepartures/" + ID)
+    .timeout(DEPARTURES_TIMEOUT)
+    .end(function(err, res) {
+      if (err) return callback(err);
 
-                lruCache.setItem(cacheKey, departures, {
-                    json: true,
-                    cacheControl: 'max-age=' + 25,
-                }, function(error) {
-                    if (error) throw error;
-                });
+      var departures = res.body;
 
-                callback(null, augmentDepartures(departures));
-            });
-        }
+      callback(null, augmentDepartures(departures));
     });
 
     function augmentDepartures(departures) {
         return (departures || []).map(function(departure) {
-            departure.MinutesToDeparture = moment(departure.ExpectedDepartureTime).diff(moment(), 'minutes');
-            return departure;
+            departure.MonitoredVehicleJourney.MinutesToDeparture = moment(departure.MonitoredVehicleJourney.MonitoredCall.ExpectedArrivalTime).diff(moment(), 'minutes');
+            return departure.MonitoredVehicleJourney;
         });
     }
 };
@@ -12440,6 +12428,62 @@ exports.getPreferredStation = function(lat, lng) {
         });
     }
     return preferredStation;
+};
+
+exports.getStationByName = function(searchString, lat, lng, callback) {
+//
+    var stations = [];
+    var filteredStations = [];
+    var url = "http://api.trafikanten.no/ReisRest/Place/FindPlaces/" + searchString;
+    request
+        .get(url)
+        .timeout(STATION_LIST_TIMEOUT)
+        .end(function(err, res) {
+            if (err) return callback(err);
+            stations = res.body;
+            callback(null, augmentStations(stations));
+        });
+
+    var coords = proj4('EPSG:25832', {
+                x: lng,
+                y: lat
+            });
+
+    function augmentStations(stations) {
+        stations.forEach(function(station, index) {
+            if (station.__type) {
+                if (station.__type.indexOf("Stop:") > -1) {
+                    var latLngXY = proj4('EPSG:25832', 'WGS84', {
+                        x: station.X,
+                        y: station.Y
+                    });
+
+                    station.Distance = geolib.getDistance({
+                        latitude: lat,
+                        longitude: lng
+                    }, {
+                        latitude: latLngXY.y,
+                        longitude: latLngXY.x
+                    });
+
+                    station.Index = index;
+
+                    if (station.Distance < 10000) {
+                        filteredStations.push(station);
+                    }
+                }
+            }
+        });
+
+        filteredStations.sort(function(a, b) {
+            var dPreference = b.Preference - a.Preference;
+            var dIndex = a.Index - b.Index;
+            return dPreference === 0 ? dIndex : dPreference;
+        });
+        console.log(filteredStations);
+        return filteredStations;
+
+    }
 };
 
 // *************** Test ****************************
@@ -12522,4 +12566,4 @@ var departureExample = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"geo-hash":2,"geolib":4,"localStorage":5,"moment":6,"proj4":42,"storage-lru":75,"superagent":80}]},{},["/lib/api"]);
+},{"geo-hash":2,"geolib":4,"localStorage":5,"moment":6,"proj4":42,"storage-lru":75,"superagent":80}]},{},[]);

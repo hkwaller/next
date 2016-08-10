@@ -5,7 +5,7 @@
 ***********************/
 
 * {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 
@@ -132,12 +132,12 @@
 }
 
 .ion-nav-view {
-    background: #fff; 
+    background: #fff;
 }
 
 .pane {
     background: #fff;
-    background-image: url('../img/background.png'); 
+    background-image: url('../img/background.png');
     background-position: top;
 }
 
@@ -238,6 +238,10 @@
 .no-hits {
     font-size: 1.3em;
     color: #4D4F53;
+}
+
+input.searchfield {
+  width: 90%;
 }
 
 

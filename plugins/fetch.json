@@ -1,32 +1,66 @@
 {
-    "org.apache.cordova.geolocation": {
+    "cordova-plugin-device": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.geolocation"
-        }
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "org.apache.cordova.statusbar": {
+    "cordova-plugin-console": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.statusbar"
-        }
+            "id": "cordova-plugin-console"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "com.ionic.keyboard": {
+    "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
-            "id": "com.ionic.keyboard"
-        }
+            "id": "cordova-plugin-whitelist"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "org.apache.cordova.device": {
+    "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.device"
-        }
+            "id": "cordova-plugin-splashscreen"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "org.apache.cordova.network-information": {
+    "cordova-plugin-statusbar": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.network-information"
-        }
+            "id": "cordova-plugin-statusbar"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "ionic-plugin-keyboard": {
+        "source": {
+            "type": "registry",
+            "id": "ionic-plugin-keyboard"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-geolocation"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
+        },
+        "is_top_level": false,
+        "variables": {}
     }
 }

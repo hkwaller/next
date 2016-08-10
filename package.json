@@ -1,15 +1,15 @@
 {
-  "name": "next",
+  "name": "Neste",
   "version": "1.0.0",
-  "description": "next: An Ionic project",
+  "description": "Neste for iOS",
   "dependencies": {
-    "geo-hash": "0.0.2",
-    "geolib": "~2.0.14",
     "gulp": "^3.5.6",
+    "gulp-sass": "^2.0.4",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
-    "gulp-sass": "^0.7.1",
+    "geo-hash": "0.0.2",
+    "geolib": "~2.0.14",
     "localStorage": "~1.0.3",
     "moment": "^2.4.0",
     "proj4": "^2.3.3",
@@ -18,20 +18,26 @@
   },
   "devDependencies": {
     "bower": "^1.3.3",
-    "browserify": "~9.0.3",
     "gulp-util": "^2.2.14",
     "shelljs": "^0.3.0",
+    "browserify": "~9.0.3",
     "vinyl-source-stream": "^1.1.0"
   },
   "cordovaPlugins": [
-    "org.apache.cordova.device",
-    "com.ionic.keyboard",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.geolocation"
+    "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "ionic-plugin-keyboard",
+    "cordova-plugin-geolocation"
+  ],
+  "cordovaPlatforms": [
+    "ios",
+    "android"
   ],
   "scripts": {
-    "bundle-external": "say sorry you are not clever enough, you should ask david to do this for you, he is much smarter than you",
     "bundle-external-forrealz": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
-    "browser": "open -a Google\\ Chrome\\ Canary --args --disable-web-security"
+    "browser": "open -a Google\\ Chrome\\ Canary --args --disable-web-security --user-data-dir=$HOME/Library/Application\\ Support/Google/Chrome\\ Canary/"
   }
 }

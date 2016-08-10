@@ -27,13 +27,17 @@ angular.module('next', ['ionic', 'next.controllers', 'next.services', 'next.filt
             controller: 'OverviewCtrl',
             templateUrl: 'templates/stations-overview.html'
         })
+        .state('search', {
+            url: '/search',
+            controller: 'SearchCtrl',
+            templateUrl: 'templates/search.html'
+        })
         .state('onboarding', {
             url: '/onboarding',
             controller: 'OnboardingCtrl',
             templateUrl: 'templates/onboarding.html',
             onEnter: function($state) {
                 var store = window.localStorage.seenOnboarding;
-                console.log(store);
                 if (store) {
                     $state.go('overview');
                 }
