@@ -6,9 +6,12 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  bundle: ['./lib/*.js']
 };
 
 gulp.task('default', ['sass']);
@@ -30,12 +33,30 @@ gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
 });
 
+gulp.task('watch:bundle', function() {
+  gulp.watch(paths.bundle, ['browserify-api']);
+});
+
 gulp.task('install', ['git-check'], function() {
   return bower.commands.install()
     .on('log', function(data) {
       gutil.log('bower', gutil.colors.cyan(data.id), data.message);
     });
 });
+
+gulp.task('browserify-api', function() {
+  return browserify('./lib/api.js')
+    .require('./lib/api.js', {
+      expose: '/lib/api'
+    })
+    .bundle()
+    //Pass desired output filename to vinyl-source-stream
+    .pipe(source('bundle.js'))
+    // Start piping stream to tasks!
+    .pipe(gulp.dest('./www/js/'));
+});
+
+
 
 gulp.task('git-check', function(done) {
   if (!sh.which('git')) {
