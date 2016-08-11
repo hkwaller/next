@@ -37,7 +37,7 @@
     "android"
   ],
   "scripts": {
-    "bundle-external-forrealz": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
+    "bundle": "./node_modules/.bin/browserify -r ./lib/api > www/js/bundle.js",
     "browser": "open -a Google\\ Chrome\\ Canary --args --disable-web-security --user-data-dir=$HOME/Library/Application\\ Support/Google/Chrome\\ Canary/"
   }
 }

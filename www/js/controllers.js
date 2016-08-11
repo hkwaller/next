@@ -138,7 +138,7 @@ angular.module('next.controllers', [])
     }
 
     function getLinesFromApi(options) {
-        ApiService.getDeparturesForStation(options, (function(err, lines) {
+        ApiService.getDeparturesForStation(options, $scope.selectedStation, (function(err, lines) {
             $timeout(function() {
                 console.log(lines);
                 $scope.lines = lines;
@@ -166,13 +166,15 @@ angular.module('next.controllers', [])
         });
     };
 
+    $scope.preferDeparture = function(departure) {
+        ApiService.preferDeparture(departure, $scope.selectedStation.Name);
+    }
+
     $ionicPlatform.on('resume', function() {
         $scope.refresh({
             showLoadingOverlay: true
         });
     })
-
-
 })
 
 .controller('SearchCtrl', function($scope, $ionicLoading, $rootScope, ApiService, $cordovaGeolocation, $timeout, StationService, $location) {

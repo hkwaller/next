@@ -244,6 +244,9 @@ input.searchfield {
   width: 90%;
 }
 
+.item-complex .item-content {
+  padding: 0 !important;
+}
 
 /********************
 

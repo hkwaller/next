@@ -16,6 +16,24 @@ angular.module('next.filters', [])
     }
 })
 
+.filter('favouriteDepartureFilter', function() {
+    return function(input) {
+        return (input || []).filter(function(departure) {
+            return departure.Preference > 0;
+        });
+    }
+})
+
+.filter('noFavouriteDepartureFilter', function() {
+    return function(input) {
+        return (input || []).filter(function(departure) {
+            return departure.Preference === 0;
+        });
+    }
+})
+
+
+
 .filter('detailFilter', function() {
     return function(input) {
         return (input || []).filter(function(line) {
