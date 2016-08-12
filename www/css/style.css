@@ -40,6 +40,10 @@
     align-items: center;
 }
 
+.favourite-departure .item-content {
+  padding: 0;
+}
+
 .hidden {
     visibility: hidden;
 }
@@ -244,10 +248,16 @@ input.searchfield {
   width: 90%;
 }
 
-.item-complex .item-content {
-  padding: 0 !important;
+.option-points {
+  display: flex;
+  flex-direction: column;
+  line-height: 16px;
+  justify-content: center;
 }
 
+.option-points:last-child {
+  color: #919191;
+}
 /********************
 
     ONBOARDING
