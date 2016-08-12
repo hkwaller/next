@@ -13830,7 +13830,7 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
  * Feed in an options object containing a station id, will call callback with (err,result) where result
  * is an array of departures. For example of a departure object, see below!
  */
-exports.getDeparturesForStation = function(options, station, callback) {
+exports.getDeparturesForStation = function(options, station, lat, lng, callback) {
     if (typeof options !== 'object') throw new Error('Options object required');
 
     var ID = options.id;
@@ -13841,7 +13841,7 @@ exports.getDeparturesForStation = function(options, station, callback) {
         json: true
     }, function(error, departures) {
         if (departures && !force) {
-            return callback(null, augmentDepartures(departures));
+            return callback(null, augmentDepartures(departures, lat, lng));
         } else {
             request.get("http://api.trafikanten.no/ReisRest/RealTime/GetAllDepartures/" + ID)
                 .timeout(DEPARTURES_TIMEOUT)
@@ -13857,19 +13857,21 @@ exports.getDeparturesForStation = function(options, station, callback) {
                         if (error) throw error;
                     });
 
-                    callback(null, augmentDepartures(departures));
+                    callback(null, augmentDepartures(departures, lat, lng));
                 });
         }
     });
 
-    function augmentDepartures(departures) {
+    function augmentDepartures(departures, lat, lng) {
         return (departures || []).map(function(departure) {
             departure.MinutesToDeparture = moment(departure.ExpectedDepartureTime).diff(moment(), 'minutes');
-            var id = "" + departure.LineRef + departure.DestinationRef + station.Name;
+            var id = "" + departure.LineRef + departure.DestinationRef;
 
+            var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
             departure.Preference = (
-                preferredDepartures[id] &&
-                preferredDepartures[id].Preference
+                preferredDepartures[geoHash] &&
+                preferredDepartures[geoHash][id] &&
+                preferredDepartures[geoHash][id].Preference
             ) ||  0;
 
             return departure;
@@ -13907,29 +13909,57 @@ exports.unpreferStation = function(station, lat, lng) {
     localStorage.setItem('preferred-stations', JSON.stringify(preferredStationsByGeoHash));
 };
 
-exports.preferDeparture = function(departure, stationName) {
+exports.preferDeparture = function(departure, stationName, lat, lng) {
+    var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
+    if (!(geoHash in preferredDepartures)) {
+        preferredDepartures[geoHash] = {};
+    }
+
     var departureObject = {
-        ID: "" + departure.LineRef + departure.DestinationRef + stationName,
+        ID: "" + departure.LineRef + departure.DestinationRef,
         LineRef: departure.LineRef,
         DestinationName: departure.DestinationName,
         Preference: 0
     }
 
     var found = false;
-    Object.keys(preferredDepartures).map(function(key) {
+    Object.keys(preferredDepartures[geoHash]).map(function(key) {
         if (departureObject.ID === key) {
             found = true;
         }
-    })
+    });
 
     if (!found) {
-        preferredDepartures[departureObject.ID] = departureObject;
+        preferredDepartures[geoHash][departureObject.ID] = departureObject;
     }
 
-    preferredDepartures[departureObject.ID].Preference++;
+    preferredDepartures[geoHash][departureObject.ID].Preference++;
     localStorage.setItem('preferred-departures', JSON.stringify(preferredDepartures));
 }
 
+exports.unpreferDeparture = function(departure, lat, lng) {
+    var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);
+
+    var departureObject = {
+        ID: "" + departure.LineRef + departure.DestinationRef,
+        LineRef: departure.LineRef,
+        DestinationName: departure.DestinationName,
+        Preference: 0
+    }
+
+    var found = false;
+    Object.keys(preferredDepartures[geoHash]).map(function(key) {
+        if (departureObject.ID === key) {
+            found = true;
+        }
+    });
+
+    if (found) {
+        delete preferredDepartures[geoHash][departureObject.ID];
+    }
+
+    localStorage.setItem('preferred-stations', JSON.stringify(preferredDepartures));
+};
 
 exports.getPreferredStation = function(lat, lng) {
     var geoHash = GeoHash.encode(lng, lat, PREFER_STATION_GEO_HASH_PRECISION);

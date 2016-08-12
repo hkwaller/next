@@ -138,19 +138,23 @@ angular.module('next.controllers', [])
     }
 
     function getLinesFromApi(options) {
-        ApiService.getDeparturesForStation(options, $scope.selectedStation, (function(err, lines) {
-            $timeout(function() {
-                console.log(lines);
-                $scope.lines = lines;
-                $scope.isLoaded = true;
-                $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
-                $scope.$apply();
-                console.log(lines);
-                $scope.$broadcast('scroll.refreshComplete');
-                $ionicScrollDelegate.scrollTop(true);
-                $ionicLoading.hide();
-            }, 500);
-        }));
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                ApiService.getDeparturesForStation(options, $scope.selectedStation, lat, lng, (function(err, lines) {
+                    $timeout(function() {
+                        console.log(lines);
+                        $scope.lines = lines;
+                        $scope.isLoaded = true;
+                        $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
+                        $scope.$apply();
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $ionicScrollDelegate.scrollTop(true);
+                        $ionicLoading.hide();
+                    }, 500);
+                }));;
+            });
     }
 
     $scope.refresh = function(options) {
@@ -167,14 +171,27 @@ angular.module('next.controllers', [])
     };
 
     $scope.preferDeparture = function(departure) {
-        ApiService.preferDeparture(departure, $scope.selectedStation.Name);
-    }
+        $cordovaGeolocation.getCurrentPosition()
+            .then(function(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                ApiService.preferDeparture(departure, $scope.selectedStation.Name, lat, lng);
+            })
+    };
 
     $ionicPlatform.on('resume', function() {
         $scope.refresh({
             showLoadingOverlay: true
         });
-    })
+    });
+
+    $scope.reset = function(departure) {
+        ApiService.unpreferDeparture(departure, lat, lng);
+        getLinesFromApi({
+            id: $scope.selectedStation.ID,
+            force: true
+        });
+    };
 })
 
 .controller('SearchCtrl', function($scope, $ionicLoading, $rootScope, ApiService, $cordovaGeolocation, $timeout, StationService, $location) {
