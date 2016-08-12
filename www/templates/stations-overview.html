@@ -24,11 +24,9 @@
                 <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
                   Fjern favoritt
                 </ion-option-button>
-
                 <ion-option-button class="button-warning option-points" ng-click="reset(station, $index)">
                   <span>{{ station.Preference }}</span><span>poeng</span>
                 </ion-option-button>
-
             </ion-item>
             <div class="divider-thingy" ng-show="(stations | favouriteFilter).length > 0"></div>
         </ion-list>
