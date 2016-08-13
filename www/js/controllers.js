@@ -6,6 +6,7 @@ angular.module('next.controllers', [])
     });
 
     $rootScope.cancel = $ionicLoading.hide();
+    $scope.hasStations = true;
 
     var lat;
     var lng;
@@ -73,33 +74,22 @@ angular.module('next.controllers', [])
     function getStationsFromApi(lat, lng) {
         ApiService.getStationList(lat, lng, NUM_STATIONS, function(err, stations) {
             $timeout(function() {
-                angular.forEach(stations, function(val, key) {
-                    val.ServedBy = [];
-                    angular.forEach(val.Lines, function(lineVal, lineKey) {
-                        if (lineVal.LineID < 10 && (val.ServedBy.indexOf("sub") === -1)) {
-                            val.ServedBy.push("sub");
-                            return;
-                        } else if (lineVal.LineID > 10 && lineVal.LineID < 20 && (val.ServedBy.indexOf("trikk") === -1)) {
-                            val.ServedBy.push("trikk");
-                            return;
-                        } else if (lineVal.LineID >= 20 && lineVal.LineID < 100 && (val.ServedBy.indexOf("buss") === -1)) {
-                            val.ServedBy.push("buss");
-                            return;
-                        } else if (lineVal.LineID > 200 && lineVal.LineID < 1000 && (val.ServedBy.indexOf("greenbus") === -1)) {
-                            val.ServedBy.push("greenbus");
-                            return;
-                        }
-                    })
-                })
-                $scope.stations = stations;
+                $scope.favorites = stations.favorites;
+                $scope.regular = stations.regular;
                 $scope.$apply();
 
                 $scope.$broadcast('scroll.refreshComplete');
                 $ionicScrollDelegate.scrollTop(true);
 
-                if (stations.length === 0) $scope.hidden = false;
+                $ionicLoading.hide();
+
+                if (stations.regular.length === 0) $scope.hidden = false;
                 else $scope.hidden = true;
             })
+
+            $timeout(function() {
+                $scope.hasStations = stations.hasStations;
+            }, 1000)
         });
     }
 
@@ -113,6 +103,9 @@ angular.module('next.controllers', [])
     };
 
     $scope.reset = function(station) {
+        $ionicLoading.show({
+            template: 'Lagrer favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
+        });
         ApiService.unpreferStation(station, lat, lng);
         getStationsFromApi(lat, lng);
     };
@@ -145,9 +138,10 @@ angular.module('next.controllers', [])
                 ApiService.getDeparturesForStation(options, $scope.selectedStation, lat, lng, (function(err, lines) {
                     $timeout(function() {
                         console.log(lines);
-                        $scope.lines = lines;
+                        $scope.favorites = lines.favorites;
+                        $scope.regular = lines.regular;
                         $scope.isLoaded = true;
-                        $scope.hasDepartures = $filter('detailFilter')(lines).length > 0;
+                        $scope.hasDepartures = lines.hasDepartures;
                         $scope.$apply();
                         $scope.$broadcast('scroll.refreshComplete');
                         $ionicScrollDelegate.scrollTop(true);
@@ -171,11 +165,25 @@ angular.module('next.controllers', [])
     };
 
     $scope.preferDeparture = function(departure) {
+        $ionicLoading.show({
+            template: 'Lagrer favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
+        });
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
                 ApiService.preferDeparture(departure, $scope.selectedStation.Name, lat, lng);
+                ApiService.getDeparturesForStation({id: $scope.selectedStation.ID}, $scope.selectedStation, lat, lng, (function(err, lines) {
+                    $timeout(function() {
+                        $scope.favorites = lines.favorites;
+                        $scope.regular = lines.regular;
+                        $scope.isLoaded = true;
+                        $scope.hasDepartures = lines.hasDepartures;
+                        $scope.$broadcast('scroll.refreshComplete');
+                        $ionicScrollDelegate.scrollTop(true);
+                        $ionicLoading.hide();
+                    }, 500);
+                }));;
             })
     };
 
@@ -186,10 +194,12 @@ angular.module('next.controllers', [])
     });
 
     $scope.reset = function(departure) {
+        $ionicLoading.show({
+            template: 'Fjerner favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
+        });
         ApiService.unpreferDeparture(departure, lat, lng);
         getLinesFromApi({
             id: $scope.selectedStation.ID,
-            force: true
         });
     };
 })
