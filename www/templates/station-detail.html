@@ -3,13 +3,13 @@
         <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="spiral">
         </ion-refresher>
         <ion-list>
-            <div class="item item-divider sub-header-bar-overview hidden-overview" ng-class="{'visible-overview': (lines | favouriteFilter).length > 0}">
+            <div class="item item-divider sub-header-bar-overview hidden-overview" ng-class="{'visible-overview': favorites.length > 0}">
                 Favoritter
             </div>
-            <ion-item ng-repeat="line in lines | limitTo:20 | detailFilter | favouriteFilter" class="no-padding favourite-departure">
+            <ion-item ng-repeat="line in favorites | limitTo:20 | detailFilter" class="no-padding favourite-departure">
                 <div class="row custom-row-padding" ng-click="preferDeparture(line)">
                     <div class="col col-20 text-center">
-                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19 && line.LineRef < 100, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.LineRef }}</span>
+                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19 && line.LineRef < 100, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.PublishedLineName }}</span>
                     </div>
                     <div class="col col-60 line-name wrap-text">
                         {{ line.DestinationName }}
@@ -24,14 +24,14 @@
                 <ion-option-button class="button-assertive" ng-click="reset(line, $index)">
                   Fjern favoritt
                 </ion-option-button>
-                <ion-option-button class="button-warning option-points" ng-click="reset(station, $index)">
-                  <span>{{ station.Preference }}</span><span>poeng</span>
+                <ion-option-button class="button-warning option-points" ng-click="reset(line, $index)">
+                  <span>{{ line.Preference }}</span><span>poeng</span>
                 </ion-option-button>
             </ion-item>
-            <div class="divider-thingy" ng-show="(lines | favouriteFilter).length > 0"></div>
+            <div class="divider-thingy" ng-show="favorites.length > 0"></div>
         </ion-list>
         <ion-list>
-            <div class="item item-divider">
+            <div class="item item-divider" ng-show="regular.length > 0">
              <div class="row no-padding sub-header-bar">
                 <div class="col col-20 no-padding">
                     Linje
@@ -45,10 +45,10 @@
 
                 </div>
             </div>
-            <ion-item ng-repeat="line in lines | limitTo:20 | detailFilter | noFavouriteFilter" class="no-padding">
+            <ion-item ng-repeat="line in regular | limitTo:20 | detailFilter" class="no-padding">
                 <div class="row custom-row-padding" ng-click="preferDeparture(line)">
                     <div class="col col-20 text-center">
-                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19 && line.LineRef < 100, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000}">{{ line.LineRef }}</span>
+                        <span class="line text-center" ng-class="{'line-buss': line.LineRef > 19 && line.LineRef < 100, 'line-sub': line.LineRef < 10, 'line-longdistance': line.LineRef > 100 && line.LineRef < 1000, 'line-buss': line.PublishedLineName.indexOf('N') > -1}">{{ line.PublishedLineName }}</span>
                     </div>
                     <div class="col col-60 line-name wrap-text">
                         {{ line.DestinationName }}
