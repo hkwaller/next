@@ -13,7 +13,7 @@ angular.module('next.controllers', [])
     var lng;
 
     var NUM_STATIONS = 15;
-
+    
     $ionicPlatform.ready(function() {
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
@@ -157,6 +157,7 @@ angular.module('next.controllers', [])
     };
 
     $scope.preferDeparture = function(departure) {
+        console.log(departure);
         $ionicLoading.show({
             template: 'Lagrer favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
         });
@@ -178,85 +179,62 @@ angular.module('next.controllers', [])
     });
 
     $scope.reset = function(departure) {
-        $ionicLoading.show({
-            template: 'Fjerner favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
-        });
-        ApiService.unpreferDeparture(departure, lat, lng);
+        var options = options || {};
+        if (options.showLoadingOverlay) {
+            $ionicLoading.show({
+                template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
+            });
+        }
+        HttpService.unpreferDeparture(departure, lat, lng);
         getLinesFromApi({
             id: $scope.selectedStation.ID,
         });
     };
 })
 
-.controller('SearchCtrl', function($scope, $ionicLoading, $rootScope, ApiService, $cordovaGeolocation, $timeout, StationService, $location) {
+.controller('SearchCtrl', function($scope, $ionicLoading, $rootScope, HttpService, $cordovaGeolocation, $timeout, StationService, $location) {
     $scope.stations = [];
     $scope.searchString = "";
     $rootScope.cancel = $ionicLoading.hide;
     $scope.searchButtonTitle = "";
 
+    $scope.recentSearches = [];
+    $scope.searched = false;
+
     $scope.search = function(stationName) {
 
-        if (stationName.length > 0) {
+       if (stationName.length > 0) {
           $scope.searchButtonTitle = "Tøm";
         }
 
         $scope.stations = [];
-        if (stationName.length < 4) return;
-
+        if (stationName.length < 4) {
+            $scope.searched = false;
+            return;
+        }
+        
         $ionicLoading.show({
-            noBackdrop: true,
             scope: $scope,
-            template: 'Søker...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
+            template: 'Søker...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /></div>'
         });
 
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                ApiService.getStationByName(stationName, lat, lng, function(err, stations) {
+                HttpService.getStationByName(stationName, lat, lng).then(function(stations) {
                     $scope.stations = stations;
                     $ionicLoading.hide();
-                    $scope.$apply();
-                })
+                    $scope.searched = true;
+                });
             })
     }
 
     $scope.goToStation = function(station) {
         StationService.setStation(station);
+        $scope.recentSearches.push(station);
         $location.path('/station-detail');
-    }
-
-    function getStationsFromApi(lat, lng, count) {
-        ApiService.getStationList(lat, lng, count, function(err, stations) {
-            $timeout(function() {
-                angular.forEach(stations, function(val, key) {
-                    val.ServedBy = [];
-                    angular.forEach(val.Lines, function(lineVal, lineKey) {
-                        if (lineVal.LineID < 10 && (val.ServedBy.indexOf("sub") === -1)) {
-                            val.ServedBy.push("sub");
-                            return;
-                        } else if (lineVal.LineID > 10 && lineVal.LineID < 20 && (val.ServedBy.indexOf("trikk") === -1)) {
-                            val.ServedBy.push("trikk");
-                            return;
-                        } else if (lineVal.LineID >= 20 && lineVal.LineID < 100 && (val.ServedBy.indexOf("buss") === -1)) {
-                            val.ServedBy.push("buss");
-                            return;
-                        } else if (lineVal.LineID > 200 && lineVal.LineID < 1000 && (val.ServedBy.indexOf("greenbus") === -1)) {
-                            val.ServedBy.push("greenbus");
-                            return;
-                        }
-                    })
-                })
-                $scope.stations = stations;
-                $scope.$apply();
-
-                $ionicScrollDelegate.scrollTop(true);
-
-                if (stations.length === 0) $scope.hidden = false;
-                else $scope.hidden = true;
-            })
-        });
-    }
+    };
 })
 
 .controller('OnboardingCtrl', function($scope, $location) {
