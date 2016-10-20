@@ -13773,6 +13773,7 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
             if (err) return callback(err.code);
 
             var stations = res.body;
+            stations = stations.splice(0, numberofstops);
 
             callback(null, augmentStations(stations));
         });
@@ -13784,6 +13785,8 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
             regular: [],
             hasStations: false
         }
+
+
 
         stations.forEach(function(station, index) {
             var latLngXY = proj4('EPSG:25832', 'WGS84', {
