@@ -22,5 +22,19 @@
             </ion-item>
             <div class="divider-thingy" ng-show="stations.length > 0"></div>
         </ion-list>
+        <ion-list class="search-list" ng-show="!searched">
+            <div class="item item-divider sub-header-bar-overview" ng-show="recentSearches.length > 0">
+                Nylige søk
+            </div>
+            <ion-item ng-repeat="station in recentSearches | orderBy:'Distance'" ng-click="goToStation(station)">
+                <div class="row">
+                    <div class="col col-80 line-name no-padding-left">
+                        {{ station.Name | maxCharFilter }}
+                        <img ng-repeat="type in station.ServedBy track by $index" ng-src="./img/{{type}}.png" class="thumbnail">
+                    </div>
+                </div>
+            </ion-item>
+            <div class="divider-thingy" ng-show="stations.length > 0"></div>
+        </ion-list>
     </ion-content>
 </ion-view>
