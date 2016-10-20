@@ -1,12 +1,13 @@
 angular.module('next.controllers', [])
-.controller('OverviewCtrl', function($scope, $rootScope, $location, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService) {
+.controller('OverviewCtrl', function($scope, $rootScope, $location, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $ionicViewSwitcher, $timeout, ApiService, StationService, HttpService) {
     $scope.stations = [];
-    $ionicLoading.show({
-        template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
-    });
 
     $rootScope.cancel = $ionicLoading.hide();
     $scope.hasStations = true;
+
+    $ionicLoading.show({
+        template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+    });
 
     var lat;
     var lng;
@@ -31,7 +32,8 @@ angular.module('next.controllers', [])
                     console.log("But since you are in Ytterby we'll use", lat, lng, "instead! :)");
                 }
 
-                var preferredStation = ApiService.getPreferredStation(lat, lng);
+                var preferredStation = HttpService.getPreferredStation(lat, lng);
+
                 if (preferredStation) {
                     $ionicViewSwitcher.nextTransition('none');
                     StationService.setStation(preferredStation);
@@ -60,7 +62,7 @@ angular.module('next.controllers', [])
 
     $scope.goToStation = function(station) {
         if (station && lat && lng) {
-            ApiService.preferStation(station, lat, lng);
+            HttpService.preferStation(station, lat, lng);
             setTimeout(function() {
                 getStationsFromApi(lat, lng);
             }, 1000)
@@ -72,28 +74,26 @@ angular.module('next.controllers', [])
 
 
     function getStationsFromApi(lat, lng) {
-        ApiService.getStationList(lat, lng, NUM_STATIONS, function(err, stations) {
-            $timeout(function() {
-                $scope.favorites = stations.favorites;
-                $scope.regular = stations.regular;
-                $scope.$apply();
+        HttpService.getStations(lat, lng, 15).then(function(stations) {
+            $scope.favorites = stations.favorites;
+            $scope.regular = stations.regular;
 
-                $scope.$broadcast('scroll.refreshComplete');
-                $ionicScrollDelegate.scrollTop(true);
+            $scope.$broadcast('scroll.refreshComplete');
+            $ionicScrollDelegate.scrollTop(true);
 
-                $ionicLoading.hide();
+            $ionicLoading.hide();
 
-                if (stations.regular.length === 0) $scope.hidden = false;
-                else $scope.hidden = true;
-            })
+            if (stations.regular.length === 0) $scope.hidden = false;
+            else $scope.hidden = true;
 
-            $timeout(function() {
-                $scope.hasStations = stations.hasStations;
-            }, 1000)
+            $scope.hasStations = stations.hasStations;
         });
     }
 
     $scope.refresh = function() {
+        $ionicLoading.show({
+            template: 'Laster inn stasjoner...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner></div>'
+        });
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
                 lat = position.coords.latitude;
@@ -104,22 +104,17 @@ angular.module('next.controllers', [])
 
     $scope.reset = function(station) {
         $ionicLoading.show({
-            template: 'Lagrer favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
+            template: 'Fjerner favoritt... <div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner>'
         });
-        ApiService.unpreferStation(station, lat, lng);
+        HttpService.unpreferStation(station, lat, lng);
         getStationsFromApi(lat, lng);
     };
 
 })
 
-.controller('DetailCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $timeout, ApiService, StationService, $filter) {
-
-    $ionicLoading.show({
-        template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
-    });
-
-    $rootScope.cancel = $ionicLoading.hide;
-
+.controller('DetailCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, $ionicPlatform, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, $timeout, HttpService, StationService, $filter) {
+/*    $rootScope.cancel = $ionicLoading.hide();
+*/
     $scope.hasDepartures = false;
     $scope.isLoaded = false;
 
@@ -131,33 +126,30 @@ angular.module('next.controllers', [])
     }
 
     function getLinesFromApi(options) {
+        $ionicLoading.show({
+            template: 'Laster inn avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /></div>'
+        });
         $cordovaGeolocation.getCurrentPosition()
             .then(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                ApiService.getDeparturesForStation(options, $scope.selectedStation, lat, lng, (function(err, lines) {
-                    $timeout(function() {
-                        console.log(lines);
-                        $scope.favorites = lines.favorites;
-                        $scope.regular = lines.regular;
-                        $scope.isLoaded = true;
-                        $scope.hasDepartures = lines.hasDepartures;
-                        $scope.$apply();
-                        $scope.$broadcast('scroll.refreshComplete');
-                        $ionicScrollDelegate.scrollTop(true);
-                        $ionicLoading.hide();
-                    }, 500);
-                }));;
+                HttpService.getDeparturesForStation(options, $scope.selectedStation, lat, lng).then(function(lines) {
+                    console.log(lines);
+                    $scope.favorites = lines.favorites;
+                    $scope.regular = lines.regular;
+                    $scope.isLoaded = true;
+                    $scope.hasDepartures = lines.hasDepartures;
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $ionicScrollDelegate.scrollTop(true);
+                    $ionicLoading.hide();
+                });;
             });
     }
 
     $scope.refresh = function(options) {
-        var options = options || {};
-        if (options.showLoadingOverlay) {
-            $ionicLoading.show({
-                template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
-            });
-        }
+        $ionicLoading.show({
+            template: 'Oppdaterer avganger...<div class="loading-icon"><ion-spinner icon="spiral" class="spinner-positive"></ion-spinner><br /><button class="button button-outline button-cancel-search" ng-click="$root.cancel()">Avbryt søk</button></div>'
+        });
         getLinesFromApi({
             id: $scope.selectedStation.ID,
             force: true
@@ -172,18 +164,10 @@ angular.module('next.controllers', [])
             .then(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                ApiService.preferDeparture(departure, $scope.selectedStation.Name, lat, lng);
-                ApiService.getDeparturesForStation({id: $scope.selectedStation.ID}, $scope.selectedStation, lat, lng, (function(err, lines) {
-                    $timeout(function() {
-                        $scope.favorites = lines.favorites;
-                        $scope.regular = lines.regular;
-                        $scope.isLoaded = true;
-                        $scope.hasDepartures = lines.hasDepartures;
-                        $scope.$broadcast('scroll.refreshComplete');
-                        $ionicScrollDelegate.scrollTop(true);
-                        $ionicLoading.hide();
-                    }, 500);
-                }));;
+                HttpService.preferDeparture(departure, $scope.selectedStation.Name, lat, lng);
+                getLinesFromApi({
+                    id: $scope.selectedStation.ID,
+                });
             })
     };
 
