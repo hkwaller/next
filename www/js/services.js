@@ -22,6 +22,14 @@ try {
     preferredDepartures = {};
 }
 
+var recentSearches;
+try {
+    console.log(JSON.parse(localStorage.getItem('recent-searches')));
+    recentSearches = JSON.parse(localStorage.getItem('recent-searches')) || [];
+} catch (error) {
+    recentSearches = [];
+}
+
 angular.module('next.services', [])
 
 .factory('ApiService', function() {
@@ -43,7 +51,6 @@ angular.module('next.services', [])
                 regular: [],
                 hasStations: false
             }
-            console.log(stations);
             stations.data.forEach(function(station, index) {
                 var latLngXY = proj4('EPSG:25832', 'WGS84', {
                 x: station.X,
@@ -281,7 +288,22 @@ angular.module('next.services', [])
 
         });
     return promise;
-    }
+    },
+    getRecentSearches() {
+        return recentSearches;
+    },
+    setRecentSearches(searched) {
+        if (searched === undefined) return;
+        var recentSearches = JSON.parse(localStorage.getItem('recent-searches'));
+
+        if (recentSearches === null) {
+            recentSearches = [];
+        }
+
+        recentSearches.push(searched);
+
+        localStorage.setItem('recent-searches', JSON.stringify(recentSearches));
+    },
   };
   return myService;
 })

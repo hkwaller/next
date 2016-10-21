@@ -134,7 +134,6 @@ angular.module('next.controllers', [])
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
                 HttpService.getDeparturesForStation(options, $scope.selectedStation, lat, lng).then(function(lines) {
-                    console.log(lines);
                     $scope.favorites = lines.favorites;
                     $scope.regular = lines.regular;
                     $scope.isLoaded = true;
@@ -198,7 +197,8 @@ angular.module('next.controllers', [])
     $rootScope.cancel = $ionicLoading.hide;
     $scope.searchButtonTitle = "";
 
-    $scope.recentSearches = [];
+    $scope.recentSearches = HttpService.getRecentSearches();
+
     $scope.searched = false;
 
     $scope.search = function(stationName) {
@@ -232,7 +232,21 @@ angular.module('next.controllers', [])
 
     $scope.goToStation = function(station) {
         StationService.setStation(station);
-        $scope.recentSearches.push(station);
+
+        var found = false;
+        $scope.recentSearches.map(function(searchedStation) {
+            if (searchedStation.ID === station.ID) {
+                found = true;
+                return;
+            }
+        });
+
+        if (!found) {
+            $scope.recentSearches.push(station);
+            HttpService.setRecentSearches(station);
+        }
+
+        $scope.searched = false;
         $location.path('/station-detail');
     };
 })
