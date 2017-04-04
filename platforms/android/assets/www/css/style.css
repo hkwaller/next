@@ -40,6 +40,10 @@
     align-items: center;
 }
 
+.favourite-departure .item-content {
+  padding: 0;
+}
+
 .hidden {
     visibility: hidden;
 }
@@ -244,6 +248,16 @@ input.searchfield {
   width: 90%;
 }
 
+.option-points {
+  display: flex;
+  flex-direction: column;
+  line-height: 16px;
+  justify-content: center;
+}
+
+.option-points:last-child {
+  color: #919191;
+}
 
 /********************
 
@@ -266,4 +280,18 @@ input.searchfield {
 
 .onboarding-button {
     width: 60%;
+}
+
+/********************
+
+    SEARCH
+
+********************/
+
+.search-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4em;
+    height: 100%;
 }

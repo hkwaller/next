@@ -4,14 +4,14 @@
         Søk
       </button>
     </ion-nav-buttons>
-    <ion-content scrollbar-y="false" ng-show="stations.length > 0">
+    <ion-content scrollbar-y="false" ng-show="(regular.length + favorites.length) > 0">
         <ion-refresher pulling-text="Dra for å oppdatere..." on-refresh="refresh()" spinner="spiral">
         </ion-refresher>
-        <div class="item item-divider sub-header-bar-overview hidden-overview" ng-class="{'visible-overview': (stations | favouriteFilter).length > 0}">
+        <div class="item item-divider sub-header-bar-overview hidden-overview" ng-class="{'visible-overview': favorites.length > 0}">
             Favoritter
         </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | orderBy:'Distance' | favouriteFilter" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in favorites | orderBy:'Distance'" ng-click="goToStation(station)">
                 <div class="row">
                     <div class="col col-90 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
@@ -24,14 +24,17 @@
                 <ion-option-button class="button-assertive" ng-click="reset(station, $index)">
                   Fjern favoritt
                 </ion-option-button>
+                <ion-option-button class="button-warning option-points" ng-click="reset(station, $index)">
+                  <span>{{ station.Preference }}</span><span>poeng</span>
+                </ion-option-button>
             </ion-item>
-            <div class="divider-thingy" ng-show="(stations | favouriteFilter).length > 0"></div>
+            <div class="divider-thingy" ng-show="favorites.length > 0"></div>
         </ion-list>
         <div class="item item-divider sub-header-bar-overview">
             Alle
         </div>
         <ion-list>
-            <ion-item ng-repeat="station in stations | orderBy:'Distance' | noFavouriteFilter" ng-click="goToStation(station)">
+            <ion-item ng-repeat="station in regular | orderBy:'Distance'" ng-click="goToStation(station)">
                 <div class="row">
                     <div class="col col-80 line-name no-padding-left">
                         {{ station.Name | maxCharFilter }}
@@ -44,7 +47,7 @@
             </ion-item>
         </ion-list>
     </ion-content>
-        <ion-content class="center hidden" ng-class="{'visible': !hidden}">
+        <ion-content class="center hidden" ng-class="{'visible': !hasStations}">
         <div class="row">
             <div class="col text-center">
                 <span class="no-hits">Ingen stasjoner funnet <br>i nærheten av deg :(</span>
