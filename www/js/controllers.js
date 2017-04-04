@@ -60,6 +60,10 @@ angular.module('next.controllers', [])
         $location.path('/search');
     }
 
+    $scope.showOnboarding = function() {
+        $location.path('/help');
+    }
+
     $scope.goToStation = function(station) {
         if (station && lat && lng) {
             HttpService.preferStation(station, lat, lng);
@@ -256,4 +260,12 @@ angular.module('next.controllers', [])
         window.localStorage['seenOnboarding'] = true;
         $location.path('/stations-overview');
     }
+})
+
+.controller('HelpCtrl', function($scope, $location) {
+    $scope.goToOverview = function() {
+        $location.path('/stations-overview');
+    }
+
+    
 })

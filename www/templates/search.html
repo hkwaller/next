@@ -37,4 +37,7 @@
             <div class="divider-thingy" ng-show="stations.length > 0"></div>
         </ion-list>
     </ion-content>
+    <div class="search-empty" ng-show="stations.length === 0 || recentSearches.length === 0">
+        You should try and search for something
+    </div>
 </ion-view>

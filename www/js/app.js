@@ -49,6 +49,11 @@ angular.module('next',
                 }
             }
         })
+        .state('help', {
+            url: '/help',
+            controller: 'HelpCtrl',
+            templateUrl: 'templates/onboarding.html'
+        })
 
     $urlRouterProvider.otherwise("/onboarding");
 

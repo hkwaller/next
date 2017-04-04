@@ -24,11 +24,11 @@ try {
 
 var recentSearches;
 try {
-    console.log(JSON.parse(localStorage.getItem('recent-searches')));
     recentSearches = JSON.parse(localStorage.getItem('recent-searches')) || [];
 } catch (error) {
     recentSearches = [];
 }
+localStorage.setItem('recent-searches', JSON.stringify([]));
 
 angular.module('next.services', [])
 

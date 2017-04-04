@@ -13760,6 +13760,8 @@ var lruCache = new StorageLRU(asyncify(localStorage));
 exports.getStationList = function(lat, lng, numberofstops, callback) {
 
     var cacheKey = 'getStationList:' + GeoHash.encode(lng, lat, STATION_LIST_GEO_HASH_PRECISION) + ':' + numberofstops;
+    console.log("lat: " + lat);
+    console.log("lng: " + lng);
 
     var coords = proj4('EPSG:25832', {
         x: lng,
@@ -13773,7 +13775,8 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
             if (err) return callback(err.code);
 
             var stations = res.body;
-
+            stations = stations.splice(0, numberofstops);
+            
             callback(null, augmentStations(stations));
         });
 
@@ -13784,6 +13787,8 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
             regular: [],
             hasStations: false
         }
+
+        
 
         stations.forEach(function(station, index) {
             var latLngXY = proj4('EPSG:25832', 'WGS84', {
@@ -13825,7 +13830,6 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
             });
 
             if (station.Preference > 0) {
-                console.log(station);
                 obj.favorites.push(station);
             } else {
                 obj.regular.push(station);
@@ -13887,7 +13891,7 @@ exports.getDeparturesForStation = function(options, station, lat, lng, callback)
             hasDepartures: false
         }
 
-        departures.map(function(departure) {
+        departures.map(function(departure, index) {
             departure.MinutesToDeparture = moment(departure.ExpectedDepartureTime).diff(moment(), 'minutes');
             var id = "" + departure.LineRef + departure.DestinationRef;
 
@@ -13897,13 +13901,14 @@ exports.getDeparturesForStation = function(options, station, lat, lng, callback)
                 preferredDepartures[geoHash][id] &&
                 preferredDepartures[geoHash][id].Preference
             ) ||  0;
-
             if (departure.Preference > 0) {
                 obj.favorites.push(departure)
             } else {
                 obj.regular.push(departure)
             }
         });
+
+        obj.regular = obj.regular.slice(0,20);
 
         if ((obj.favorites.length + obj.regular.length) > 0) obj.hasDepartures = true;
 
@@ -14007,6 +14012,62 @@ exports.getPreferredStation = function(lat, lng) {
         });
     }
     return preferredStation;
+};
+
+exports.getStationByName = function(searchString, lat, lng, callback) {
+//
+    var stations = [];
+    var filteredStations = [];
+    var url = "http://api.trafikanten.no/ReisRest/Place/FindPlaces/" + searchString;
+    request
+        .get(url)
+        .timeout(STATION_LIST_TIMEOUT)
+        .end(function(err, res) {
+            if (err) return callback(err);
+            stations = res.body;
+            callback(null, augmentStations(stations));
+        });
+
+    var coords = proj4('EPSG:25832', {
+                x: lng,
+                y: lat
+            });
+
+    function augmentStations(stations) {
+        stations.forEach(function(station, index) {
+            if (station.__type) {
+                if (station.__type.indexOf("Stop:") > -1) {
+                    var latLngXY = proj4('EPSG:25832', 'WGS84', {
+                        x: station.X,
+                        y: station.Y
+                    });
+
+                    station.Distance = geolib.getDistance({
+                        latitude: lat,
+                        longitude: lng
+                    }, {
+                        latitude: latLngXY.y,
+                        longitude: latLngXY.x
+                    });
+
+                    station.Index = index;
+
+                    if (station.Distance < 10000) {
+                        filteredStations.push(station);
+                    }
+                }
+            }
+        });
+
+        filteredStations.sort(function(a, b) {
+            var dPreference = b.Preference - a.Preference;
+            var dIndex = a.Index - b.Index;
+            return dPreference === 0 ? dIndex : dPreference;
+        });
+
+        return filteredStations;
+
+    }
 };
 
 // *************** Test ****************************

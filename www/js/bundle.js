@@ -13760,6 +13760,8 @@ var lruCache = new StorageLRU(asyncify(localStorage));
 exports.getStationList = function(lat, lng, numberofstops, callback) {
 
     var cacheKey = 'getStationList:' + GeoHash.encode(lng, lat, STATION_LIST_GEO_HASH_PRECISION) + ':' + numberofstops;
+    console.log("lat: " + lat);
+    console.log("lng: " + lng);
 
     var coords = proj4('EPSG:25832', {
         x: lng,
@@ -13774,7 +13776,7 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
 
             var stations = res.body;
             stations = stations.splice(0, numberofstops);
-
+            
             callback(null, augmentStations(stations));
         });
 
@@ -13786,7 +13788,7 @@ exports.getStationList = function(lat, lng, numberofstops, callback) {
             hasStations: false
         }
 
-
+        
 
         stations.forEach(function(station, index) {
             var latLngXY = proj4('EPSG:25832', 'WGS84', {

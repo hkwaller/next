@@ -258,6 +258,7 @@ input.searchfield {
 .option-points:last-child {
   color: #919191;
 }
+
 /********************
 
     ONBOARDING
@@ -279,4 +280,18 @@ input.searchfield {
 
 .onboarding-button {
     width: 60%;
+}
+
+/********************
+
+    SEARCH
+
+********************/
+
+.search-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4em;
+    height: 100%;
 }
