@@ -1,12 +1,12 @@
 <ion-view view-title="neste" ng-init="hidden = true" hide-back-button="true" ng-cloak>
     <ion-nav-buttons side="left">
-      <button class="button button-clear" ng-click="showOnboarding()">
+      <button class="button button-clear" id="button-left" ng-click="showOnboarding()">
         <i class="ion-help"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-      <button class="button button-clear" id="top-bar-img" ng-click="goToSearch()">
-        Søk
+      <button class="button button-clear" id="button-right" ng-click="goToSearch()">
+        <i class="ion-search"></i>
       </button>
     </ion-nav-buttons>
     <ion-content scrollbar-y="false" ng-show="(regular.length + favorites.length) > 0">

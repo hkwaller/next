@@ -266,6 +266,4 @@ angular.module('next.controllers', [])
     $scope.goToOverview = function() {
         $location.path('/stations-overview');
     }
-
-    
 })

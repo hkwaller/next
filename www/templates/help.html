@@ -1,18 +1,149 @@
 <ion-view hide-nav-bar="true" ng-cloak>
     <ion-content scroll="false">
         <ion-slide-box on-slide-changed="slideHasChanged($index)" class="slide-box" show-pager="true">
+          <ion-slide>
+            <div class="slide-container">
+              <div class="slide-button-row">
+                <button class="button-clear close-onboarding" ng-click="goToOverview()">
+                  <i class="ion-close close-onboarding-icon"></i>
+                </button>
+              </div>
+              <div class="image-container">
+                <h1>Neste</h1>
+                <div class="onboarding-text">
+                  Denne appen lar deg veldig, veldig kjappt se når neste avgang går fra din favorittstasjon basert på din posisjon. Appen lærer seg hvor du åker fra å hvilke avganger du vil ta slik at du slipper en slitsom prosess med å søke på avganger, eller å skanne av en lang liste.
+                  <br /><br />
+                  Vi skal nå vise hvordan appen fungerer, å håper du vil gå igjennom dette for å få en bedre forståelse for hva som skjer. 
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="slide-container">
+              <div class="slide-button-row">
+                <button class="button-clear close-onboarding" ng-click="goToOverview()">
+                  <i class="ion-close close-onboarding-icon"></i>
+                </button>
+              </div>
+              <div class="image-container">
+                <h3>Stasjonsliste</h3>
+                <img ng-src="./img/onboarding/liste.png" class="onboarding-img">
+                <div class="onboarding-text">
+                  Oversikten viser stasjoner i nærheten av deg samt hvilken type transport som er tilgjengelig på dette stoppet
+                </div>
+                <div class="image-row">
+                  <div class="image-with-text">
+                    <img src="./img/buss.png" class="transport-image" />
+                    Buss
+                  </div>
+                  <div class="image-with-text">
+                    <img src="./img/trikk.png" class="transport-image" />
+                    Trikk
+                  </div>
+                  <div class="image-with-text">
+                    <img src="./img/sub.png" class="transport-image" />
+                    T-bane
+                  </div>
+                  <div class="image-with-text">
+                    <img src="./img/greenbus.png" class="transport-image" />
+                    Langdistanse
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="slide-container">
+              <div class="slide-button-row">
+                <button class="button-clear close-onboarding" ng-click="goToOverview()">
+                  <i class="ion-close close-onboarding-icon"></i>
+                </button>
+              </div>
+              <div class="image-container">
+                <h3>Favoritter</h3>
+                <img ng-src="./img/onboarding/liste_favoritter.png" class="onboarding-img">
+                <div class="onboarding-text">
+                  Når du trykker på en stasjon lagres din nåværende posisjon og stasjonen får en poeng og legges som en favoritt for denne posisjonen. <br /><br /> Det betyr at når du åpner appen neste gang på samme posisjon vil vi direkte presentere avganger fra denne stasjonen.
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="slide-container">
+              <div class="slide-button-row">
+                <button class="button-clear close-onboarding" ng-click="goToOverview()">
+                  <i class="ion-close close-onboarding-icon"></i>
+                </button>
+              </div>
+              <div class="image-container">
+                <h3>Slette favoritter</h3>
+                <img ng-src="./img/onboarding/liste_fjern_favoritter.png" class="onboarding-img">
+                <div class="onboarding-text">
+                  Hvis du vil slette en stasjon swiper du som vanlig å kan da enten slette den, eller bare se hvor mange poeng en stasjon har.
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="slide-container">
+              <div class="slide-button-row">
+                <button class="button-clear close-onboarding" ng-click="goToOverview()">
+                  <i class="ion-close close-onboarding-icon"></i>
+                </button>
+              </div>
+              <div class="image-container">
+                <h3>Avgangsliste</h3>
+                <img ng-src="./img/onboarding/avganger.png" class="onboarding-img">
+                <div class="onboarding-text">
+                  Når du trykket på en stasjon vil du få se alle avgangene fra denne stasjonen. Fargen på ikonet sier noe om hva type det en avgang er.
+                </div>
+                <div class="image-row">
+                  <div class="image-with-text">
+                    <img src="./img/onboarding_circle.png" class="transport-image" />
+                    Buss
+                  </div>
+                  <div class="image-with-text">
+                    <img src="./img/onboarding_octagon.png" class="transport-image" />
+                    Trikk
+                  </div>
+                  <div class="image-with-text">
+                    <img src="./img/onboarding_polygon.png" class="transport-image" />
+                    T-bane
+                  </div>
+                  <div class="image-with-text">
+                    <img src="./img/onboarding_rectangle.png" class="transport-image" />
+                    Langdistanse
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="slide-container">
+              <div class="slide-button-row">
+                <button class="button-clear close-onboarding" ng-click="goToOverview()">
+                  <i class="ion-close close-onboarding-icon"></i>
+                </button>
+              </div>
+              <div class="image-container">
+                <h3>Favorittstasjoner</h3>
+                <img ng-src="./img/onboarding/avganger_favoritter.png" class="onboarding-img">
+                <div class="onboarding-text">
+                  Her kan du og legge til en avgang som favoritt ved å trykke på den samt slette den ved å swipe.                
+                  <br /><br />
+                  Da blir det litt enklere å finne riktig avgang.
+                </div>
+              </div>
+            </div>
+          </ion-slide>
           <ion-slide class="center">
-              <img ng-src="./img/onboarding/1.png" class="onboarding-img">
-            </ion-slide>
-          <ion-slide class="center">
-              <img ng-src="./img/onboarding/2.png" class="onboarding-img">
-            </ion-slide>
-          <ion-slide class="center">
-              <img ng-src="./img/onboarding/3.png" class="onboarding-img">
-            </ion-slide>
-            <ion-slide class="center">
+            <div class="image-container final-slide">
+              <div class="final-message">
+                Håper du liker appen!
+              </div>
               <button class="button button-positive button-outline onboarding-button" ng-click="goToOverview()">Ferdig</button>
-            </ion-slide>
+            </div>
+          </ion-slide>
         </ion-slide-box>
     </ion-content>
 </ion-view>

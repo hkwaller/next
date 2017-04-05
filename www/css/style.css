@@ -40,6 +40,73 @@
     align-items: center;
 }
 
+.slide-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100%;
+}
+
+.slide-button-row {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.close-onboarding {
+    padding: 1em;
+}
+
+.close-onboarding-icon {
+    font-size: 2em;
+}
+
+.image-container {
+    height: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.image-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
+.image-with-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 4em;
+    text-align: center;
+}
+
+.final-slide {
+    width: 80%;
+}
+
+.final-message {
+    margin-bottom: 2em;
+}
+
+.transport-image {
+    height: 1.5em;
+    width: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.onboarding-text {
+    padding: 2em 3em 1.5em 3em;
+    text-align: center;
+}
+
 .favourite-departure .item-content {
   padding: 0;
 }
@@ -237,6 +304,14 @@
     width: 16em;
     margin-top: 3em;
     display: block;
+}
+
+#button-left {
+    padding-left: 1em;
+}
+
+#button-right {
+    padding-right: 1em;
 }
 
 .no-hits {
