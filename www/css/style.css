@@ -57,6 +57,8 @@
 
 .close-onboarding {
     padding: 1em;
+    max-height: 6em;
+    padding: 2em;
 }
 
 .close-onboarding-icon {
@@ -67,7 +69,8 @@
     height: 95%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    margin-top: 2em;
     flex-direction: column;
 }
 
@@ -90,6 +93,7 @@
 
 .final-slide {
     width: 80%;
+    justify-content: center;
 }
 
 .final-message {
@@ -104,6 +108,11 @@
 
 .onboarding-text {
     padding: 2em 3em 1.5em 3em;
+    text-align: center;
+}
+
+h1 {
+    max-width: 70%;
     text-align: center;
 }
 

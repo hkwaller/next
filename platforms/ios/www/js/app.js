@@ -52,7 +52,7 @@ angular.module('next',
         .state('help', {
             url: '/help',
             controller: 'HelpCtrl',
-            templateUrl: 'templates/onboarding.html'
+            templateUrl: 'templates/help.html'
         })
 
     $urlRouterProvider.otherwise("/onboarding");
